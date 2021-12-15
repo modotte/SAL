@@ -52,11 +52,11 @@ module Client =
         printfn $"Cded to {systemDir}"
 
         printfn "Launching mod.."
-        let process = new Process()
-        process.StartInfo.FileName <- @"..\..\ContentExpansion\System\Swat4X.exe"
-        process.StartInfo.WindowStyle <- ProcessWindowStyle.Normal
-        process.Start()
-        process.WaitForExit()
+        let externalProcess = new Process()
+        externalProcess.StartInfo.FileName <- @"..\..\ContentExpansion\System\Swat4X.exe"
+        externalProcess.StartInfo.WindowStyle <- ProcessWindowStyle.Normal
+        externalProcess.Start() |> ignore
+        externalProcess.WaitForExit()
         printfn $"SWAT4 + {gameMod.Name} closed gracefully"
 
 
@@ -65,8 +65,8 @@ module Launcher =
     open Avalonia.FuncUI.DSL
     open Avalonia.Layout
     
-    type Model = { Status: string }
-    let init = { Status = "" }
+    type Model = { Status: string; IsModRunning: bool }
+    let init = { Status = ""; IsModRunning = false }
 
     type Msg = Install | Uninstall | Launch
     let update (msg: Msg) (model: Model) : Model =
@@ -92,13 +92,14 @@ module Launcher =
         | Uninstall -> { model with Status = "Mod uninstalled" }
         | Launch ->
             Client.launchMod gameMod |> ignore
-            { model with Status = gameMod.Name + " has been launched" }
+            { model with Status = gameMod.Name + " has been launched"; IsModRunning = true }
     
     let view (model: Model) (dispatch) =
         DockPanel.create [
             DockPanel.children [
                 Button.create [
                     Button.dock Dock.Bottom
+                    Button.isEnabled (not model.IsModRunning)
                     Button.onClick (fun _ -> dispatch Launch)
                     Button.content "Launch Mod"
                 ]                
