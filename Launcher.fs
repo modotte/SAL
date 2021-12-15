@@ -6,11 +6,16 @@ module Client =
     open System.Net
     open System.IO.Compression
 
-    type Archive = Zip | Rar
+    type ArchiveType = Zip | Rar
+    type ModMeta = {
+        Url: string
+        ModName: string
+        Archive: ArchiveType
+    }
 
     let [<Literal>] SWAT_INSTALLATION_DIRECTORY = "SWAT4"
 
-    let asArchiveFile (archiveType: Archive) (modName: string) =
+    let asArchiveFile (archiveType: ArchiveType) (modName: string) =
         match archiveType with
         | Zip -> modName + ".zip"
         | Rar -> modName + ".rar"
@@ -42,7 +47,7 @@ module Launcher =
     let update (msg: Msg) (model: Model) : Model =
         match msg with
         | Install ->
-            match Client.downloadMod "https://www.moddb.com/downloads/mirror/195627/115/b7e306bbf7d472a49725194bedb0da71" "SEF" Client.Archive.Zip with
+            match Client.downloadMod "https://www.moddb.com/downloads/mirror/195627/115/b7e306bbf7d472a49725194bedb0da71" "SEF" Client.ArchiveType.Zip with
             | Error err -> { model with Status = err }
             | Ok m -> 
                 Client.extractArchive "SEF" (Path.Combine(Client.SWAT_INSTALLATION_DIRECTORY, "SEF.zip"))
