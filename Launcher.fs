@@ -73,8 +73,13 @@ module Launcher =
         Status = ""
         IsModRunning = false 
     }
+    type Message =
+        | SwatInstallationDirectoryEntryChanged of string
+        | Install 
+        | Uninstall 
+        | Launch
 
-    type Message = Install | Uninstall | Launch
+
     let update (message: Message) (model: Model) : Model =
         let gameMod = {
             Client.Mod.Name = "SEF"
@@ -87,6 +92,8 @@ module Launcher =
         }
 
         match message with
+        | SwatInstallationDirectoryEntryChanged directory ->
+            { model with SwatInstallationDirectory = directory }
         | Install ->
             printfn "Download started.."
             match Client.downloadMod gameMod model.SwatInstallationDirectory with
@@ -106,7 +113,7 @@ module Launcher =
                 Button.create [
                     Button.dock Dock.Bottom
                     // FIXME: Find a way to emit this state change.
-                    Button.isEnabled (not model.IsModRunning)
+                    // Button.isEnabled model.IsModRunning
                     Button.onClick (fun _ -> dispatch Launch)
                     Button.content "Launch Mod"
                 ]                
@@ -120,9 +127,16 @@ module Launcher =
                     Button.onClick (fun _ -> dispatch Install)
                     Button.content "Install"
                 ]
+
+                Button.create [
+                    Button.dock Dock.Bottom
+                ]
+
+
                 TextBox.create [
                     TextBox.dock Dock.Bottom
                     TextBox.text model.SwatInstallationDirectory
+                    TextBox.onTextChanged (fun text -> dispatch (SwatInstallationDirectoryEntryChanged text))
                 ]
             ] 
         ]       
