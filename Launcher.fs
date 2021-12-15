@@ -1,8 +1,10 @@
 ﻿namespace SAL
 
+open System.IO
+
 module Client =
     open System.Net
-    open System.IO
+    open System.IO.Compression
 
     type Archive = Zip | Rar
 
@@ -14,15 +16,18 @@ module Client =
         | Rar -> modName + ".rar"
 
     let downloadMod (url: string) modName archiveType = 
-        let downloaDir = Path.Combine(SWAT_INSTALLATION_DIRECTORY)
-
-        if File.Exists(downloaDir + (asArchiveFile archiveType modName)) then
+        if File.Exists(SWAT_INSTALLATION_DIRECTORY + (asArchiveFile archiveType modName)) then
             Error $"{modName} already exist!"
         else
             let a = (asArchiveFile archiveType modName)
             printfn "Download started.."
-            WebClient().DownloadFile(url, Path.Combine(downloaDir, a))
+            WebClient().DownloadFile(url, Path.Combine(SWAT_INSTALLATION_DIRECTORY, a))
             Ok $"{a} downloaded"
+
+    let extractArchive modName (archivePath: string) =
+        let dir = Directory.CreateDirectory(modName)
+        Compression.ZipFile.ExtractToDirectory(archivePath, Path.Combine(SWAT_INSTALLATION_DIRECTORY, modName))
+
 
 module Launcher =
     open Avalonia.Controls
@@ -39,7 +44,9 @@ module Launcher =
         | Install ->
             match Client.downloadMod "https://www.moddb.com/downloads/mirror/195627/115/b7e306bbf7d472a49725194bedb0da71" "SEF" Client.Archive.Zip with
             | Error err -> { model with Status = err }
-            | Ok m -> { model with Status = m}
+            | Ok m -> 
+                Client.extractArchive "SEF" (Path.Combine(Client.SWAT_INSTALLATION_DIRECTORY, "SEF.zip"))
+                { model with Status = m}
         | Uninstall -> { model with Status = "Mod uninstalled" }
     
     let view (model: Model) (dispatch) =
