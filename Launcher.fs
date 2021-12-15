@@ -49,14 +49,15 @@ module Client =
         let systemDir = Path.Combine(modDir, "System")
         
         Directory.SetCurrentDirectory(systemDir)
+        printfn $"Cded to {systemDir}"
+
+        printfn "Launching mod.."
         let process = new Process()
         process.StartInfo.FileName <- @"..\..\ContentExpansion\System\Swat4X.exe"
         process.StartInfo.WindowStyle <- ProcessWindowStyle.Normal
         process.Start()
         process.WaitForExit()
-
-        let command = @"/C ..\..\ContentExpansion\System\Swat4X.exe"
-        System.Diagnostics.Process.Start(command)
+        printfn $"SWAT4 + {gameMod.Name} closed gracefully"
 
 
 module Launcher =
