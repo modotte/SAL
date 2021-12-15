@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net6.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="Launcher.fs" />
+    <Compile Include="Program.fs" />
+  </ItemGroup>
+
+  <ItemGroup />
+
+  <ItemGroup>
+    <PackageReference Include="Avalonia.Desktop" Version="0.9.11" />
+    <PackageReference Include="Fsharp.Data" Version="4.2.6" />
+    <PackageReference Include="JaggerJo.Avalonia.FuncUI" Version="0.4.1" />
+    <PackageReference Include="JaggerJo.Avalonia.FuncUI.DSL" Version="0.4.3" />
+    <PackageReference Include="JaggerJo.Avalonia.FuncUI.Elmish" Version="0.4.0" />
+    <PackageReference Include="LibGit2Sharp" Version="0.27.0-preview-0158" />
+    <PackageReference Include="SharpCompress" Version="0.30.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Remove=".template.config\**" />
+  </ItemGroup>
+
+</Project>
