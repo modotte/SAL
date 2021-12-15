@@ -1,0 +1,23 @@
+{
+    "mods": [
+        {
+            "Name": "SEF",
+            "Maintainer": "eezstreet",
+            "Version": "v7.0",
+            "Url": "https://www.moddb.com/downloads/mirror/195627/124/084b4b2d20eb9f57e10e4b248a1df07d/?referer=https%3A%2F%2Fwww.moddb.com%2Fmods%2Fswat-elite-force%2Fdownloads",
+            "Origin": "Official",
+            "Archive": "Zip",
+            "PreExtractFolder": "SEF"
+        },
+
+        {
+            "Name": "SEF_FR",
+            "Maintainer": "beppegoodoldrebel",
+            "Version": "v0.65",
+            "Url": "https://www.moddb.com/downloads/mirror/195627/124/084b4b2d20eb9f57e10e4b248a1df07d/?referer=https%3A%2F%2Fwww.moddb.com%2Fmods%2Fswat-elite-force%2Fdownloads",
+            "Origin": "Official",
+            "Archive": "Zip",
+            "PreExtractFolder": "SEF_FR"
+        }
+    ]
+}

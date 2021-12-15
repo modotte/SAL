@@ -20,7 +20,7 @@ module Client =
         Url: string
         Origin: OriginType
         Archive: ArchiveType
-        PreModFolder: string
+        PreExtractFolder: string
     }
 
     let private modDirectoryOutput gameMod = $"{gameMod.Maintainer}-{gameMod.Version}-{gameMod.Name}"
@@ -37,6 +37,7 @@ module Client =
             Error $"{gameMod.Name} already exist!"
         else
             let archive = (asArchiveFile gameMod)
+            // TODO: Replace with async stuff and update
             WebClient().DownloadFile(gameMod.Url, Path.Combine(swatDir, archive))
             Ok $"{archive} downloaded"
 
@@ -44,7 +45,7 @@ module Client =
         let archivePath = Path.Combine(swatDir, (asArchiveFile gameMod))
         Compression.ZipFile.ExtractToDirectory(archivePath, swatDir)
         Directory.Move(
-            Path.Combine(swatDir, gameMod.PreModFolder),
+            Path.Combine(swatDir, gameMod.PreExtractFolder),
             Path.Combine(swatDir, modDirectoryOutput gameMod))
 
     let launchMod gameMod swatDir =
@@ -91,7 +92,7 @@ module Launcher =
             Client.Mod.Url = "https://www.moddb.com/downloads/mirror/195627/124/084b4b2d20eb9f57e10e4b248a1df07d/?referer=https%3A%2F%2Fwww.moddb.com%2Fmods%2Fswat-elite-force%2Fdownloads"
             Client.Mod.Origin = Client.OriginType.Official
             Client.Mod.Archive = Client.ArchiveType.Zip
-            Client.Mod.PreModFolder = "SEF"
+            Client.Mod.PreExtractFolder = "SEF"
         }
 
         match message with
