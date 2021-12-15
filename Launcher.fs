@@ -14,6 +14,7 @@ module Client =
         Url: string
         Origin: OriginType
         Archive: ArchiveType
+        LauncherScript: string
     }
 
     let [<Literal>] SWAT_INSTALLATION_DIRECTORY = "SWAT4"
@@ -36,6 +37,12 @@ module Client =
         let archivePath = Path.Combine(SWAT_INSTALLATION_DIRECTORY, (asArchiveFile Zip gameMod.Name))
         Compression.ZipFile.ExtractToDirectory(archivePath, Path.Combine(SWAT_INSTALLATION_DIRECTORY, gameMod.Maintainer, gameMod.Version))
 
+    let launchMod gameMod =
+        let modDir = Path.Combine(SWAT_INSTALLATION_DIRECTORY, gameMod.Maintainer, gameMod.Version, gameMod.Name)
+        let launcher = Path.Combine(modDir, gameMod.LauncherScript)
+        let command = $"/C .\\{launcher}"
+        System.Diagnostics.Process.Start(command)
+
 
 module Launcher =
     open Avalonia.Controls
@@ -54,6 +61,7 @@ module Launcher =
             Client.Mod.Url = "https://www.moddb.com/downloads/mirror/195627/124/0bc1f7ff5d1308ec81bfa2e9e0507990/?referer=https%3A%2F%2Fwww.moddb.com%2Fmods%2Fswat-elite-force%2Fdownloads"
             Client.Mod.Origin = Client.OriginType.Official
             Client.Mod.Archive = Client.ArchiveType.Zip
+            Client.Mod.LauncherScript = "LaunchSEF.bat"
         }
 
         match msg with
@@ -66,7 +74,9 @@ module Launcher =
                 printfn "Extraction started.."
                 { model with Status = m}
         | Uninstall -> { model with Status = "Mod uninstalled" }
-        | Launch -> init
+        | Launch ->
+            Client.launchMod gameMod |> ignore
+            init
     
     let view (model: Model) (dispatch) =
         DockPanel.create [
