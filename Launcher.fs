@@ -38,7 +38,9 @@ module Client =
         let modDirName = $"{gameMod.Maintainer}-{gameMod.Version}-{gameMod.Name}"
         let archivePath = Path.Combine(SWAT_INSTALLATION_DIRECTORY, (asArchiveFile gameMod))
         Compression.ZipFile.ExtractToDirectory(archivePath, SWAT_INSTALLATION_DIRECTORY)
-        Microsoft.VisualBasic.FileIO.FileSystem.RenameDirectory(gameMod.PreModFolder, modDirName)
+        Microsoft.VisualBasic.FileIO.FileSystem.RenameDirectory(
+            Path.Combine(SWAT_INSTALLATION_DIRECTORY, gameMod.PreModFolder),
+            Path.Combine(SWAT_INSTALLATION_DIRECTORY, modDirName))
 
     let launchMod gameMod =
         let modDirName = $"{gameMod.Maintainer}-{gameMod.Version}-{gameMod.Name}"
