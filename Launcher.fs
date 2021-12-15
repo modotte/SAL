@@ -5,40 +5,36 @@ open System.IO
 module Client =
     open System.Net
     open System.IO.Compression
-
-    type MaintainerType = MaintainerType of string
-    type UrlType = UrlType of string
-    type VersionType = ModVersion of string
     type OriginType = Official | Fork
     type ArchiveType = Zip | Rar
     type Mod = {
         Name: string
-        Maintainer: MaintainerType
+        Maintainer: string
+        Version: string
+        Url: string
         Origin: OriginType
-        Url: UrlType
-        Version: VersionType
         Archive: ArchiveType
     }
 
     let [<Literal>] SWAT_INSTALLATION_DIRECTORY = "SWAT4"
 
-    let asArchiveFile (archiveType: ArchiveType) (modName: string) =
+    let private asArchiveFile (archiveType: ArchiveType) (modName: string) =
         match archiveType with
         | Zip -> modName + ".zip"
         | Rar -> modName + ".rar"
 
-    let downloadMod (url: string) modName archiveType = 
-        if File.Exists(SWAT_INSTALLATION_DIRECTORY + (asArchiveFile archiveType modName)) then
-            Error $"{modName} already exist!"
+    let downloadMod gameMod = 
+        if File.Exists(SWAT_INSTALLATION_DIRECTORY + (asArchiveFile gameMod.Archive gameMod.Name)) then
+            Error $"{gameMod.Name} already exist!"
         else
-            let a = (asArchiveFile archiveType modName)
+            let a = (asArchiveFile gameMod.Archive gameMod.Name)
             printfn "Download started.."
-            WebClient().DownloadFile(url, Path.Combine(SWAT_INSTALLATION_DIRECTORY, a))
+            WebClient().DownloadFile(gameMod.Url, Path.Combine(SWAT_INSTALLATION_DIRECTORY, a))
             Ok $"{a} downloaded"
 
-    let extractArchive modName (archivePath: string) =
-        let dir = Directory.CreateDirectory(modName)
-        Compression.ZipFile.ExtractToDirectory(archivePath, Path.Combine(SWAT_INSTALLATION_DIRECTORY, modName))
+    let extractArchive gameMod =
+        let archivePath = Path.Combine(SWAT_INSTALLATION_DIRECTORY, (asArchiveFile Zip gameMod.Name))
+        Compression.ZipFile.ExtractToDirectory(archivePath, Path.Combine(SWAT_INSTALLATION_DIRECTORY, gameMod.Name))
 
 
 module Launcher =
@@ -53,19 +49,19 @@ module Launcher =
     let update (msg: Msg) (model: Model) : Model =
         let gameMod = {
             Client.Mod.Name = "SEF"
-            Client.Mod.Maintainer = Client.MaintainerType "eezstreet"
+            Client.Mod.Maintainer = "eezstreet"
+            Client.Mod.Version = "v7.0"
+            Client.Mod.Url = "https://www.moddb.com/downloads/mirror/195627/115/b7e306bbf7d472a49725194bedb0da71"
             Client.Mod.Origin = Client.OriginType.Official
-            Client.Mod.Url = Client.UrlType "https://www.moddb.com/downloads/mirror/195627/115/b7e306bbf7d472a49725194bedb0da71"
-            Client.Mod.Version = Client.ModVersion "v7.0"
             Client.Mod.Archive = Client.ArchiveType.Zip
         }
 
         match msg with
         | Install ->
-            match Client.downloadMod "https://www.moddb.com/downloads/mirror/195627/115/b7e306bbf7d472a49725194bedb0da71" "SEF" Client.ArchiveType.Zip with
+            match Client.downloadMod gameMod with
             | Error err -> { model with Status = err }
             | Ok m -> 
-                Client.extractArchive "SEF" (Path.Combine(Client.SWAT_INSTALLATION_DIRECTORY, "SEF.zip"))
+                Client.extractArchive gameMod
                 { model with Status = m}
         | Uninstall -> { model with Status = "Mod uninstalled" }
     
