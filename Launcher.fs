@@ -14,6 +14,7 @@ module Client =
         Url: string
         Origin: OriginType
         Archive: ArchiveType
+        PreModFolder: string
     }
 
     let [<Literal>] SWAT_INSTALLATION_DIRECTORY = @"C:\GOG Games\SWAT 4"
@@ -34,8 +35,10 @@ module Client =
             Ok $"{a} downloaded"
 
     let extractArchive gameMod =
+        let modDirName = $"{gameMod.Maintainer}-{gameMod.Version}-{gameMod.Name}"
         let archivePath = Path.Combine(SWAT_INSTALLATION_DIRECTORY, (asArchiveFile gameMod))
         Compression.ZipFile.ExtractToDirectory(archivePath, SWAT_INSTALLATION_DIRECTORY)
+        Microsoft.VisualBasic.FileIO.FileSystem.RenameDirectory(gameMod.PreModFolder, modDirName)
 
     let launchMod gameMod =
         let modDirName = $"{gameMod.Maintainer}-{gameMod.Version}-{gameMod.Name}"
@@ -65,6 +68,7 @@ module Launcher =
             Client.Mod.Url = "https://www.moddb.com/downloads/mirror/195627/124/084b4b2d20eb9f57e10e4b248a1df07d/?referer=https%3A%2F%2Fwww.moddb.com%2Fmods%2Fswat-elite-force%2Fdownloads"
             Client.Mod.Origin = Client.OriginType.Official
             Client.Mod.Archive = Client.ArchiveType.Zip
+            Client.Mod.PreModFolder = "SEF"
         }
 
         match msg with
