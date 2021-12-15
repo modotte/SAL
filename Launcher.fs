@@ -40,8 +40,11 @@ module Client =
     let launchMod gameMod =
         let modDir = Path.Combine(SWAT_INSTALLATION_DIRECTORY, gameMod.Maintainer, gameMod.Version, gameMod.Name)
         let systemDir = Path.Combine(modDir, "System")
-        let command = $"/C cd .\\{systemDir} && ..\\..\\..\\..\\ContentExpansion\\System\Swat4X.exe"
-        System.Diagnostics.Process.Start(command)
+        
+        Directory.SetCurrentDirectory(systemDir)
+
+        //let command = $"/C cd .\\{systemDir} && ..\\..\\..\\..\\ContentExpansion\\System\\Swat4X.exe"
+        //System.Diagnostics.Process.Start(command)
 
 
 module Launcher =
