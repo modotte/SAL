@@ -17,7 +17,7 @@ module Client =
         LauncherScript: string
     }
 
-    let [<Literal>] SWAT_INSTALLATION_DIRECTORY = "SWAT4"
+    let [<Literal>] SWAT_INSTALLATION_DIRECTORY = "C:\\GOG Games\\SWAT 4"
 
     let private asArchiveFile (archiveType: ArchiveType) (modName: string) =
         match archiveType with
