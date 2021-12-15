@@ -2,6 +2,11 @@
 
 open System.IO
 open Elmish
+
+module Logger =
+    open Serilog
+    let log = LoggerConfiguration().WriteTo.Console().CreateLogger();
+
 module Client =
     open System.Net
     open System.Diagnostics
@@ -47,15 +52,15 @@ module Client =
         let systemDir = Path.Combine(modDir, "System")
         
         Directory.SetCurrentDirectory(systemDir)
-        printfn $"Cded to {systemDir}"
+        Logger.log.Information($"Cded to {systemDir}")
 
-        printfn "Launching mod.."
+        Logger.log.Information("Launching mod..")
         let externalProcess = new Process()
         externalProcess.StartInfo.FileName <- @"..\..\ContentExpansion\System\Swat4X.exe"
         externalProcess.StartInfo.WindowStyle <- ProcessWindowStyle.Normal
         externalProcess.Start() |> ignore
         externalProcess.WaitForExit()
-        printfn $"SWAT4 + {gameMod.Name} closed gracefully"
+        Logger.log.Information($"SWAT4 + {gameMod.Name} closed gracefully")
 
 
 module Launcher =
@@ -93,12 +98,12 @@ module Launcher =
         | SwatInstallationDirectoryEntryChanged directory ->
             { model with SwatInstallationDirectory = directory }, Cmd.none
         | Install ->
-            printfn "Download started.."
+            Logger.log.Information("Download started..")
             match Client.downloadMod gameMod model.SwatInstallationDirectory with
             | Error err -> { model with Status = err }, Cmd.none
             | Ok m -> 
                 Client.extractArchive gameMod model.SwatInstallationDirectory
-                printfn "Extraction started.."
+                Logger.log.Information("Extraction started..")
                 { model with Status = m}, Cmd.none
         | Uninstall -> { model with Status = "Mod uninstalled" }, Cmd.none
         | Launch ->
