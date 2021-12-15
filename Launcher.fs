@@ -16,7 +16,7 @@ module Client =
     let downloadMod (url: string) modName archiveType = 
         let downloaDir = Path.Combine(SWAT_INSTALLATION_DIRECTORY)
 
-        if Directory.Exists(downloaDir + (asArchiveFile archiveType modName)) then
+        if File.Exists(downloaDir + (asArchiveFile archiveType modName)) then
             Error $"{modName} already exist!"
         else
             let a = (asArchiveFile archiveType modName)
