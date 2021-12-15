@@ -32,7 +32,7 @@ module Client =
             Ok $"{a} downloaded"
 
     let extractArchive gameMod =
-        let modularizedDir =Path.Combine(gameMod.Maintainer, gameMod.Version)
+        let modularizedDir = Path.Combine(gameMod.Maintainer, gameMod.Version)
         let archivePath = Path.Combine(SWAT_INSTALLATION_DIRECTORY, (asArchiveFile Zip gameMod.Name))
         Compression.ZipFile.ExtractToDirectory(archivePath, Path.Combine(SWAT_INSTALLATION_DIRECTORY, gameMod.Maintainer, gameMod.Version))
 
