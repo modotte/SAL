@@ -23,8 +23,10 @@ module Client =
         PreModFolder: string
     }
 
+    let private modDirectoryOutput gameMod = $"{gameMod.Maintainer}-{gameMod.Version}-{gameMod.Name}"
+
     let private asArchiveFile gameMod =
-        let modArchiveName = $"{gameMod.Maintainer}-{gameMod.Version}-{gameMod.Name}"
+        let modArchiveName = modDirectoryOutput gameMod
         match gameMod.Archive with
         | Zip -> modArchiveName + ".zip"
         | Rar -> modArchiveName + ".rar"
@@ -39,16 +41,14 @@ module Client =
             Ok $"{archive} downloaded"
 
     let extractArchive gameMod swatDir =
-        let modDirName = $"{gameMod.Maintainer}-{gameMod.Version}-{gameMod.Name}"
         let archivePath = Path.Combine(swatDir, (asArchiveFile gameMod))
         Compression.ZipFile.ExtractToDirectory(archivePath, swatDir)
         Directory.Move(
             Path.Combine(swatDir, gameMod.PreModFolder),
-            Path.Combine(swatDir, modDirName))
+            Path.Combine(swatDir, modDirectoryOutput gameMod))
 
     let launchMod gameMod swatDir =
-        let modDirName = $"{gameMod.Maintainer}-{gameMod.Version}-{gameMod.Name}"
-        let modDir = Path.Combine(swatDir, modDirName)
+        let modDir = Path.Combine(swatDir, modDirectoryOutput gameMod)
         let systemDir = Path.Combine(modDir, "System")
         
         Directory.SetCurrentDirectory(systemDir)
