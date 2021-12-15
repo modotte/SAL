@@ -28,7 +28,6 @@ module Client =
             Error $"{gameMod.Name} already exist!"
         else
             let a = (asArchiveFile gameMod.Archive gameMod.Name)
-            printfn "Download started.."
             WebClient().DownloadFile(gameMod.Url, Path.Combine(SWAT_INSTALLATION_DIRECTORY, a))
             Ok $"{a} downloaded"
 
@@ -58,10 +57,12 @@ module Launcher =
 
         match msg with
         | Install ->
+            printfn "Download started.."
             match Client.downloadMod gameMod with
             | Error err -> { model with Status = err }
             | Ok m -> 
                 Client.extractArchive gameMod
+                printfn "Extraction started.."
                 { model with Status = m}
         | Uninstall -> { model with Status = "Mod uninstalled" }
     
