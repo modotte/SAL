@@ -6,13 +6,17 @@ module Client =
     open System.Net
     open System.IO.Compression
 
-    type ArchiveType = Zip | Rar
+    type MaintainerType = MaintainerType of string
     type UrlType = UrlType of string
-    type ModVersion = ModVersion of string
+    type VersionType = ModVersion of string
+    type OriginType = Official | Fork
+    type ArchiveType = Zip | Rar
     type Mod = {
         Name: string
+        Maintainer: MaintainerType
+        Origin: OriginType
         Url: UrlType
-        Version: ModVersion
+        Version: VersionType
         Archive: ArchiveType
     }
 
@@ -49,11 +53,13 @@ module Launcher =
     let update (msg: Msg) (model: Model) : Model =
         let gameMod = {
             Client.Mod.Name = "SEF"
+            Client.Mod.Maintainer = Client.MaintainerType "eezstreet"
+            Client.Mod.Origin = Client.OriginType.Official
             Client.Mod.Url = Client.UrlType "https://www.moddb.com/downloads/mirror/195627/115/b7e306bbf7d472a49725194bedb0da71"
             Client.Mod.Version = Client.ModVersion "v7.0"
             Client.Mod.Archive = Client.ArchiveType.Zip
         }
-        
+
         match msg with
         | Install ->
             match Client.downloadMod "https://www.moddb.com/downloads/mirror/195627/115/b7e306bbf7d472a49725194bedb0da71" "SEF" Client.ArchiveType.Zip with
