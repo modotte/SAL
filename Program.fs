@@ -1,5 +1,6 @@
 ﻿namespace SAL
 
+open DomainModel
 open Elmish
 open Avalonia
 open Avalonia.Controls.ApplicationLifetimes
@@ -37,25 +38,10 @@ type App() =
         | _ -> ()
 
 module Program =
-    open System
-    open System.IO
-    open Logger
-    open FSharp.Json
-
     [<EntryPoint>]
     let main(args: string[]) =
-        try
-            File.ReadAllText("settings.json")
-            |> Json.deserialize<SALSettings> |> ignore
-
-            AppBuilder
-                .Configure<App>()
-                .UsePlatformDetect()
-                .UseSkia()
-                .StartWithClassicDesktopLifetime(args)
-        with
-        | :? FileNotFoundException as exn ->
-            log.Error(exn.Message)
-            Environment.Exit(1)
-
-            1
+        AppBuilder
+            .Configure<App>()
+            .UsePlatformDetect()
+            .UseSkia()
+            .StartWithClassicDesktopLifetime(args)

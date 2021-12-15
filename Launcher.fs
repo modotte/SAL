@@ -59,7 +59,10 @@ module Launcher =
         IsModRunning: bool 
     }
 
-    let init = { SwatInstallationDirectory = @"C:\GOG Games\SWAT 4"; Status = ""; IsModRunning = false; }, Cmd.none
+    let init = { 
+        SwatInstallationDirectory = @"C:\GOG Games\SWAT 4"
+        Status = ""
+        IsModRunning = false }, Cmd.none
 
     type Message =
         | SwatInstallationDirectoryEntryChanged of string
