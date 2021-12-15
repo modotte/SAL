@@ -41,8 +41,12 @@ module Client =
         log.Information($"Cded to {systemDir}")
 
         log.Information("Launching mod..")
+        let executable = @"..\..\ContentExpansion\System\Swat4X.exe"
+        if not (File.Exists(executable)) then
+            log.Error(executable + " doesn't exist!")
+
         let externalProcess = new Process()
-        externalProcess.StartInfo.FileName <- @"..\..\ContentExpansion\System\Swat4X.exe"
+        externalProcess.StartInfo.FileName <- executable
         externalProcess.StartInfo.WindowStyle <- ProcessWindowStyle.Normal
         externalProcess.Start() |> ignore
         externalProcess.WaitForExit()
