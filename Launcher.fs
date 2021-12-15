@@ -13,9 +13,7 @@ module Client =
 
     let private asArchiveFile gameMod =
         let modArchiveName = modDirectoryOutput gameMod
-        match gameMod.Archive with
-        | Zip -> modArchiveName + ".zip"
-        | Rar -> modArchiveName + ".rar"
+        modArchiveName + ".zip"
 
     let downloadMod gameMod swatDir = 
         // TODO: Check on installed mod dir instead
@@ -77,7 +75,6 @@ module Launcher =
             Mod.Version = "v7.0"
             Mod.Url = "https://www.moddb.com/downloads/mirror/195627/124/084b4b2d20eb9f57e10e4b248a1df07d/?referer=https%3A%2F%2Fwww.moddb.com%2Fmods%2Fswat-elite-force%2Fdownloads"
             Mod.Origin = OriginType.Official
-            Mod.Archive = ArchiveType.Zip
             Mod.PreExtractFolder = "SEF"
         }
 
