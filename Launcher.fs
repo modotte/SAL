@@ -32,8 +32,9 @@ module Client =
             Ok $"{a} downloaded"
 
     let extractArchive gameMod =
+        let modularizedDir =Path.Combine(gameMod.Maintainer, gameMod.Version)
         let archivePath = Path.Combine(SWAT_INSTALLATION_DIRECTORY, (asArchiveFile Zip gameMod.Name))
-        Compression.ZipFile.ExtractToDirectory(archivePath, Path.Combine(SWAT_INSTALLATION_DIRECTORY, gameMod.Name))
+        Compression.ZipFile.ExtractToDirectory(archivePath, Path.Combine(SWAT_INSTALLATION_DIRECTORY, gameMod.Maintainer, gameMod.Version))
 
 
 module Launcher =
@@ -50,7 +51,7 @@ module Launcher =
             Client.Mod.Name = "SEF"
             Client.Mod.Maintainer = "eezstreet"
             Client.Mod.Version = "v7.0"
-            Client.Mod.Url = "https://www.moddb.com/downloads/mirror/195627/115/b7e306bbf7d472a49725194bedb0da71"
+            Client.Mod.Url = "https://www.moddb.com/downloads/mirror/195627/124/0bc1f7ff5d1308ec81bfa2e9e0507990/?referer=https%3A%2F%2Fwww.moddb.com%2Fmods%2Fswat-elite-force%2Fdownloads"
             Client.Mod.Origin = Client.OriginType.Official
             Client.Mod.Archive = Client.ArchiveType.Zip
         }
