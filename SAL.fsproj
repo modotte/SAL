@@ -14,7 +14,7 @@
 
   <ItemGroup>
     <PackageReference Include="Avalonia.Desktop" Version="0.9.11" />
-    <PackageReference Include="Fsharp.Data" Version="4.2.6" />
+    <PackageReference Include="FSharp.Json" Version="0.4.1" />
     <PackageReference Include="JaggerJo.Avalonia.FuncUI" Version="0.4.1" />
     <PackageReference Include="JaggerJo.Avalonia.FuncUI.DSL" Version="0.4.3" />
     <PackageReference Include="JaggerJo.Avalonia.FuncUI.Elmish" Version="0.4.0" />
