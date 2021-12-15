@@ -17,7 +17,7 @@ module Client =
         LauncherScript: string
     }
 
-    let [<Literal>] SWAT_INSTALLATION_DIRECTORY = "C:\\GOG Games\\SWAT 4"
+    let [<Literal>] SWAT_INSTALLATION_DIRECTORY = @"C:\GOG Games\SWAT 4"
 
     let private asArchiveFile (archiveType: ArchiveType) (modName: string) =
         match archiveType with
@@ -43,7 +43,7 @@ module Client =
         
         Directory.SetCurrentDirectory(systemDir)
 
-        let command = $"/C ..\\..\\ContentExpansion\\System\\Swat4X.exe"
+        let command = @"/C ..\..\ContentExpansion\System\Swat4X.exe"
         System.Diagnostics.Process.Start(command)
 
 
