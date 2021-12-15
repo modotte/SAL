@@ -63,11 +63,19 @@ module Launcher =
     open Avalonia.FuncUI.DSL
     open Avalonia.Layout
     
-    type Model = { SwatInstallationDirectory: string; Status: string; IsModRunning: bool }
-    let init = { SwatInstallationDirectory = @"C:\GOG Games\SWAT 4"; Status = ""; IsModRunning = false }
+    type Model = {
+        SwatInstallationDirectory: string
+        Status: string
+        IsModRunning: bool 
+    }
+    let init = { 
+        SwatInstallationDirectory = @"C:\GOG Games\SWAT 4"
+        Status = ""
+        IsModRunning = false 
+    }
 
-    type Msg = Install | Uninstall | Launch
-    let update (msg: Msg) (model: Model) : Model =
+    type Message = Install | Uninstall | Launch
+    let update (message: Message) (model: Model) : Model =
         let gameMod = {
             Client.Mod.Name = "SEF"
             Client.Mod.Maintainer = "eezstreet"
@@ -78,7 +86,7 @@ module Launcher =
             Client.Mod.PreModFolder = "SEF"
         }
 
-        match msg with
+        match message with
         | Install ->
             printfn "Download started.."
             match Client.downloadMod gameMod model.SwatInstallationDirectory with
