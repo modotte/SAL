@@ -4,6 +4,7 @@ open System.IO
 open Logger
 open Elmish
 open DomainModel
+open SAL.Data
 
 module Client =
     open System.Net

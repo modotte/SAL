@@ -12,6 +12,7 @@
     <Compile Include="Logger.fs" />
     <Compile Include="DomainModel.fs" />
     <Compile Include="Settings.fs" />
+    <Compile Include="Mods.fs" />
     <Compile Include="Launcher.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
