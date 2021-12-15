@@ -59,8 +59,9 @@ module Launcher =
         IsModRunning: bool 
     }
 
+    let sid = Settings.currentSettings.SwatInstallationDirectory
     let init = { 
-        SwatInstallationDirectory = @"C:\GOG Games\SWAT 4"
+        SwatInstallationDirectory = sid
         Status = ""
         IsModRunning = false }, Cmd.none
 

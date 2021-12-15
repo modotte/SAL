@@ -8,7 +8,7 @@
   <ItemGroup>
     <Compile Include="Logger.fs" />
     <Compile Include="DomainModel.fs" />
-    <Compile Include="SALSettings.fs" />
+    <Compile Include="Settings.fs" />
     <Compile Include="Launcher.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
@@ -28,9 +28,6 @@
 
   <ItemGroup>
     <EmbeddedResource Remove=".template.config\**" />
-    <Content Include="settings.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
 
 </Project>
