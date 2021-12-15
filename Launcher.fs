@@ -1,7 +1,7 @@
 ﻿namespace SAL
 
 open System.IO
-
+open Elmish
 module Client =
     open System.Net
     open System.Diagnostics
@@ -68,11 +68,9 @@ module Launcher =
         Status: string
         IsModRunning: bool 
     }
-    let init = { 
-        SwatInstallationDirectory = @"C:\GOG Games\SWAT 4"
-        Status = ""
-        IsModRunning = false 
-    }
+
+    let init = { SwatInstallationDirectory = @"C:\GOG Games\SWAT 4"; Status = ""; IsModRunning = false; }, Cmd.none
+
     type Message =
         | SwatInstallationDirectoryEntryChanged of string
         | Install 
@@ -80,7 +78,7 @@ module Launcher =
         | Launch
 
 
-    let update (message: Message) (model: Model) : Model =
+    let update (message: Message) (model: Model) =
         let gameMod = {
             Client.Mod.Name = "SEF"
             Client.Mod.Maintainer = "eezstreet"
@@ -93,19 +91,19 @@ module Launcher =
 
         match message with
         | SwatInstallationDirectoryEntryChanged directory ->
-            { model with SwatInstallationDirectory = directory }
+            { model with SwatInstallationDirectory = directory }, Cmd.none
         | Install ->
             printfn "Download started.."
             match Client.downloadMod gameMod model.SwatInstallationDirectory with
-            | Error err -> { model with Status = err }
+            | Error err -> { model with Status = err }, Cmd.none
             | Ok m -> 
                 Client.extractArchive gameMod model.SwatInstallationDirectory
                 printfn "Extraction started.."
-                { model with Status = m}
-        | Uninstall -> { model with Status = "Mod uninstalled" }
+                { model with Status = m}, Cmd.none
+        | Uninstall -> { model with Status = "Mod uninstalled" }, Cmd.none
         | Launch ->
             Client.launchMod gameMod model.SwatInstallationDirectory |> ignore
-            { model with Status = gameMod.Name + " has been launched"; IsModRunning = true }
+            { model with Status = gameMod.Name + " has been launched"; IsModRunning = true }, Cmd.none
     
     let view (model: Model) (dispatch) =
         DockPanel.create [

@@ -12,14 +12,14 @@ type MainWindow() as this =
     inherit HostWindow()
     do
         base.Title <- "SAL: SWAT4 Alternative Launcher"
-        base.Width <- 400.0
-        base.Height <- 400.0
+        base.Width <- 800.0
+        base.Height <- 600.0
         
         //this.VisualRoot.VisualRoot.Renderer.DrawFps <- true
         //this.VisualRoot.VisualRoot.Renderer.DrawDirtyRects <- true
 
 
-        Elmish.Program.mkSimple (fun () -> Launcher.init) Launcher.update Launcher.view
+        Elmish.Program.mkProgram (fun () -> Launcher.init) Launcher.update Launcher.view
         |> Program.withHost this
         |> Program.run
 
