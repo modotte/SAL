@@ -14,31 +14,32 @@ module Client =
         Url: string
         Origin: OriginType
         Archive: ArchiveType
-        LauncherScript: string
     }
 
     let [<Literal>] SWAT_INSTALLATION_DIRECTORY = @"C:\GOG Games\SWAT 4"
 
-    let private asArchiveFile (archiveType: ArchiveType) (modName: string) =
-        match archiveType with
-        | Zip -> modName + ".zip"
-        | Rar -> modName + ".rar"
+    let private asArchiveFile gameMod =
+        let modArchiveName = $"{gameMod.Maintainer}-{gameMod.Version}-{gameMod.Name}"
+        match gameMod.Archive with
+        | Zip -> modArchiveName + ".zip"
+        | Rar -> modArchiveName + ".rar"
 
     let downloadMod gameMod = 
         // TODO: Check on installed mod dir instead
-        if File.Exists(SWAT_INSTALLATION_DIRECTORY + (asArchiveFile gameMod.Archive gameMod.Name)) then
+        if File.Exists(SWAT_INSTALLATION_DIRECTORY + (asArchiveFile gameMod)) then
             Error $"{gameMod.Name} already exist!"
         else
-            let a = (asArchiveFile gameMod.Archive gameMod.Name)
+            let a = (asArchiveFile gameMod)
             WebClient().DownloadFile(gameMod.Url, Path.Combine(SWAT_INSTALLATION_DIRECTORY, a))
             Ok $"{a} downloaded"
 
     let extractArchive gameMod =
-        let archivePath = Path.Combine(SWAT_INSTALLATION_DIRECTORY, (asArchiveFile Zip gameMod.Name))
-        Compression.ZipFile.ExtractToDirectory(archivePath, Path.Combine(SWAT_INSTALLATION_DIRECTORY, gameMod.Maintainer, gameMod.Version))
+        let archivePath = Path.Combine(SWAT_INSTALLATION_DIRECTORY, (asArchiveFile gameMod))
+        Compression.ZipFile.ExtractToDirectory(archivePath, SWAT_INSTALLATION_DIRECTORY)
 
     let launchMod gameMod =
-        let modDir = Path.Combine(SWAT_INSTALLATION_DIRECTORY, gameMod.Maintainer, gameMod.Version, gameMod.Name)
+        let modDirName = $"{gameMod.Maintainer}-{gameMod.Version}-{gameMod.Name}"
+        let modDir = Path.Combine(SWAT_INSTALLATION_DIRECTORY, modDirName)
         let systemDir = Path.Combine(modDir, "System")
         
         Directory.SetCurrentDirectory(systemDir)
@@ -64,7 +65,6 @@ module Launcher =
             Client.Mod.Url = "https://www.moddb.com/downloads/mirror/195627/124/084b4b2d20eb9f57e10e4b248a1df07d/?referer=https%3A%2F%2Fwww.moddb.com%2Fmods%2Fswat-elite-force%2Fdownloads"
             Client.Mod.Origin = Client.OriginType.Official
             Client.Mod.Archive = Client.ArchiveType.Zip
-            Client.Mod.LauncherScript = "LaunchSEF.bat"
         }
 
         match msg with
