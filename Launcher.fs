@@ -24,6 +24,7 @@ module Client =
         | Rar -> modName + ".rar"
 
     let downloadMod gameMod = 
+        // TODO: Check on installed mod dir instead
         if File.Exists(SWAT_INSTALLATION_DIRECTORY + (asArchiveFile gameMod.Archive gameMod.Name)) then
             Error $"{gameMod.Name} already exist!"
         else
@@ -44,7 +45,7 @@ module Launcher =
     type Model = { Status: string }
     let init = { Status = "" }
 
-    type Msg = Install | Uninstall
+    type Msg = Install | Uninstall | Launch
     let update (msg: Msg) (model: Model) : Model =
         let gameMod = {
             Client.Mod.Name = "SEF"
@@ -65,10 +66,16 @@ module Launcher =
                 printfn "Extraction started.."
                 { model with Status = m}
         | Uninstall -> { model with Status = "Mod uninstalled" }
+        | Launch -> init
     
     let view (model: Model) (dispatch) =
         DockPanel.create [
             DockPanel.children [
+                Button.create [
+                    Button.dock Dock.Bottom
+                    Button.onClick (fun _ -> dispatch Launch)
+                    Button.content "Launch Mod"
+                ]                
                 Button.create [
                     Button.dock Dock.Bottom
                     Button.onClick (fun _ -> dispatch Uninstall)
@@ -86,5 +93,5 @@ module Launcher =
                     TextBlock.horizontalAlignment HorizontalAlignment.Center
                     TextBlock.text (string model.Status)
                 ]
-            ]
+            ] 
         ]       
