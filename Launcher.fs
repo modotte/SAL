@@ -39,8 +39,8 @@ module Client =
 
     let launchMod gameMod =
         let modDir = Path.Combine(SWAT_INSTALLATION_DIRECTORY, gameMod.Maintainer, gameMod.Version, gameMod.Name)
-        let launcher = Path.Combine(modDir, gameMod.LauncherScript)
-        let command = $"/C .\\{launcher}"
+        let systemDir = Path.Combine(modDir, "System")
+        let command = $"/C cd .\\{systemDir} && ..\\..\\..\\..\\ContentExpansion\\System\Swat4X.exe"
         System.Diagnostics.Process.Start(command)
 
 
@@ -58,7 +58,7 @@ module Launcher =
             Client.Mod.Name = "SEF"
             Client.Mod.Maintainer = "eezstreet"
             Client.Mod.Version = "v7.0"
-            Client.Mod.Url = "https://www.moddb.com/downloads/mirror/195627/124/0bc1f7ff5d1308ec81bfa2e9e0507990/?referer=https%3A%2F%2Fwww.moddb.com%2Fmods%2Fswat-elite-force%2Fdownloads"
+            Client.Mod.Url = "https://www.moddb.com/downloads/mirror/195627/124/084b4b2d20eb9f57e10e4b248a1df07d/?referer=https%3A%2F%2Fwww.moddb.com%2Fmods%2Fswat-elite-force%2Fdownloads"
             Client.Mod.Origin = Client.OriginType.Official
             Client.Mod.Archive = Client.ArchiveType.Zip
             Client.Mod.LauncherScript = "LaunchSEF.bat"
@@ -76,7 +76,7 @@ module Launcher =
         | Uninstall -> { model with Status = "Mod uninstalled" }
         | Launch ->
             Client.launchMod gameMod |> ignore
-            init
+            { model with Status = gameMod.Name + " has been launched" }
     
     let view (model: Model) (dispatch) =
         DockPanel.create [
