@@ -7,9 +7,11 @@ module Client =
     open System.IO.Compression
 
     type ArchiveType = Zip | Rar
-    type ModMeta = {
-        Url: string
-        ModName: string
+    type ModVersion = ModVersion of string
+    type Mod = {
+        Urls: string list
+        Name: string
+        Version: ModVersion
         Archive: ArchiveType
     }
 
