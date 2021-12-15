@@ -7,10 +7,11 @@ module Client =
     open System.IO.Compression
 
     type ArchiveType = Zip | Rar
+    type UrlType = UrlType of string
     type ModVersion = ModVersion of string
     type Mod = {
-        Urls: string list
         Name: string
+        Url: UrlType
         Version: ModVersion
         Archive: ArchiveType
     }
@@ -45,8 +46,14 @@ module Launcher =
     let init = { Status = "" }
 
     type Msg = Install | Uninstall
-
     let update (msg: Msg) (model: Model) : Model =
+        let gameMod = {
+            Client.Mod.Name = "SEF"
+            Client.Mod.Url = Client.UrlType "https://www.moddb.com/downloads/mirror/195627/115/b7e306bbf7d472a49725194bedb0da71"
+            Client.Mod.Version = Client.ModVersion "v7.0"
+            Client.Mod.Archive = Client.ArchiveType.Zip
+        }
+        
         match msg with
         | Install ->
             match Client.downloadMod "https://www.moddb.com/downloads/mirror/195627/115/b7e306bbf7d472a49725194bedb0da71" "SEF" Client.ArchiveType.Zip with
