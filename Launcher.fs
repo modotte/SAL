@@ -34,9 +34,9 @@ module Client =
         if File.Exists(swatDir + (asArchiveFile gameMod)) then
             Error $"{gameMod.Name} already exist!"
         else
-            let a = (asArchiveFile gameMod)
-            WebClient().DownloadFile(gameMod.Url, Path.Combine(swatDir, a))
-            Ok $"{a} downloaded"
+            let archive = (asArchiveFile gameMod)
+            WebClient().DownloadFile(gameMod.Url, Path.Combine(swatDir, archive))
+            Ok $"{archive} downloaded"
 
     let extractArchive gameMod swatDir =
         let modDirName = $"{gameMod.Maintainer}-{gameMod.Version}-{gameMod.Name}"
