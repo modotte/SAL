@@ -1,27 +1,13 @@
 ﻿namespace SAL
 
 open System.IO
+open Logger
 open Elmish
-
-module Logger =
-    open Serilog
-    let log = LoggerConfiguration().WriteTo.Console().CreateLogger();
+open DomainModel
 
 module Client =
     open System.Net
     open System.Diagnostics
-    open System.IO.Compression
-    type OriginType = Official | Fork
-    type ArchiveType = Zip | Rar
-    type Mod = {
-        Name: string
-        Maintainer: string
-        Version: string
-        Url: string
-        Origin: OriginType
-        Archive: ArchiveType
-        PreExtractFolder: string
-    }
 
     let private modDirectoryOutput gameMod = $"{gameMod.Maintainer}-{gameMod.Version}-{gameMod.Name}"
 
@@ -53,15 +39,15 @@ module Client =
         let systemDir = Path.Combine(modDir, "System")
         
         Directory.SetCurrentDirectory(systemDir)
-        Logger.log.Information($"Cded to {systemDir}")
+        log.Information($"Cded to {systemDir}")
 
-        Logger.log.Information("Launching mod..")
+        log.Information("Launching mod..")
         let externalProcess = new Process()
         externalProcess.StartInfo.FileName <- @"..\..\ContentExpansion\System\Swat4X.exe"
         externalProcess.StartInfo.WindowStyle <- ProcessWindowStyle.Normal
         externalProcess.Start() |> ignore
         externalProcess.WaitForExit()
-        Logger.log.Information($"SWAT4 + {gameMod.Name} closed gracefully")
+        log.Information($"SWAT4 + {gameMod.Name} closed gracefully")
 
 
 module Launcher =
@@ -86,25 +72,25 @@ module Launcher =
 
     let update (message: Message) (model: Model) =
         let gameMod = {
-            Client.Mod.Name = "SEF"
-            Client.Mod.Maintainer = "eezstreet"
-            Client.Mod.Version = "v7.0"
-            Client.Mod.Url = "https://www.moddb.com/downloads/mirror/195627/124/084b4b2d20eb9f57e10e4b248a1df07d/?referer=https%3A%2F%2Fwww.moddb.com%2Fmods%2Fswat-elite-force%2Fdownloads"
-            Client.Mod.Origin = Client.OriginType.Official
-            Client.Mod.Archive = Client.ArchiveType.Zip
-            Client.Mod.PreExtractFolder = "SEF"
+            Mod.Name = "SEF"
+            Mod.Maintainer = "eezstreet"
+            Mod.Version = "v7.0"
+            Mod.Url = "https://www.moddb.com/downloads/mirror/195627/124/084b4b2d20eb9f57e10e4b248a1df07d/?referer=https%3A%2F%2Fwww.moddb.com%2Fmods%2Fswat-elite-force%2Fdownloads"
+            Mod.Origin = OriginType.Official
+            Mod.Archive = ArchiveType.Zip
+            Mod.PreExtractFolder = "SEF"
         }
 
         match message with
         | SwatInstallationDirectoryEntryChanged directory ->
             { model with SwatInstallationDirectory = directory }, Cmd.none
         | Install ->
-            Logger.log.Information("Download started..")
+            log.Information("Download started..")
             match Client.downloadMod gameMod model.SwatInstallationDirectory with
             | Error err -> { model with Status = err }, Cmd.none
             | Ok m -> 
                 Client.extractArchive gameMod model.SwatInstallationDirectory
-                Logger.log.Information("Extraction started..")
+                log.Information("Extraction started..")
                 { model with Status = m}, Cmd.none
         | Uninstall -> { model with Status = "Mod uninstalled" }, Cmd.none
         | Launch ->

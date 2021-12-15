@@ -3,7 +3,6 @@
 open Elmish
 open Avalonia
 open Avalonia.Controls.ApplicationLifetimes
-open Avalonia.Input
 open Avalonia.FuncUI
 open Avalonia.FuncUI.Elmish
 open Avalonia.FuncUI.Components.Hosts
@@ -19,7 +18,7 @@ type MainWindow() as this =
         //this.VisualRoot.VisualRoot.Renderer.DrawDirtyRects <- true
 
 
-        Elmish.Program.mkProgram (fun () -> Launcher.init) Launcher.update Launcher.view
+        Program.mkProgram (fun () -> Launcher.init) Launcher.update Launcher.view
         |> Program.withHost this
         |> Program.run
 
@@ -38,11 +37,25 @@ type App() =
         | _ -> ()
 
 module Program =
+    open System
+    open System.IO
+    open Logger
+    open FSharp.Json
 
     [<EntryPoint>]
     let main(args: string[]) =
-        AppBuilder
-            .Configure<App>()
-            .UsePlatformDetect()
-            .UseSkia()
-            .StartWithClassicDesktopLifetime(args)
+        try
+            File.ReadAllText("settings.json")
+            |> Json.deserialize<SALSettings> |> ignore
+
+            AppBuilder
+                .Configure<App>()
+                .UsePlatformDetect()
+                .UseSkia()
+                .StartWithClassicDesktopLifetime(args)
+        with
+        | :? FileNotFoundException as exn ->
+            log.Error(exn.Message)
+            Environment.Exit(1)
+
+            1
