@@ -10,7 +10,7 @@ module Client =
     open System.Net
     open System.Diagnostics
 
-    let private modDirectoryOutput gameMod = $"{gameMod.Maintainer}-{gameMod.Version}-{gameMod.Name}"
+    let private modDirectoryOutput gameMod = $"{gameMod.Maintainer}-{gameMod.Name}-{gameMod.Version}"
 
     let private asArchiveFile gameMod =
         let modArchiveName = modDirectoryOutput gameMod
