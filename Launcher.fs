@@ -4,6 +4,7 @@ open System.IO
 
 module Client =
     open System.Net
+    open System.Diagnostics
     open System.IO.Compression
     type OriginType = Official | Fork
     type ArchiveType = Zip | Rar
@@ -48,6 +49,11 @@ module Client =
         let systemDir = Path.Combine(modDir, "System")
         
         Directory.SetCurrentDirectory(systemDir)
+        let process = new Process()
+        process.StartInfo.FileName <- @"..\..\ContentExpansion\System\Swat4X.exe"
+        process.StartInfo.WindowStyle <- ProcessWindowStyle.Normal
+        process.Start()
+        process.WaitForExit()
 
         let command = @"/C ..\..\ContentExpansion\System\Swat4X.exe"
         System.Diagnostics.Process.Start(command)
