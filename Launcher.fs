@@ -78,7 +78,7 @@ module Launcher =
             Mod.Name = "SEF"
             Mod.Maintainer = "eezstreet"
             Mod.Version = "v7.0"
-            Mod.Url = "https://www.moddb.com/downloads/mirror/195627/124/084b4b2d20eb9f57e10e4b248a1df07d/?referer=https%3A%2F%2Fwww.moddb.com%2Fmods%2Fswat-elite-force%2Fdownloads"
+            Mod.Url = "https://www.moddb.com/downloads/mirror/195627/115/35d7c155b0249f6ca4aae6fb2a366cda/?referer=https%3A%2F%2Fwww.moddb.com%2Fmods%2Fswat-elite-force%2Fdownloads"
             Mod.Origin = OriginType.Official
             Mod.PreExtractFolder = "SEF"
         }
@@ -119,11 +119,6 @@ module Launcher =
                     Button.onClick (fun _ -> dispatch Install)
                     Button.content "Install"
                 ]
-
-                Button.create [
-                    Button.dock Dock.Bottom
-                ]
-
 
                 TextBox.create [
                     TextBox.dock Dock.Bottom
