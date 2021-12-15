@@ -43,8 +43,8 @@ module Client =
         
         Directory.SetCurrentDirectory(systemDir)
 
-        //let command = $"/C cd .\\{systemDir} && ..\\..\\..\\..\\ContentExpansion\\System\\Swat4X.exe"
-        //System.Diagnostics.Process.Start(command)
+        let command = $"/C ..\\..\\ContentExpansion\\System\\Swat4X.exe"
+        System.Diagnostics.Process.Start(command)
 
 
 module Launcher =
