@@ -20,7 +20,7 @@ module Client =
         let archive = modDirectoryOutput gameMod
         let archivePath = Path.Combine(swatDir, asArchiveFile gameMod)
 
-        if Directory.Exists(archivePath) then
+        if Directory.Exists(archive) then
             let err = $"{archive} already installed!"
             log.Error err
             Error err
@@ -33,14 +33,16 @@ module Client =
 
     let extractArchive gameMod swatDir =
         log.Information("Beginning to extract mod archive..")
+
         let archivePath = Path.Combine(swatDir, (asArchiveFile gameMod))
         Compression.ZipFile.ExtractToDirectory(archivePath, swatDir)
         Directory.Move(
             Path.Combine(swatDir, gameMod.PreExtractFolder),
-            Path.Combine(swatDir, modDirectoryOutput gameMod))
+            Path.Combine(swatDir, modDirectoryOutput gameMod)
+        )
         log.Information("Finished extracting mod archive")
 
-        log.Information("Delete redundant archive..")
+        log.Information("Deleting redundant archive..")
         File.Delete(archivePath)
         log.Information("Deleted archive")
 
@@ -98,6 +100,7 @@ module Launcher =
         model.GameMods
         |> Array.filter (fun m -> m.Id = id)
         |> Array.head
+
     let OnSwatInstallationDirectoryEntryChanged directory model = { model with SwatInstallationDirectory = directory }, Cmd.none
 
     let OnInstall id model =
