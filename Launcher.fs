@@ -108,9 +108,15 @@ module Launcher =
         | Uninstall -> OnUninstall model
         | Launch -> OnLaunch gameMod model
 
-    let makeModStackView currentMod (model: Model) dispatch =
+    let popupInfo =
+        Popup.create [
+            
+        ]
+
+    let makeModStackView (currentMod: Mod) (model: Model) dispatch =
         WrapPanel.create [
             WrapPanel.children [
+                TextBlock.create [ TextBlock.text $"{currentMod.Maintainer}-{currentMod.Version}" ]
                 Button.create [
                     Button.dock Dock.Bottom
                     // FIXME: Find a way to emit this state change.
