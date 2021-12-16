@@ -9,10 +9,9 @@ open SAL.Data
 module Client =
     open System.Net
     open System.Diagnostics
-    open Mods
-
-    let private modDirectoryOutput gameMod = $"{gameMod.Maintainer}-{getCategory gameMod.Category}-{gameMod.Version}"
-
+    
+    let private modDirectoryOutput (gameMod: Mods.Mod) = $"{gameMod.Maintainer}-{Mods.getCategory gameMod.Category}-{gameMod.Version}"
+    
     let private asArchiveFile gameMod =
         let modArchiveName = modDirectoryOutput gameMod
         modArchiveName + ".zip"
@@ -79,7 +78,7 @@ module Launcher =
         { model with Status = (Mods.getCategory gameMod.Category) + " has been launched"; IsModRunning = true }, Cmd.none
 
     let update (message: Message) (model: Model) =
-        let gameMod = Mods.mods[0]
+        let gameMod = model.GameMods[0]
 
         match message with
         | SwatInstallationDirectoryEntryChanged directory -> OnSwatInstallationDirectoryEntryChanged directory model
