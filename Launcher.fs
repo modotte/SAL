@@ -134,15 +134,22 @@ module Launcher =
             ]
         ]    
 
+    let getMods category mods =
+        mods |> Array.filter (fun m -> m.Category = category)
+        
     let makeModCategoriesView (mods: Mod array) (model: Model) dispatch =
         StackPanel.create [
             StackPanel.horizontalAlignment HorizontalAlignment.Left
-            StackPanel.children (
-                mods 
-                |> Array.toList
-                |> List.filter (fun m -> m.Category = SEF)
-                |> List.map (fun m -> makeModStackView m model dispatch)
-            )
+            StackPanel.children [
+                Expander.create [
+                    Expander.header "SEF"
+                    Expander.content [
+                        StackPanel.create [
+                            StackPanel.children [ TextBlock.create [ TextBlock.text "HELLO!"] ]
+                        ]
+                    ]
+                ]
+            ]
         ]
     
     let view (model: Model) dispatch =
