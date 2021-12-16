@@ -61,29 +61,24 @@ module Client =
 
 
 module Launcher =
+    let getModById id model =
+        model.GameMods
+        |> Array.filter (fun m -> m.Id = id)
+        |> Array.head
     let OnSwatInstallationDirectoryEntryChanged directory model = { model with SwatInstallationDirectory = directory }, Cmd.none
 
     let OnInstall id model =
-        let getMod i = 
-            model.GameMods
-            |> Array.filter (fun m -> m.Id = i)
-            |> Array.head
-
-        match Client.downloadMod  (getMod id) model.SwatInstallationDirectory with
+        let selectedMod = getModById id model
+        match Client.downloadMod selectedMod model.SwatInstallationDirectory with
         | Error err -> { model with Status = err }, Cmd.none
         | Ok m -> 
-            Client.extractArchive (getMod id) model.SwatInstallationDirectory
+            Client.extractArchive selectedMod model.SwatInstallationDirectory
             { model with Status = m; }, Cmd.none
 
     let OnUninstall id model = { model with Status = "Mod uninstalled" }, Cmd.none
 
-    let OnLaunch (id: System.Guid) model = 
-        let getMod i = 
-            model.GameMods
-            |> Array.filter (fun m -> m.Id = i)
-            |> Array.head
-
-        let selectedMod = (getMod id)
+    let OnLaunch id model = 
+        let selectedMod = getModById id model
         Client.launchMod selectedMod model.SwatInstallationDirectory |> ignore
         { model with Status = (Mods.getCategory selectedMod.Category) + " has been launched"; IsModRunning = true }, Cmd.none
 
