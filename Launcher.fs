@@ -147,7 +147,7 @@ module Launcher =
                         TextBlock.create [ TextBlock.text "SEF" ]
                         StackPanel.create [
                             StackPanel.children (
-                                getMods ModCategory.SEF mods
+                                getMods CategoryType.SEF mods
                                 |> Array.toList
                                 |> List.map  (fun m -> makeModStackView m model dispatch)
                             )
@@ -161,7 +161,7 @@ module Launcher =
                         TextBlock.create [ TextBlock.text "SEF - First Responders" ]
                         StackPanel.create [
                             StackPanel.children (
-                                getMods ModCategory.SEF_FR mods
+                                getMods CategoryType.SEF_FR mods
                                 |> Array.toList
                                 |> List.map  (fun m -> makeModStackView m model dispatch)
                             )
@@ -174,7 +174,7 @@ module Launcher =
                         TextBlock.create [ TextBlock.text "SEF - Back To Los Angeles" ]
                         StackPanel.create [
                             StackPanel.children (
-                                getMods ModCategory.SEF_BTLA mods
+                                getMods CategoryType.SEF_BTLA mods
                                 |> Array.toList
                                 |> List.map  (fun m -> makeModStackView m model dispatch)
                             )
