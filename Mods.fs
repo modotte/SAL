@@ -15,7 +15,7 @@ module Mods =
             Mod.Category = SEF
             Mod.Maintainer = "eezstreet"
             Mod.Version = "v7.0"
-            Mod.Url = "https://www.moddb.com/downloads/mirror/195627/115/35d7c155b0249f6ca4aae6fb2a366cda/?referer=https%3A%2F%2Fwww.moddb.com%2Fmods%2Fswat-elite-force%2Fdownloads"
+            Mod.Url = "http://localhost:6792/SEF-v7.0.zip"
             Mod.Origin = OriginType.Official
             Mod.PreExtractFolder = "SEF"
             Mod.Stability = StabilityType.Stable
@@ -48,7 +48,7 @@ module Mods =
             Mod.Category = SEF_FR
             Mod.Maintainer = "beppe_goodoldrebel"
             Mod.Version = "v0.66"
-            Mod.Url = "https://www.moddb.com/downloads/mirror/224024/115/ea2d08b65dbc1957aaf1774e693e3612/?referer=https%3A%2F%2Fwww.moddb.com%2Fmods%2Fsef-first-responders%2Fdownloads"
+            Mod.Url = "http://localhost:6792/SEF_FRv66b.1.zip"
             Mod.Origin = OriginType.Official
             Mod.PreExtractFolder = "SEF_FR"
             Mod.Stability = StabilityType.Beta
