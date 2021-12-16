@@ -79,6 +79,9 @@ module Client =
         else
             log.Information("Beginning to uninstall mod..")
             log.Information($"Deleting {modPath}..gonna take a few seconds..")
+            // FIXME: Throws violated memory protection access when
+            // clicking uninstall after closing a direct launched game.
+            // Possibly resource was not fully released and cause this issue.
             Directory.Delete(Path.Combine(swatDir, modPath), true)
 
             log.Information("Finished uninstalling..")
