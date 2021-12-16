@@ -24,6 +24,7 @@ module Client =
         else
             let archive = (asArchiveFile gameMod)
             // TODO: Replace with async stuff and update
+            log.Information("Downloading from " + gameMod.Url)
             WebClient().DownloadFile(gameMod.Url, Path.Combine(swatDir, archive))
             Ok $"{archive} downloaded"
 

@@ -15,7 +15,7 @@ module Mods =
             Mod.Category = SEF
             Mod.Maintainer = "eezstreet"
             Mod.Version = "v7.0"
-            Mod.Url = "http://localhost:6792/SEF-v7.0.zip"
+            Mod.Url = "https://www.moddb.com/downloads/mirror/195627/123/0bc1f7ff5d1308ec81bfa2e9e0507990/?referer=https%3A%2F%2Fwww.moddb.com%2Fmods%2Fswat-elite-force%2Fdownloads"
             Mod.Origin = OriginType.Official
             Mod.PreExtractFolder = "SEF"
             Mod.Stability = StabilityType.Stable
