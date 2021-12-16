@@ -138,8 +138,9 @@ module Launcher =
         StackPanel.create [
             StackPanel.horizontalAlignment HorizontalAlignment.Left
             StackPanel.children (
-                mods
+                mods 
                 |> Array.toList
+                |> List.filter (fun m -> m.Category = SEF)
                 |> List.map (fun m -> makeModStackView m model dispatch)
             )
         ]
