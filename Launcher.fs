@@ -40,6 +40,10 @@ module Client =
             Path.Combine(swatDir, modDirectoryOutput gameMod))
         log.Information("Finished extracting mod archive")
 
+        log.Information("Delete redundant archive..")
+        File.Delete(archivePath)
+        log.Information("Deleted archive")
+
     let launchMod gameMod swatDir =
         let modDir = Path.Combine(swatDir, modDirectoryOutput gameMod)
         let systemDir = Path.Combine(modDir, "System")
