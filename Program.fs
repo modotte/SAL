@@ -42,5 +42,5 @@ module Program =
         AppBuilder
             .Configure<App>()
             .UsePlatformDetect()
-            .UseSkia()
+            .UseWin32()
             .StartWithClassicDesktopLifetime(args)
