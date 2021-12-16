@@ -5,7 +5,7 @@ module Mods =
     type OriginType = Official | Fork
     type CategoryType = SEF | SEF_FR | SEF_BTLA
     type StabilityType = Stable | Beta | Alpha | Nightly | Experimental
-    
+
     type Mod = {
         Id: System.Guid
         Category: CategoryType
@@ -28,7 +28,7 @@ module Mods =
             Mod.Category = SEF
             Mod.Maintainer = "eezstreet"
             Mod.Version = "v7.0"
-            Mod.Url = "https://www.moddb.com/downloads/mirror/195627/123/0bc1f7ff5d1308ec81bfa2e9e0507990/?referer=https%3A%2F%2Fwww.moddb.com%2Fmods%2Fswat-elite-force%2Fdownloads"
+            Mod.Url = "https://www.moddb.com/downloads/mirror/195627/115/0b956450644e83d3e624ec75779ae051/?referer=https%3A%2F%2Fwww.moddb.com%2Fmods%2Fswat-elite-force%2Fdownloads"
             Mod.Origin = OriginType.Official
             Mod.PreExtractFolder = "SEF"
             Mod.Stability = StabilityType.Stable

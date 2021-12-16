@@ -18,7 +18,7 @@ module Client =
 
     let downloadMod gameMod swatDir = 
         let archive = modDirectoryOutput gameMod
-        let archivePath = Path.Combine(swatDir, archive)
+        let archivePath = Path.Combine(swatDir, asArchiveFile gameMod)
 
         if Directory.Exists(archivePath) then
             let err = $"{archive} already installed!"
