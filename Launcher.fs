@@ -32,15 +32,36 @@ module Client =
             WebClient().DownloadFile(gameMod.Url, archivePath)
             Ok $"{archive} downloaded"
 
+    let private makeTemporaryFolder swatDir =
+        log.Information("Creating temporary folder for archive extraction..")
+
+        let name = System.Guid().ToString()
+        let tempDirPath = Path.Combine(swatDir, name)
+        Directory.CreateDirectory(tempDirPath) |> ignore
+
+        log.Information("Temporary folder " + name + " has been created..")
+
+        name
+
+    let private deleteTemporaryFolder tempDirPath =
+        log.Information ("Deleting temporary folder ..")
+        Directory.Delete(tempDirPath, true)
+        log.Information("Deleted temporary folder " + tempDirPath)
+
     let extractArchive gameMod swatDir =
         log.Information("Beginning to extract mod archive..")
 
+        let tempDirName = makeTemporaryFolder swatDir
+        let tempDirPath = Path.Combine(swatDir, tempDirName)
+
         let archivePath = Path.Combine(swatDir, (asArchiveFile gameMod))
-        Compression.ZipFile.ExtractToDirectory(archivePath, swatDir)
+        Compression.ZipFile.ExtractToDirectory(archivePath, tempDirPath)
         Directory.Move(
-            Path.Combine(swatDir, gameMod.PreExtractFolder),
+            Path.Combine(tempDirPath, gameMod.PreExtractFolder),
             Path.Combine(swatDir, modDirectoryOutput gameMod)
         )
+
+        deleteTemporaryFolder tempDirPath
         log.Information("Finished extracting mod archive")
 
         log.Information("Deleting redundant archive..")
