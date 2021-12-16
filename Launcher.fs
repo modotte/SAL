@@ -136,16 +136,49 @@ module Launcher =
 
     let getMods category mods =
         mods |> Array.filter (fun m -> m.Category = category)
-        
+
     let makeModCategoriesView (mods: Mod array) (model: Model) dispatch =
         StackPanel.create [
-            StackPanel.horizontalAlignment HorizontalAlignment.Left
+            StackPanel.horizontalAlignment HorizontalAlignment.Center
+            StackPanel.spacing 32
             StackPanel.children [
-                Expander.create [
-                    Expander.header "SEF"
-                    Expander.content [
+                
+                StackPanel.create [
+                    StackPanel.children [
+                        TextBlock.create [ TextBlock.text "SEF" ]
                         StackPanel.create [
-                            StackPanel.children [ TextBlock.create [ TextBlock.text "HELLO!"] ]
+                            StackPanel.children (
+                                getMods ModCategory.SEF mods
+                                |> Array.toList
+                                |> List.map  (fun m -> makeModStackView m model dispatch)
+                            )
+                        ]
+                    ]
+                ]
+                
+
+                StackPanel.create [
+                    StackPanel.children [
+                        TextBlock.create [ TextBlock.text "SEF - First Responders" ]
+                        StackPanel.create [
+                            StackPanel.children (
+                                getMods ModCategory.SEF_FR mods
+                                |> Array.toList
+                                |> List.map  (fun m -> makeModStackView m model dispatch)
+                            )
+                        ]
+                    ]
+                ]
+
+                StackPanel.create [
+                    StackPanel.children [
+                        TextBlock.create [ TextBlock.text "SEF - Back To Los Angeles" ]
+                        StackPanel.create [
+                            StackPanel.children (
+                                getMods ModCategory.SEF_BTLA mods
+                                |> Array.toList
+                                |> List.map  (fun m -> makeModStackView m model dispatch)
+                            )
                         ]
                     ]
                 ]
