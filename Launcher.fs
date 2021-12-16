@@ -81,32 +81,32 @@ module Launcher =
         | Uninstall 
         | Launch
 
+    let OnSwatInstallationDirectoryEntryChanged directory model =
+        { model with SwatInstallationDirectory = directory }, Cmd.none
+
+    let OnInstall gameMod model = 
+        log.Information("Download started..")
+        match Client.downloadMod gameMod model.SwatInstallationDirectory with
+        | Error err -> { model with Status = err }, Cmd.none
+        | Ok m -> 
+            Client.extractArchive gameMod model.SwatInstallationDirectory
+            log.Information("Extraction started..")
+            { model with Status = m}, Cmd.none
+
+    let OnUninstall model = { model with Status = "Mod uninstalled" }, Cmd.none
+
+    let OnLaunch gameMod model = 
+        Client.launchMod gameMod model.SwatInstallationDirectory |> ignore
+        { model with Status = (Client.getCategory gameMod.Category) + " has been launched"; IsModRunning = true }, Cmd.none
 
     let update (message: Message) (model: Model) =
-        let gameMod = {
-            Mod.Category = SEF
-            Mod.Maintainer = "eezstreet"
-            Mod.Version = "v7.0"
-            Mod.Url = "https://www.moddb.com/downloads/mirror/195627/115/35d7c155b0249f6ca4aae6fb2a366cda/?referer=https%3A%2F%2Fwww.moddb.com%2Fmods%2Fswat-elite-force%2Fdownloads"
-            Mod.Origin = Official
-            Mod.PreExtractFolder = "SEF"
-        }
+        let gameMod = Mods.mods[0]
 
         match message with
-        | SwatInstallationDirectoryEntryChanged directory ->
-            { model with SwatInstallationDirectory = directory }, Cmd.none
-        | Install ->
-            log.Information("Download started..")
-            match Client.downloadMod gameMod model.SwatInstallationDirectory with
-            | Error err -> { model with Status = err }, Cmd.none
-            | Ok m -> 
-                Client.extractArchive gameMod model.SwatInstallationDirectory
-                log.Information("Extraction started..")
-                { model with Status = m}, Cmd.none
-        | Uninstall -> { model with Status = "Mod uninstalled" }, Cmd.none
-        | Launch ->
-            Client.launchMod gameMod model.SwatInstallationDirectory |> ignore
-            { model with Status = (Client.getCategory gameMod.Category) + " has been launched"; IsModRunning = true }, Cmd.none
+        | SwatInstallationDirectoryEntryChanged directory -> OnSwatInstallationDirectoryEntryChanged directory model
+        | Install -> OnInstall gameMod model
+        | Uninstall -> OnUninstall model
+        | Launch -> OnLaunch gameMod model
 
     let makeModStackView (model: Model) dispatch =
         WrapPanel.create [
