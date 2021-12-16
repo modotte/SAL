@@ -4,6 +4,11 @@ namespace SAL.Data
 module Mods =
     open SAL.DomainModel
 
+    let getCategory = function
+    | SEF -> "SEF"
+    | SEF_FR -> "SEF_FR"
+    | SEF_BTLA -> "SEF_BTLA"
+
     let mods: Mod array = [|
         {
             Mod.Id = System.Guid.NewGuid()

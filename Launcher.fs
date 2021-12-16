@@ -9,11 +9,7 @@ open SAL.Data
 module Client =
     open System.Net
     open System.Diagnostics
-
-    let getCategory = function
-    | SEF -> "SEF"
-    | SEF_FR -> "SEF_FR"
-    | SEF_BTLA -> "SEF_BTLA"
+    open Mods
 
     let private modDirectoryOutput gameMod = $"{gameMod.Maintainer}-{getCategory gameMod.Category}-{gameMod.Version}"
 
@@ -97,7 +93,7 @@ module Launcher =
 
     let OnLaunch gameMod model = 
         Client.launchMod gameMod model.SwatInstallationDirectory |> ignore
-        { model with Status = (Client.getCategory gameMod.Category) + " has been launched"; IsModRunning = true }, Cmd.none
+        { model with Status = (Mods.getCategory gameMod.Category) + " has been launched"; IsModRunning = true }, Cmd.none
 
     let update (message: Message) (model: Model) =
         let gameMod = Mods.mods[0]
@@ -116,7 +112,7 @@ module Launcher =
     let makeModStackView (currentMod: Mod) (model: Model) dispatch =
         WrapPanel.create [
             WrapPanel.children [
-                TextBlock.create [ TextBlock.text $"{currentMod.Maintainer}-{currentMod.Version}" ]
+                TextBlock.create [ TextBlock.text $"{currentMod.Maintainer}-{currentMod.Version}-{currentMod.Stability.ToString()}" ]
                 Button.create [
                     Button.dock Dock.Bottom
                     // FIXME: Find a way to emit this state change.
