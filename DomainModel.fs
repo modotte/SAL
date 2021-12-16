@@ -6,6 +6,7 @@ module DomainModel =
     type ModCategory = SEF | SEF_FR | SEF_BTLA
     type StabilityType = Stable | Nightly | Experimental
     type Mod = {
+        Id: System.Guid
         Category: ModCategory
         Maintainer: string
         Version: string

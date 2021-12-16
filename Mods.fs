@@ -6,6 +6,7 @@ module Mods =
 
     let mods: Mod array = [|
         {
+            Mod.Id = System.Guid.NewGuid()
             Mod.Category = SEF
             Mod.Maintainer = "eezstreet"
             Mod.Version = "v7.0"
