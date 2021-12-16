@@ -35,7 +35,7 @@ module Client =
     let private makeTemporaryFolder swatDir =
         log.Information("Creating temporary folder for archive extraction..")
 
-        let name = System.Guid().ToString()
+        let name = System.Guid.NewGuid().ToString()
         let tempDirPath = Path.Combine(swatDir, name)
         Directory.CreateDirectory(tempDirPath) |> ignore
 
