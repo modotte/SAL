@@ -62,14 +62,16 @@ module Launcher =
     type Model = {
         SwatInstallationDirectory: string
         Status: string
-        IsModRunning: bool 
+        IsModRunning: bool
+        IsModInstalled: bool
     }
 
     let sid = Settings.currentSettings.SwatInstallationDirectory
     let init = { 
         SwatInstallationDirectory = sid
         Status = ""
-        IsModRunning = false }, Cmd.none
+        IsModRunning = false
+        IsModInstalled = false }, Cmd.none
 
     type Message =
         | SwatInstallationDirectoryEntryChanged of string
@@ -87,7 +89,7 @@ module Launcher =
         | Ok m -> 
             Client.extractArchive gameMod model.SwatInstallationDirectory
             log.Information("Extraction started..")
-            { model with Status = m}, Cmd.none
+            { model with Status = m; IsModInstalled = true}, Cmd.none
 
     let OnUninstall model = { model with Status = "Mod uninstalled" }, Cmd.none
 
