@@ -29,8 +29,13 @@ module Client =
             // TODO: Replace with async stuff and update
             log.Information("Starting to download the mod..")
             log.Information("Downloading from " + gameMod.Url)
-            WebClient().DownloadFile(gameMod.Url, archivePath)
-            Ok $"{archive} downloaded"
+            try
+                WebClient().DownloadFile(gameMod.Url, archivePath)
+                Ok $"{archive} downloaded"
+            with
+            | :? WebException as exn ->
+                log.Error(exn.Message)
+                Error exn.Message
 
     let private makeTemporaryFolder swatDir =
         log.Information("Creating temporary folder for archive extraction..")
