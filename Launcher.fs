@@ -115,6 +115,7 @@ module Launcher =
                     Button.dock Dock.Bottom
                     // FIXME: Find a way to emit this state change.
                     // Button.isEnabled model.IsModRunning
+                    Button.background "Green"
                     Button.onClick (fun _ -> dispatch Launch)
                     Button.content "Launch Mod"
                 ]                
@@ -126,6 +127,7 @@ module Launcher =
 
                 Button.create [
                     Button.dock Dock.Bottom
+                    Button.background "Red"
                     Button.onClick (fun _ -> dispatch Uninstall)
                     Button.content "Uninstall"
                 ]
@@ -135,7 +137,6 @@ module Launcher =
     let view (model: Model) dispatch =
         StackPanel.create [
             StackPanel.verticalAlignment VerticalAlignment.Top
-            StackPanel.horizontalAlignment HorizontalAlignment.Left
             StackPanel.spacing 8.0
             StackPanel.margin 8.0
             StackPanel.children [    
@@ -144,6 +145,28 @@ module Launcher =
                     StackPanel.children [
 
                         StackPanel.create [
+                            StackPanel.verticalAlignment VerticalAlignment.Top
+                            StackPanel.horizontalAlignment HorizontalAlignment.Center
+                            StackPanel.spacing 8.0
+                            StackPanel.margin 8.0
+                            StackPanel.orientation Orientation.Horizontal
+                            StackPanel.children [
+                                TextBlock.create [
+                                    TextBlock.fontSize 15.0
+                                    TextBlock.text "SWAT4 Folder: "
+                                ]
+
+                                TextBox.create [
+                                    TextBox.minWidth 500
+                                    TextBox.onTextChanged (SwatInstallationDirectoryEntryChanged >> dispatch)
+                                    TextBox.text model.SwatInstallationDirectory
+                                ]
+
+                            ]
+                        ]
+
+                        StackPanel.create [
+                            StackPanel.horizontalAlignment HorizontalAlignment.Left
                             StackPanel.children [
                                 Expander.create [
                                     Expander.header "SEF"
