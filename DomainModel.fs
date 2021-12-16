@@ -1,9 +1,10 @@
 namespace SAL
 module DomainModel =
+    open System
     open SAL.Data.Settings
     open SAL.Data.Mods
     open Elmish
-    
+
     type Model = {
         GameMods: Mod array
         SwatInstallationDirectory: string
@@ -21,7 +22,7 @@ module DomainModel =
 
     type Message =
         | SwatInstallationDirectoryEntryChanged of string
-        | Install 
-        | Uninstall 
-        | Launch
-        | Failure
+        | Install of Guid
+        | Uninstall of Guid
+        | Launch of Guid
+        | Failure of string

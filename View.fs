@@ -16,19 +16,19 @@ module View =
                     // FIXME: Find a way to emit this state change.
                     // Button.isEnabled model.IsModRunning
                     Button.background "Green"
-                    Button.onClick (fun _ -> dispatch Launch)
+                    Button.onClick (fun _ -> dispatch (Launch selectedMod.Id))
                     Button.content "Launch Mod"
                 ]                
                 Button.create [
                     Button.dock Dock.Bottom
-                    Button.onClick (fun _ -> dispatch Install)
+                    Button.onClick (fun _ -> dispatch (Install selectedMod.Id))
                     Button.content "Install"
                 ]
 
                 Button.create [
                     Button.dock Dock.Bottom
                     Button.background "Red"
-                    Button.onClick (fun _ -> dispatch Uninstall)
+                    Button.onClick (fun _ -> dispatch (Uninstall selectedMod.Id))
                     Button.content "Uninstall"
                 ]
             ]

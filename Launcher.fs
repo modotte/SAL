@@ -11,7 +11,7 @@ module Client =
     open System.Diagnostics
     
     let private modDirectoryOutput (gameMod: Mods.Mod) = $"{gameMod.Maintainer}-{Mods.getCategory gameMod.Category}-{gameMod.Version}"
-    
+
     let private asArchiveFile gameMod =
         let modArchiveName = modDirectoryOutput gameMod
         modArchiveName + ".zip"
@@ -61,27 +61,36 @@ module Client =
 
 
 module Launcher =
-    let OnSwatInstallationDirectoryEntryChanged directory model =
-        { model with SwatInstallationDirectory = directory }, Cmd.none
+    let OnSwatInstallationDirectoryEntryChanged directory model = { model with SwatInstallationDirectory = directory }, Cmd.none
 
-    let OnInstall gameMod model = 
-        match Client.downloadMod gameMod model.SwatInstallationDirectory with
+    let OnInstall id model =
+        let getMod i = 
+            model.GameMods
+            |> Array.filter (fun m -> m.Id = i)
+            |> Array.head
+
+        match Client.downloadMod  (getMod id) model.SwatInstallationDirectory with
         | Error err -> { model with Status = err }, Cmd.none
         | Ok m -> 
-            Client.extractArchive gameMod model.SwatInstallationDirectory
+            Client.extractArchive (getMod id) model.SwatInstallationDirectory
             { model with Status = m; }, Cmd.none
 
-    let OnUninstall model = { model with Status = "Mod uninstalled" }, Cmd.none
+    let OnUninstall id model = { model with Status = "Mod uninstalled" }, Cmd.none
 
-    let OnLaunch gameMod model = 
-        Client.launchMod gameMod model.SwatInstallationDirectory |> ignore
-        { model with Status = (Mods.getCategory gameMod.Category) + " has been launched"; IsModRunning = true }, Cmd.none
+    let OnLaunch (id: System.Guid) model = 
+        let getMod i = 
+            model.GameMods
+            |> Array.filter (fun m -> m.Id = i)
+            |> Array.head
+
+        let selectedMod = (getMod id)
+        Client.launchMod selectedMod model.SwatInstallationDirectory |> ignore
+        { model with Status = (Mods.getCategory selectedMod.Category) + " has been launched"; IsModRunning = true }, Cmd.none
 
     let update (message: Message) (model: Model) =
-        let gameMod = model.GameMods[0]
-
         match message with
+        | Failure err -> log.Error err; model, Cmd.none
         | SwatInstallationDirectoryEntryChanged directory -> OnSwatInstallationDirectoryEntryChanged directory model
-        | Install -> OnInstall gameMod model
-        | Uninstall -> OnUninstall model
-        | Launch -> OnLaunch gameMod model
+        | Install id -> OnInstall id model
+        | Uninstall id -> OnUninstall id model
+        | Launch id -> OnLaunch id model
