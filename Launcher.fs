@@ -161,7 +161,6 @@ module Launcher =
                                     TextBox.onTextChanged (SwatInstallationDirectoryEntryChanged >> dispatch)
                                     TextBox.text model.SwatInstallationDirectory
                                 ]
-
                             ]
                         ]
 
