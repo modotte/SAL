@@ -4,13 +4,13 @@ module View =
     open Avalonia.Controls
     open Avalonia.FuncUI.DSL
     open Avalonia.Layout
-    open SAL.Data
+    open SAL.Data.Mods
     open SAL.DomainModel
 
-    let makeModStackView (currentMod: Mod) (model: Model) dispatch =
+    let makeModStackView (selectedMod: Mod) (model: Model) dispatch =
         WrapPanel.create [
             WrapPanel.children [
-                TextBlock.create [ TextBlock.text $"{currentMod.Maintainer}-{currentMod.Version}-{currentMod.Stability.ToString()}" ]
+                TextBlock.create [ TextBlock.text $"{selectedMod.Maintainer}-{selectedMod.Version}-{selectedMod.Stability.ToString()}" ]
                 Button.create [
                     Button.dock Dock.Bottom
                     // FIXME: Find a way to emit this state change.
@@ -48,7 +48,7 @@ module View =
                         TextBlock.create [ TextBlock.text "SEF" ]
                         StackPanel.create [
                             StackPanel.children (
-                                getMods CategoryType.SEF mods
+                                getMods SEF mods
                                 |> Array.toList
                                 |> List.map  (fun m -> makeModStackView m model dispatch)
                             )
@@ -62,7 +62,7 @@ module View =
                         TextBlock.create [ TextBlock.text "SEF - First Responders" ]
                         StackPanel.create [
                             StackPanel.children (
-                                getMods CategoryType.SEF_FR mods
+                                getMods SEF_FR mods
                                 |> Array.toList
                                 |> List.map  (fun m -> makeModStackView m model dispatch)
                             )
@@ -75,7 +75,7 @@ module View =
                         TextBlock.create [ TextBlock.text "SEF - Back To Los Angeles" ]
                         StackPanel.create [
                             StackPanel.children (
-                                getMods CategoryType.SEF_BTLA mods
+                                getMods SEF_BTLA mods
                                 |> Array.toList
                                 |> List.map  (fun m -> makeModStackView m model dispatch)
                             )
@@ -114,7 +114,7 @@ module View =
                                 ]
                             ]
                         ]
-                        makeModCategoriesView Mods.mods model dispatch
+                        makeModCategoriesView mods model dispatch
                     ]
                 ]
             ]

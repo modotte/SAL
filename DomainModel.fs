@@ -1,31 +1,20 @@
 namespace SAL
 module DomainModel =
-    open SAL.Data
+    open SAL.Data.Settings
+    open SAL.Data.Mods
     open Elmish
-
-    type OriginType = Official | Fork
-    type CategoryType = SEF | SEF_FR | SEF_BTLA
-    type StabilityType = Stable | Beta | Alpha | Nightly | Experimental
-    type Mod = {
-        Id: System.Guid
-        Category: CategoryType
-        Maintainer: string
-        Version: string
-        Url: string
-        Origin: OriginType
-        PreExtractFolder: string
-        Stability: StabilityType
-    }
-
+    
     type Model = {
-    SwatInstallationDirectory: string
-    Status: string
-    IsModRunning: bool
+        GameMods: Mod array
+        SwatInstallationDirectory: string
+        Status: string
+        IsModRunning: bool
     }
 
-    let sid = Settings.currentSettings.SwatInstallationDirectory
+    let sid = currentSettings.SwatInstallationDirectory
 
-    let init = { 
+    let init = {
+        GameMods = mods
         SwatInstallationDirectory = sid
         Status = ""
         IsModRunning = false }, Cmd.none
@@ -35,3 +24,4 @@ module DomainModel =
         | Install 
         | Uninstall 
         | Launch
+        | Failure
