@@ -1,6 +1,5 @@
 ﻿namespace SAL
 
-open DomainModel
 open Elmish
 open Avalonia
 open Avalonia.Controls.ApplicationLifetimes
@@ -19,7 +18,7 @@ type MainWindow() as this =
         //this.VisualRoot.VisualRoot.Renderer.DrawDirtyRects <- true
 
 
-        Program.mkProgram (fun () -> Launcher.init) Launcher.update Launcher.view
+        Program.mkProgram (fun () -> DomainModel.init) Launcher.update View.view
         |> Program.withHost this
         |> Program.run
 
