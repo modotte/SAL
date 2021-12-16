@@ -44,6 +44,24 @@ module Client =
         File.Delete(archivePath)
         log.Information("Deleted archive")
 
+    let uninstallMod gameMod swatDir =
+        let modPath = modDirectoryOutput gameMod
+        if not (Directory.Exists(Path.Combine(swatDir, modPath))) then
+            let err = (modDirectoryOutput gameMod) + " is not even installed!"
+            log.Error err
+            Error err
+
+        else
+            log.Information("Beginning to uninstall mod..")
+            log.Information("Deleting {modPath}..gonna take a few seconds..")
+            Directory.Delete(Path.Combine(swatDir, modPath), true)
+
+            log.Information("Finished uninstalling..")
+
+            let msg = modPath + " uninstalled successfully"
+            log.Information(msg)
+            Ok msg
+
     let launchMod gameMod swatDir =
         let modDir = Path.Combine(swatDir, modDirectoryOutput gameMod)
         let systemDir = Path.Combine(modDir, "System")
@@ -90,7 +108,11 @@ module Launcher =
             Client.extractArchive selectedMod model.SwatInstallationDirectory
             { model with Status = msg }, Cmd.none
 
-    let OnUninstall id model = { model with Status = "Mod uninstalled" }, Cmd.none
+    let OnUninstall id model = 
+        let selectedMod = getModById id model
+        match Client.uninstallMod selectedMod model.SwatInstallationDirectory with
+        | Ok msg -> { model with Status = msg }, Cmd.none
+        | Error err -> { model with Status = err }, Cmd.none
 
     let OnLaunch id model = 
         let selectedMod = getModById id model
