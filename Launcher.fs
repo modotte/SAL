@@ -18,23 +18,28 @@ module Client =
         modArchiveName + ".zip"
 
     let downloadMod gameMod swatDir = 
-        let archive = (asArchiveFile gameMod)
+        let archive = modDirectoryOutput gameMod
         let archivePath = Path.Combine(swatDir, archive)
-        // TODO: Check on installed mod dir instead
-        if File.Exists(archivePath) then
-            Error $"{gameMod.Category} already exist!"
+
+        if Directory.Exists(archivePath) then
+            let err = $"{archive} already installed!"
+            log.Error err
+            Error err
         else
             // TODO: Replace with async stuff and update
+            log.Information("Starting to download the mod..")
             log.Information("Downloading from " + gameMod.Url)
             WebClient().DownloadFile(gameMod.Url, archivePath)
             Ok $"{archive} downloaded"
 
     let extractArchive gameMod swatDir =
+        log.Information("Beginning to extract mod archive..")
         let archivePath = Path.Combine(swatDir, (asArchiveFile gameMod))
         Compression.ZipFile.ExtractToDirectory(archivePath, swatDir)
         Directory.Move(
             Path.Combine(swatDir, gameMod.PreExtractFolder),
             Path.Combine(swatDir, modDirectoryOutput gameMod))
+        log.Information("Finished extracting mod archive")
 
     let launchMod gameMod swatDir =
         let modDir = Path.Combine(swatDir, modDirectoryOutput gameMod)
@@ -61,12 +66,10 @@ module Launcher =
         { model with SwatInstallationDirectory = directory }, Cmd.none
 
     let OnInstall gameMod model = 
-        log.Information("Download started..")
         match Client.downloadMod gameMod model.SwatInstallationDirectory with
         | Error err -> { model with Status = err }, Cmd.none
         | Ok m -> 
             Client.extractArchive gameMod model.SwatInstallationDirectory
-            log.Information("Extraction started..")
             { model with Status = m; }, Cmd.none
 
     let OnUninstall model = { model with Status = "Mod uninstalled" }, Cmd.none
