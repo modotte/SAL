@@ -21,7 +21,7 @@ module Client =
         let archive = modDirectoryOutput gameMod
         let archivePath = Path.Combine(swatDir, asArchiveFile gameMod)
 
-        if Directory.Exists(archive) then
+        if Directory.Exists(Path.Combine(swatDir, archive)) then
             let err = $"{archive} already installed!"
             log.Error err
             Error err
@@ -67,6 +67,7 @@ module Client =
         log.Information("Deleting redundant archive..")
         File.Delete(archivePath)
         log.Information("Deleted archive")
+        log.Information(modDirectoryOutput gameMod + " installed successfully")
 
     let uninstallMod gameMod swatDir =
         let modPath = modDirectoryOutput gameMod
