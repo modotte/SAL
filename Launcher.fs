@@ -10,7 +10,12 @@ module Client =
     open System.Net
     open System.Diagnostics
 
-    let private modDirectoryOutput gameMod = $"{gameMod.Maintainer}-{gameMod.Category}-{gameMod.Version}"
+    let getCategory = function
+    | SEF -> "SEF"
+    | SEF_FR -> "SEF_FR"
+    | SEF_BTLA -> "SEF_BTLA"
+
+    let private modDirectoryOutput gameMod = $"{gameMod.Maintainer}-{getCategory gameMod.Category}-{gameMod.Version}"
 
     let private asArchiveFile gameMod =
         let modArchiveName = modDirectoryOutput gameMod
@@ -79,11 +84,11 @@ module Launcher =
 
     let update (message: Message) (model: Model) =
         let gameMod = {
-            Mod.Category = "SEF"
+            Mod.Category = SEF
             Mod.Maintainer = "eezstreet"
             Mod.Version = "v7.0"
             Mod.Url = "https://www.moddb.com/downloads/mirror/195627/115/35d7c155b0249f6ca4aae6fb2a366cda/?referer=https%3A%2F%2Fwww.moddb.com%2Fmods%2Fswat-elite-force%2Fdownloads"
-            Mod.Origin = OriginType.Official
+            Mod.Origin = Official
             Mod.PreExtractFolder = "SEF"
         }
 
@@ -101,7 +106,7 @@ module Launcher =
         | Uninstall -> { model with Status = "Mod uninstalled" }, Cmd.none
         | Launch ->
             Client.launchMod gameMod model.SwatInstallationDirectory |> ignore
-            { model with Status = gameMod.Category + " has been launched"; IsModRunning = true }, Cmd.none
+            { model with Status = (Client.getCategory gameMod.Category) + " has been launched"; IsModRunning = true }, Cmd.none
 
     let makeModStackView (model: Model) dispatch =
         WrapPanel.create [
