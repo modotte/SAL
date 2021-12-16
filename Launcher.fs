@@ -102,10 +102,10 @@ module Launcher =
         | Launch ->
             Client.launchMod gameMod model.SwatInstallationDirectory |> ignore
             { model with Status = gameMod.Name + " has been launched"; IsModRunning = true }, Cmd.none
-    
-    let view (model: Model) (dispatch) =
-        DockPanel.create [
-            DockPanel.children [
+
+    let makeModStackView (model: Model) dispatch =
+        WrapPanel.create [
+            WrapPanel.children [
                 Button.create [
                     Button.dock Dock.Bottom
                     // FIXME: Find a way to emit this state change.
@@ -115,19 +115,55 @@ module Launcher =
                 ]                
                 Button.create [
                     Button.dock Dock.Bottom
-                    Button.onClick (fun _ -> dispatch Uninstall)
-                    Button.content "Uninstall"
-                ]                
-                Button.create [
-                    Button.dock Dock.Bottom
                     Button.onClick (fun _ -> dispatch Install)
                     Button.content "Install"
                 ]
 
-                TextBox.create [
-                    TextBox.dock Dock.Bottom
-                    TextBox.text model.SwatInstallationDirectory
-                    TextBox.onTextChanged (fun text -> dispatch (SwatInstallationDirectoryEntryChanged text))
+                Button.create [
+                    Button.dock Dock.Bottom
+                    Button.onClick (fun _ -> dispatch Uninstall)
+                    Button.content "Uninstall"
                 ]
-            ] 
-        ]       
+            ]
+        ]    
+    
+    let view (model: Model) dispatch =
+        StackPanel.create [
+            StackPanel.verticalAlignment VerticalAlignment.Top
+            StackPanel.horizontalAlignment HorizontalAlignment.Left
+            StackPanel.spacing 8.0
+            StackPanel.margin 8.0
+            StackPanel.children [    
+                StackPanel.create [
+                    StackPanel.orientation Orientation.Vertical
+                    StackPanel.children [
+
+                        StackPanel.create [
+                            StackPanel.children [
+                                Expander.create [
+                                    Expander.header "SEF"
+                                    Expander.content (
+                                        makeModStackView model dispatch
+                                    )
+                                ]
+
+                                Expander.create [
+                                    Expander.header "SEF - First Responders"
+                                    Expander.content (
+                                        makeModStackView model dispatch
+                                    )
+                                ]
+
+
+                                Expander.create [
+                                    Expander.header "SEF - Back To Los Angeles: Close Quarters Battle"
+                                    Expander.content (
+                                        makeModStackView model dispatch
+                                    )
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ]
