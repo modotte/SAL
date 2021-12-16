@@ -44,20 +44,31 @@ module Client =
         let modDir = Path.Combine(swatDir, modDirectoryOutput gameMod)
         let systemDir = Path.Combine(modDir, "System")
         
-        Directory.SetCurrentDirectory(systemDir)
-        log.Information($"Cded to {systemDir}")
+        if not (Directory.Exists(systemDir)) then
+            let err = (modDirectoryOutput gameMod) + " is not installed!"
+            log.Error err
+            Error err
 
-        log.Information("Launching mod..")
-        let launcher = @"..\..\ContentExpansion\System\Swat4X.exe"
-        if not (File.Exists(launcher)) then
-            log.Error(launcher + " doesn't exist!")
+        else
+            Directory.SetCurrentDirectory(systemDir)
+            log.Information($"Change current working directory into {systemDir}")
 
-        let externalProcess = new Process()
-        externalProcess.StartInfo.FileName <- launcher
-        externalProcess.StartInfo.WindowStyle <- ProcessWindowStyle.Normal
-        externalProcess.Start() |> ignore
-        externalProcess.WaitForExit()
-        log.Information($"SWAT4 + {gameMod.Category} closed gracefully")
+            log.Information("Launching mod..")
+            let launcher = @"..\..\ContentExpansion\System\Swat4X.exe"
+            if not (File.Exists(launcher)) then
+                let err = launcher + " doesn't exist! Possible corrupted mod installation!"
+                log.Error(err)
+                Error err
+
+            else
+                let externalProcess = new Process()
+                externalProcess.StartInfo.FileName <- launcher
+                externalProcess.StartInfo.WindowStyle <- ProcessWindowStyle.Normal
+                externalProcess.Start() |> ignore
+                externalProcess.WaitForExit()
+                log.Information($"SWAT4 + {modDirectoryOutput gameMod} closed gracefully")
+
+                Ok $"{launcher} executed and closed gracefully"
 
 
 module Launcher =
@@ -71,16 +82,17 @@ module Launcher =
         let selectedMod = getModById id model
         match Client.downloadMod selectedMod model.SwatInstallationDirectory with
         | Error err -> { model with Status = err }, Cmd.none
-        | Ok m -> 
+        | Ok msg -> 
             Client.extractArchive selectedMod model.SwatInstallationDirectory
-            { model with Status = m; }, Cmd.none
+            { model with Status = msg }, Cmd.none
 
     let OnUninstall id model = { model with Status = "Mod uninstalled" }, Cmd.none
 
     let OnLaunch id model = 
         let selectedMod = getModById id model
-        Client.launchMod selectedMod model.SwatInstallationDirectory |> ignore
-        { model with Status = (Mods.getCategory selectedMod.Category) + " has been launched"; IsModRunning = true }, Cmd.none
+        match Client.launchMod selectedMod model.SwatInstallationDirectory with
+        | Ok msg -> { model with Status = msg }, Cmd.none
+        | Error err -> { model with Status = err }, Cmd.none
 
     let update (message: Message) (model: Model) =
         match message with
