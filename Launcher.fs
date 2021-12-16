@@ -104,11 +104,6 @@ module Launcher =
         | Uninstall -> OnUninstall model
         | Launch -> OnLaunch gameMod model
 
-    let popupInfo =
-        Popup.create [
-            
-        ]
-
     let makeModStackView (currentMod: Mod) (model: Model) dispatch =
         WrapPanel.create [
             WrapPanel.children [
