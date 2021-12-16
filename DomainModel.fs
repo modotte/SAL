@@ -21,16 +21,14 @@ module DomainModel =
     SwatInstallationDirectory: string
     Status: string
     IsModRunning: bool
-    IsModInstalled: bool
     }
 
     let sid = Settings.currentSettings.SwatInstallationDirectory
-    
+
     let init = { 
         SwatInstallationDirectory = sid
         Status = ""
-        IsModRunning = false
-        IsModInstalled = false }, Cmd.none
+        IsModRunning = false }, Cmd.none
 
     type Message =
         | SwatInstallationDirectoryEntryChanged of string

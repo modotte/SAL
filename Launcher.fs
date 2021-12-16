@@ -66,7 +66,7 @@ module Launcher =
         | Ok m -> 
             Client.extractArchive gameMod model.SwatInstallationDirectory
             log.Information("Extraction started..")
-            { model with Status = m; IsModInstalled = true}, Cmd.none
+            { model with Status = m; }, Cmd.none
 
     let OnUninstall model = { model with Status = "Mod uninstalled" }, Cmd.none
 
