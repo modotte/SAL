@@ -60,18 +60,25 @@ module Client =
         let tempDirPath = Path.Combine(swatDir, tempDirName)
 
         let archivePath = Path.Combine(swatDir, (asArchiveFile gameMod))
+        log.Information("Extracting mod archive..")
         Compression.ZipFile.ExtractToDirectory(archivePath, tempDirPath)
+        log.Information("Finished extracting mod archive")
+
+        log.Information("Renaming extracted folder...")
         Directory.Move(
             Path.Combine(tempDirPath, gameMod.PreExtractFolder),
             Path.Combine(swatDir, modDirectoryOutput gameMod)
         )
+        log.Information("Finishred renaming extracted foler..")
 
+        log.Information("Deleting temporary folder for extraction..")
         deleteTemporaryFolder tempDirPath
-        log.Information("Finished extracting mod archive")
+        log.Information("Deleted temporary folder..")
 
         log.Information("Deleting redundant archive..")
         File.Delete(archivePath)
         log.Information("Deleted archive")
+        
         log.Information(modDirectoryOutput gameMod + " installed successfully")
 
     let uninstallMod gameMod swatDir =
