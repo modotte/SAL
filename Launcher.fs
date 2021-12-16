@@ -108,7 +108,7 @@ module Launcher =
         | Uninstall -> OnUninstall model
         | Launch -> OnLaunch gameMod model
 
-    let makeModStackView (model: Model) dispatch =
+    let makeModStackView currentMod (model: Model) dispatch =
         WrapPanel.create [
             WrapPanel.children [
                 Button.create [
@@ -133,6 +133,16 @@ module Launcher =
                 ]
             ]
         ]    
+
+    let makeModCategoriesView (mods: Mod array) (model: Model) dispatch =
+        StackPanel.create [
+            StackPanel.horizontalAlignment HorizontalAlignment.Left
+            StackPanel.children (
+                mods
+                |> Array.toList
+                |> List.map (fun m -> makeModStackView m model dispatch)
+            )
+        ]
     
     let view (model: Model) dispatch =
         StackPanel.create [
@@ -163,33 +173,7 @@ module Launcher =
                                 ]
                             ]
                         ]
-
-                        StackPanel.create [
-                            StackPanel.horizontalAlignment HorizontalAlignment.Left
-                            StackPanel.children [
-                                Expander.create [
-                                    Expander.header "SEF"
-                                    Expander.content (
-                                        makeModStackView model dispatch
-                                    )
-                                ]
-
-                                Expander.create [
-                                    Expander.header "SEF - First Responders"
-                                    Expander.content (
-                                        makeModStackView model dispatch
-                                    )
-                                ]
-
-
-                                Expander.create [
-                                    Expander.header "SEF - Back To Los Angeles: Close Quarters Battle"
-                                    Expander.content (
-                                        makeModStackView model dispatch
-                                    )
-                                ]
-                            ]
-                        ]
+                        makeModCategoriesView Mods.mods model dispatch
                     ]
                 ]
             ]
