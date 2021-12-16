@@ -10,7 +10,7 @@ module Client =
     open System.Net
     open System.Diagnostics
 
-    let private modDirectoryOutput gameMod = $"{gameMod.Maintainer}-{gameMod.Name}-{gameMod.Version}"
+    let private modDirectoryOutput gameMod = $"{gameMod.Maintainer}-{gameMod.Category}-{gameMod.Version}"
 
     let private asArchiveFile gameMod =
         let modArchiveName = modDirectoryOutput gameMod
@@ -19,7 +19,7 @@ module Client =
     let downloadMod gameMod swatDir = 
         // TODO: Check on installed mod dir instead
         if File.Exists(swatDir + (asArchiveFile gameMod)) then
-            Error $"{gameMod.Name} already exist!"
+            Error $"{gameMod.Category} already exist!"
         else
             let archive = (asArchiveFile gameMod)
             // TODO: Replace with async stuff and update
@@ -50,7 +50,7 @@ module Client =
         externalProcess.StartInfo.WindowStyle <- ProcessWindowStyle.Normal
         externalProcess.Start() |> ignore
         externalProcess.WaitForExit()
-        log.Information($"SWAT4 + {gameMod.Name} closed gracefully")
+        log.Information($"SWAT4 + {gameMod.Category} closed gracefully")
 
 
 module Launcher =
@@ -79,7 +79,7 @@ module Launcher =
 
     let update (message: Message) (model: Model) =
         let gameMod = {
-            Mod.Name = "SEF"
+            Mod.Category = "SEF"
             Mod.Maintainer = "eezstreet"
             Mod.Version = "v7.0"
             Mod.Url = "https://www.moddb.com/downloads/mirror/195627/115/35d7c155b0249f6ca4aae6fb2a366cda/?referer=https%3A%2F%2Fwww.moddb.com%2Fmods%2Fswat-elite-force%2Fdownloads"
@@ -101,7 +101,7 @@ module Launcher =
         | Uninstall -> { model with Status = "Mod uninstalled" }, Cmd.none
         | Launch ->
             Client.launchMod gameMod model.SwatInstallationDirectory |> ignore
-            { model with Status = gameMod.Name + " has been launched"; IsModRunning = true }, Cmd.none
+            { model with Status = gameMod.Category + " has been launched"; IsModRunning = true }, Cmd.none
 
     let makeModStackView (model: Model) dispatch =
         WrapPanel.create [

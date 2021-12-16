@@ -4,7 +4,7 @@ module DomainModel =
     type OriginType = Official | Fork
 
     type Mod = {
-        Name: string
+        Category: string
         Maintainer: string
         Version: string
         Url: string
