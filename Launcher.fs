@@ -53,7 +53,7 @@ module Client =
 
         else
             log.Information("Beginning to uninstall mod..")
-            log.Information("Deleting {modPath}..gonna take a few seconds..")
+            log.Information($"Deleting {modPath}..gonna take a few seconds..")
             Directory.Delete(Path.Combine(swatDir, modPath), true)
 
             log.Information("Finished uninstalling..")
