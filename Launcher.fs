@@ -18,14 +18,15 @@ module Client =
         modArchiveName + ".zip"
 
     let downloadMod gameMod swatDir = 
+        let archive = (asArchiveFile gameMod)
+        let archivePath = Path.Combine(swatDir, archive)
         // TODO: Check on installed mod dir instead
-        if File.Exists(swatDir + (asArchiveFile gameMod)) then
+        if File.Exists(archivePath) then
             Error $"{gameMod.Category} already exist!"
         else
-            let archive = (asArchiveFile gameMod)
             // TODO: Replace with async stuff and update
             log.Information("Downloading from " + gameMod.Url)
-            WebClient().DownloadFile(gameMod.Url, Path.Combine(swatDir, archive))
+            WebClient().DownloadFile(gameMod.Url, archivePath)
             Ok $"{archive} downloaded"
 
     let extractArchive gameMod swatDir =
