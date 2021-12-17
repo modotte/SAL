@@ -74,7 +74,7 @@ module Mods =
             Mod.Version = "v1.2.7"
             Mod.Url = "https://www.moddb.com/downloads/mirror/214404/121/2653989c215d6ed23b68cd61a0e55fe8/?referer=https%3A%2F%2Fwww.moddb.com%2Fmods%2Fswat-back-to-la%2Fdownloads"
             Mod.Origin = OriginType.Official
-            Mod.PreExtractFolder = "SEF_BTLA"
+            Mod.PreExtractFolder = "SEF-BTLA"
             Mod.Stability = StabilityType.Stable
         }
 
@@ -85,7 +85,7 @@ module Mods =
             Mod.Version = "v1.5.7"
             Mod.Url = "https://www.moddb.com/downloads/mirror/220769/126/7df9a2ae56274b5b8b99bfd387b5865d/?referer=https%3A%2F%2Fwww.moddb.com%2Fmods%2Fswat-back-to-la%2Fdownloads"
             Mod.Origin = OriginType.Official
-            Mod.PreExtractFolder = "SEF_BTLA"
+            Mod.PreExtractFolder = "SEF-BTLA"
             Mod.Stability = StabilityType.Stable
         }
     |]

@@ -1,0 +1,4 @@
+namespace SAL
+
+module Archive =
+    ()
