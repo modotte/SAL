@@ -65,18 +65,9 @@ module Client =
 
         log.Information("Extracting mod archive..")
         match gameMod.ArchiveFormat with
+        | Mods.Zip -> Archive.extractZipArchive archivePath tempDirPath
         | Mods.Rar -> Archive.extractRarArchiveTo archivePath tempDirPath
-        | _ ->
-            try
-                Compression.ZipFile.ExtractToDirectory(archivePath, tempDirPath)
-            with
-            | :? System.IO.DirectoryNotFoundException as exn ->
-                log.Error(exn.Message)
-            | :? System.IO.PathTooLongException as exn ->
-                log.Error(exn.Message)
-            | :? System.IO.InvalidDataException as exn ->
-                log.Error("Corrupt zip archive")
-                log.Error(exn.Message)
+        | Mods.SevenZip -> Archive.extractSevenZipArchiveTo archivePath tempDirPath
 
         log.Information("Finished extracting mod archive")
 
