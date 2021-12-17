@@ -9,7 +9,7 @@ module DomainModel =
         GameMods: Mod array
         SwatInstallationDirectory: string
         Status: string
-        IsModRunning: bool
+        IsAModRunning: bool
     }
 
     let sid = currentSettings.SwatInstallationDirectory
@@ -18,7 +18,7 @@ module DomainModel =
         GameMods = mods
         SwatInstallationDirectory = sid
         Status = ""
-        IsModRunning = false }, Cmd.none
+        IsAModRunning = false }, Cmd.none
 
     type Message =
         | SwatInstallationDirectoryEntryChanged of string

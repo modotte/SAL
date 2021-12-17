@@ -17,6 +17,7 @@ module Mods =
         PreExtractFolder: string
         Stability: StabilityType
         ArchiveFormat: ArchiveFormatType
+        IsInstalled: bool
     }
 
     let getCategory = function
@@ -35,6 +36,7 @@ module Mods =
             PreExtractFolder = "SEF"
             Stability = Stable
             ArchiveFormat = Zip
+            IsInstalled = false
         }
 
         {
@@ -47,6 +49,7 @@ module Mods =
             PreExtractFolder = "SEF"
             Stability = Beta
             ArchiveFormat = Zip
+            IsInstalled = false
         }
 
         {
@@ -59,6 +62,7 @@ module Mods =
             PreExtractFolder = "SEF_FR"
             Stability = Stable
             ArchiveFormat = Rar
+            IsInstalled = false
         }
 
         {
@@ -71,6 +75,7 @@ module Mods =
             PreExtractFolder = "SEF_FR"
             Stability = Beta
             ArchiveFormat = Rar
+            IsInstalled = false
         }
 
         {
@@ -83,6 +88,7 @@ module Mods =
             PreExtractFolder = "SEF-BTLA"
             Stability = Stable
             ArchiveFormat = Rar
+            IsInstalled = false
         }
 
         {
@@ -95,5 +101,6 @@ module Mods =
             PreExtractFolder = "SEF-BTLA"
             Stability = Stable
             ArchiveFormat = Rar
+            IsInstalled = false
         }
     |]
