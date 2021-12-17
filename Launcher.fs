@@ -61,7 +61,17 @@ module Client =
 
         let archivePath = Path.Combine(swatDir, (asArchiveFile gameMod))
         log.Information("Extracting mod archive..")
-        Compression.ZipFile.ExtractToDirectory(archivePath, tempDirPath)
+        try
+            Compression.ZipFile.ExtractToDirectory(archivePath, tempDirPath)
+        with
+        | :? System.IO.DirectoryNotFoundException as exn ->
+            log.Error(exn.Message)
+        | :? System.IO.PathTooLongException as exn ->
+            log.Error(exn.Message)
+        | :? System.IO.InvalidDataException as exn ->
+            log.Error("Corrupt zip archive")
+            log.Error(exn.Message)
+
         log.Information("Finished extracting mod archive")
 
         log.Information("Renaming extracted folder...")
@@ -69,7 +79,7 @@ module Client =
             Path.Combine(tempDirPath, gameMod.PreExtractFolder),
             Path.Combine(swatDir, modDirectoryOutput gameMod)
         )
-        log.Information("Finishred renaming extracted foler..")
+        log.Information("Finished renaming extracted folder..")
 
         log.Information("Deleting temporary folder for extraction..")
         deleteTemporaryFolder tempDirPath

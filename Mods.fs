@@ -83,7 +83,7 @@ module Mods =
             Mod.Category = SEF_BTLA
             Mod.Maintainer = "EFdee"
             Mod.Version = "v1.5.7"
-            Mod.Url = "https://www.moddb.com/downloads/mirror/220769/126/7df9a2ae56274b5b8b99bfd387b5865d/?referer=https%3A%2F%2Fwww.moddb.com%2Fmods%2Fswat-back-to-la%2Fdownloads"
+            Mod.Url = "http://localhost:6792/SEF-BTLA_v1.5.7z"
             Mod.Origin = OriginType.Official
             Mod.PreExtractFolder = "SEF-BTLA"
             Mod.Stability = StabilityType.Stable
