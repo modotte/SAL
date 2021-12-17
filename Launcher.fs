@@ -18,7 +18,6 @@ module Client =
         match gameMod.ArchiveFormat with
         | Mods.Zip -> modArchiveName + ".zip"
         | Mods.Rar -> modArchiveName + ".rar"
-        | Mods.SevenZip -> modArchiveName + ".7z"
 
     let downloadMod gameMod swatDir = 
         let archive = modDirectoryOutput gameMod
@@ -65,9 +64,8 @@ module Client =
 
         log.Information("Extracting mod archive..")
         match gameMod.ArchiveFormat with
-        | Mods.Zip -> Archive.extractZipArchive archivePath tempDirPath
+        | Mods.Zip -> Archive.extractZipArchiveTo archivePath tempDirPath
         | Mods.Rar -> Archive.extractRarArchiveTo archivePath tempDirPath
-        | Mods.SevenZip -> Archive.extractSevenZipArchiveTo archivePath tempDirPath
 
         log.Information("Finished extracting mod archive")
 

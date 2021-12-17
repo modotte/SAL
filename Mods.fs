@@ -5,7 +5,7 @@ module Mods =
     type OriginType = Official | Fork
     type CategoryType = SEF | SEF_FR | SEF_BTLA
     type StabilityType = Stable | Beta | Alpha | Nightly | Experimental
-    type ArchiveFormatType = Zip | Rar | SevenZip
+    type ArchiveFormatType = Zip | Rar
 
     type Mod = {
         Id: System.Guid
@@ -82,7 +82,7 @@ module Mods =
             Origin = Official
             PreExtractFolder = "SEF-BTLA"
             Stability = Stable
-            ArchiveFormat = SevenZip
+            ArchiveFormat = Rar
         }
 
         {
@@ -94,6 +94,6 @@ module Mods =
             Origin = Official
             PreExtractFolder = "SEF-BTLA"
             Stability = Stable
-            ArchiveFormat = SevenZip
+            ArchiveFormat = Rar
         }
     |]
