@@ -66,6 +66,17 @@ module Client =
         match gameMod.ArchiveFormat with
         | Mods.Zip -> Archive.extractZipArchiveTo archivePath tempDirPath
         | Mods.Rar -> Archive.extractRarArchiveTo archivePath tempDirPath
+        
+        (*
+        log.Information("Deleting redundant archive..")
+        try
+            File.Delete(archivePath)
+        with
+        | :? System.IO.IOException as exn ->
+            log.Error(exn.Message)
+
+        log.Information("Deleted archive")
+        *)
 
         log.Information("Finished extracting mod archive")
 
@@ -79,10 +90,6 @@ module Client =
         log.Information("Deleting temporary folder for extraction..")
         deleteTemporaryFolder tempDirPath
         log.Information("Deleted temporary folder..")
-
-        log.Information("Deleting redundant archive..")
-        File.Delete(archivePath)
-        log.Information("Deleted archive")
         
         log.Information(modDirectoryOutput gameMod + " installed successfully")
 
