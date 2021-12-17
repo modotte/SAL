@@ -15,7 +15,10 @@ module Client =
 
     let private asArchiveFile gameMod =
         let modArchiveName = modDirectoryOutput gameMod
-        modArchiveName + ".zip"
+        match gameMod.ArchiveFormat with
+        | Mods.Zip -> modArchiveName + ".zip"
+        | Mods.Rar -> modArchiveName + ".rar"
+        | Mods.SevenZip -> modArchiveName + ".7z"
 
     let downloadMod gameMod swatDir = 
         let archive = modDirectoryOutput gameMod
@@ -58,19 +61,22 @@ module Client =
 
         let tempDirName = makeTemporaryFolder swatDir
         let tempDirPath = Path.Combine(swatDir, tempDirName)
-
         let archivePath = Path.Combine(swatDir, (asArchiveFile gameMod))
+
         log.Information("Extracting mod archive..")
-        try
-            Compression.ZipFile.ExtractToDirectory(archivePath, tempDirPath)
-        with
-        | :? System.IO.DirectoryNotFoundException as exn ->
-            log.Error(exn.Message)
-        | :? System.IO.PathTooLongException as exn ->
-            log.Error(exn.Message)
-        | :? System.IO.InvalidDataException as exn ->
-            log.Error("Corrupt zip archive")
-            log.Error(exn.Message)
+        match gameMod.ArchiveFormat with
+        | Mods.Rar -> Archive.extractRarArchiveTo archivePath tempDirPath
+        | _ ->
+            try
+                Compression.ZipFile.ExtractToDirectory(archivePath, tempDirPath)
+            with
+            | :? System.IO.DirectoryNotFoundException as exn ->
+                log.Error(exn.Message)
+            | :? System.IO.PathTooLongException as exn ->
+                log.Error(exn.Message)
+            | :? System.IO.InvalidDataException as exn ->
+                log.Error("Corrupt zip archive")
+                log.Error(exn.Message)
 
         log.Information("Finished extracting mod archive")
 
