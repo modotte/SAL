@@ -11,6 +11,9 @@ module View =
         WrapPanel.create [
             WrapPanel.children [
                 TextBlock.create [ TextBlock.text $"{selectedMod.Maintainer}-{selectedMod.Version}-{selectedMod.Stability.ToString()}" ]
+                
+                
+
                 Button.create [
                     Button.dock Dock.Bottom
                     // FIXME: Find a way to emit this state change.
@@ -19,17 +22,17 @@ module View =
                     Button.onClick (fun _ -> dispatch (Launch selectedMod.Id))
                     Button.content "Launch Mod"
                 ]                
-                Button.create [
-                    Button.dock Dock.Bottom
-                    Button.onClick (fun _ -> dispatch (Install selectedMod.Id))
-                    Button.content "Install"
-                ]
 
                 Button.create [
                     Button.dock Dock.Bottom
                     Button.background "Red"
                     Button.onClick (fun _ -> dispatch (Uninstall selectedMod.Id))
                     Button.content "Uninstall"
+                ]
+                Button.create [
+                    Button.dock Dock.Bottom
+                    Button.onClick (fun _ -> dispatch (Install selectedMod.Id))
+                    Button.content "Install"
                 ]
             ]
         ]    
