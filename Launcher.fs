@@ -20,24 +20,31 @@ module Client =
         | Mods.Rar -> modArchiveName + ".rar"
 
     let downloadMod gameMod swatDir = 
-        let archive = modDirectoryOutput gameMod
+        let modInstallDir = modDirectoryOutput gameMod
         let archivePath = Path.Combine(swatDir, asArchiveFile gameMod)
 
-        if Directory.Exists(Path.Combine(swatDir, archive)) then
-            let err = $"{archive} already installed!"
+        if Directory.Exists(Path.Combine(swatDir, modInstallDir)) then
+            let err = $"{modInstallDir} already installed!"
             log.Error err
             Error err
         else
-            // TODO: Replace with async stuff and update
-            log.Information("Starting to download the mod..")
-            log.Information("Downloading from " + gameMod.Url)
-            try
-                WebClient().DownloadFile(gameMod.Url, archivePath)
-                Ok $"{archive} downloaded"
-            with
-            | :? WebException as exn ->
-                log.Error(exn.Message)
-                Error exn.Message
+            if File.Exists(archivePath) then
+                let msg = $"{archivePath} already exist. Reusing it to save resources.."
+                log.Information(msg)
+                Ok msg
+                
+            else
+                // TODO: Replace with async stuff and update
+                log.Information("Starting to download the mod archive file..")
+                log.Information("Downloading from: " + gameMod.Url)
+                try
+                    let client = new WebClient() 
+                    client.DownloadFile(gameMod.Url, archivePath)
+                    Ok $"{archivePath} has been downloaded"
+                with
+                | :? WebException as exn ->
+                    log.Error(exn.Message)
+                    Error exn.Message
 
     let private makeTemporaryFolder swatDir =
         log.Information("Creating temporary folder for archive extraction..")
@@ -51,9 +58,9 @@ module Client =
         name
 
     let private deleteTemporaryFolder tempDirPath =
-        log.Information ("Deleting temporary folder ..")
+        log.Information ("Deleting temporary extraction folder ..")
         Directory.Delete(tempDirPath, true)
-        log.Information("Deleted temporary folder " + tempDirPath)
+        log.Information("Deleted temporary extraction folder " + tempDirPath)
 
     let extractArchive gameMod swatDir =
         log.Information("Beginning to extract mod archive..")
@@ -66,7 +73,6 @@ module Client =
         match gameMod.ArchiveFormat with
         | Mods.Zip -> Archive.extractZipArchiveTo archivePath tempDirPath
         | Mods.Rar -> Archive.extractRarArchiveTo archivePath tempDirPath
-
         log.Information("Finished extracting mod archive")
 
         log.Information("Renaming extracted folder...")
@@ -76,7 +82,6 @@ module Client =
         )
         log.Information("Finished renaming extracted folder..")
 
-        log.Information("Deleting temporary folder for extraction..")
         deleteTemporaryFolder tempDirPath
         log.Information("Deleted temporary folder..")
         
