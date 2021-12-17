@@ -66,17 +66,6 @@ module Client =
         match gameMod.ArchiveFormat with
         | Mods.Zip -> Archive.extractZipArchiveTo archivePath tempDirPath
         | Mods.Rar -> Archive.extractRarArchiveTo archivePath tempDirPath
-        
-        (*
-        log.Information("Deleting redundant archive..")
-        try
-            File.Delete(archivePath)
-        with
-        | :? System.IO.IOException as exn ->
-            log.Error(exn.Message)
-
-        log.Information("Deleted archive")
-        *)
 
         log.Information("Finished extracting mod archive")
 
@@ -103,7 +92,7 @@ module Client =
         else
             log.Information("Beginning to uninstall mod..")
             log.Information($"Deleting {modPath}..gonna take a few seconds..")
-            // FIXME: Throws violated memory protection access when
+            // BUG: Throws violated memory protection access when
             // clicking uninstall after closing a direct launched game.
             // Possibly resource was not fully released and cause this issue.
             Directory.Delete(Path.Combine(swatDir, modPath), true)
