@@ -62,6 +62,7 @@ module Client =
         Directory.Delete(tempDirPath, true)
         log.Information("Deleted temporary extraction folder " + tempDirPath)
 
+    // TODO: Add error handling monads
     let extractArchive gameMod swatDir =
         log.Information("Beginning to extract mod archive..")
 

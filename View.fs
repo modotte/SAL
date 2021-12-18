@@ -12,8 +12,6 @@ module View =
             WrapPanel.children [
                 TextBlock.create [ TextBlock.text $"{selectedMod.Maintainer}-{selectedMod.Version}-{selectedMod.Stability.ToString()}" ]
                 
-                
-
                 Button.create [
                     Button.dock Dock.Bottom
                     // FIXME: Find a way to emit this state change.
