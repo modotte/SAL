@@ -15,11 +15,11 @@ module DomainModel =
     }
 
     type Message =
-    | SwatDirectoryEntryChanged of string
-    | Install of Guid
-    | Uninstall of Guid
-    | Launch of Guid
-    | Failure of string
+        | SwatDirectoryEntryChanged of string
+        | Install of Guid
+        | Uninstall of Guid
+        | Launch of Guid
+        | Failure of string
 
     let private sid = currentSettings.SwatDirectory
     let init = 
