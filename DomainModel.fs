@@ -51,32 +51,6 @@ module DomainModel =
 
         {
             Id = System.Guid.NewGuid()
-            Category = SEF
-            Maintainer = "eezstreet"
-            Version = "v7.1"
-            Url = "https://www.moddb.com/downloads/mirror/195627/115/35d7c155b0249f6ca4aae6fb2a366cda/?referer=https%3A%2F%2Fwww.moddb.com%2Fmods%2Fswat-elite-force%2Fdownloads"
-            Origin = Official
-            PreExtractFolder = "SEF"
-            Stability = Beta
-            ArchiveFormat = Zip
-            IsInstalled = false
-        }
-
-        {
-            Id = System.Guid.NewGuid()
-            Category = SEF_FR
-            Maintainer = "beppe_goodoldrebel"
-            Version = "v0.65"
-            Url = "https://www.moddb.com/downloads/mirror/216323/114/f0c528726f0780610e51d3d49241b1c8/?referer=https%3A%2F%2Fwww.moddb.com%2Fmods%2Fsef-first-responders%2Fdownloads"
-            Origin = Official
-            PreExtractFolder = "SEF_FR"
-            Stability = Stable
-            ArchiveFormat = Rar
-            IsInstalled = false
-        }
-
-        {
-            Id = System.Guid.NewGuid()
             Category = SEF_FR
             Maintainer = "beppe_goodoldrebel"
             Version = "v0.66"
@@ -84,32 +58,6 @@ module DomainModel =
             Origin = Official
             PreExtractFolder = "SEF_FR"
             Stability = Beta
-            ArchiveFormat = Rar
-            IsInstalled = false
-        }
-
-        {
-            Id = System.Guid.NewGuid()
-            Category = SEF_BTLA
-            Maintainer = "EFdee"
-            Version = "v1.2.7"
-            Url = "https://www.moddb.com/downloads/mirror/214404/121/2653989c215d6ed23b68cd61a0e55fe8/?referer=https%3A%2F%2Fwww.moddb.com%2Fmods%2Fswat-back-to-la%2Fdownloads"
-            Origin = Official
-            PreExtractFolder = "SEF-BTLA"
-            Stability = Stable
-            ArchiveFormat = Rar
-            IsInstalled = false
-        }
-
-        {
-            Id = System.Guid.NewGuid()
-            Category = SEF_BTLA
-            Maintainer = "EFdee"
-            Version = "v1.5.7"
-            Url = "http://localhost:6792/SEF-BTLA_v1.5.7z"
-            Origin = Official
-            PreExtractFolder = "SEF-BTLA"
-            Stability = Stable
             ArchiveFormat = Rar
             IsInstalled = false
         }
