@@ -31,6 +31,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="configuration.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <EmbeddedResource Remove=".template.config\**" />
   </ItemGroup>
 
