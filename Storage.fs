@@ -15,11 +15,9 @@ module Storage =
     let [<Literal>] private storageFilename = "configuration.json"
     let private decoder = Decode.Auto.generateDecoder<Model>()
     let load () =
-        File.ReadAllText storageFilename
-        |> unbox
-        |> Option.bind (
-            Decode.fromString decoder
-            >> function
-            | Ok data -> Some data
-            | _ -> None
-        )
+        let json = File.ReadAllText storageFilename
+        let decoder = Decode.fromString decoder json
+
+        match decoder with
+        | Error r -> SAL.Logger.log.Error(r); None
+        | Ok r -> Some r
