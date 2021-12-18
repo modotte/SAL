@@ -5,40 +5,42 @@ module View =
     open Avalonia.FuncUI.DSL
     open Avalonia.Layout
     open SAL.DomainModel
-    open SAL.Data.Storage
 
-    let makeModStackView (selectedMod: Mod) (model: Model) dispatch =
+    let makeModStackView (selectedMod: Mod) dispatch =
         WrapPanel.create [
             WrapPanel.children [
                 TextBlock.create [ TextBlock.text $"{selectedMod.Maintainer}-{selectedMod.Version}-{selectedMod.Stability.ToString()}" ]
                 
-                Button.create [
-                    Button.dock Dock.Bottom
-                    // FIXME: Find a way to emit this state change.
-                    // Button.isEnabled model.IsModRunning
-                    Button.background "Green"
-                    Button.onClick (fun _ -> dispatch (Launch selectedMod.Id))
-                    Button.content "Launch Mod"
-                ]                
+                if selectedMod.IsInstalled then
+                    Button.create [
+                        Button.dock Dock.Bottom
+                        // FIXME: Find a way to emit this state change.
+                        // Button.isEnabled model.IsModRunning
+                        Button.background "Green"
+                        Button.onClick (fun _ -> dispatch (Launch selectedMod.Id))
+                        Button.content "Launch Mod"
+                    ]                
 
-                Button.create [
-                    Button.dock Dock.Bottom
-                    Button.background "Red"
-                    Button.onClick (fun _ -> dispatch (Uninstall selectedMod.Id))
-                    Button.content "Uninstall"
-                ]
-                Button.create [
-                    Button.dock Dock.Bottom
-                    Button.onClick (fun _ -> dispatch (Install selectedMod.Id))
-                    Button.content "Install"
-                ]
+                    Button.create [
+                        Button.dock Dock.Bottom
+                        Button.background "Red"
+                        Button.onClick (fun _ -> dispatch (Uninstall selectedMod.Id))
+                        Button.content "Uninstall"
+                    ]
+
+                else
+                    Button.create [
+                        Button.dock Dock.Bottom
+                        Button.onClick (fun _ -> dispatch (Install selectedMod.Id))
+                        Button.content "Install"
+                    ]
             ]
         ]    
 
     let getMods category mods =
         mods |> Array.filter (fun m -> m.Category = category)
 
-    let makeModCategoriesView (mods: Mod array) (model: Model) dispatch =
+    let makeModCategoriesView (model: Model) dispatch =
         StackPanel.create [
             StackPanel.horizontalAlignment HorizontalAlignment.Center
             StackPanel.spacing 32
@@ -49,9 +51,9 @@ module View =
                         TextBlock.create [ TextBlock.text "SEF" ]
                         StackPanel.create [
                             StackPanel.children (
-                                getMods SEF mods
+                                getMods SEF model.Mods
                                 |> Array.toList
-                                |> List.map  (fun m -> makeModStackView m model dispatch)
+                                |> List.map  (fun m -> makeModStackView m dispatch)
                             )
                         ]
                     ]
@@ -63,9 +65,9 @@ module View =
                         TextBlock.create [ TextBlock.text "SEF - First Responders" ]
                         StackPanel.create [
                             StackPanel.children (
-                                getMods SEF_FR mods
+                                getMods SEF_FR model.Mods
                                 |> Array.toList
-                                |> List.map  (fun m -> makeModStackView m model dispatch)
+                                |> List.map  (fun m -> makeModStackView m dispatch)
                             )
                         ]
                     ]
@@ -103,7 +105,7 @@ module View =
                                 ]
                             ]
                         ]
-                        makeModCategoriesView defaultMods model dispatch
+                        makeModCategoriesView model dispatch
                     ]
                 ]
             ]
