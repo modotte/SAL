@@ -20,6 +20,8 @@ module DomainModel =
         | Uninstall of Guid
         | Launch of Guid
         | Failure of string
+        | FetchSettings
+        | SettingsFetched of SettingsType
 
     let private sid = currentSettings.SwatDirectory
     let init = 
