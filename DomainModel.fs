@@ -23,10 +23,9 @@ module DomainModel =
         | FetchSettings
         | SettingsFetched of AppSettings
 
-    let private sid = currentSettings.SwatDirectory
     let init = 
         {
-            SwatDirectory = sid
+            SwatDirectory = @"C:\GOG Games\SWAT 4"
             GameMods = mods
             Status = ""
         }, Cmd.none

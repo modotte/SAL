@@ -6,11 +6,8 @@ open FSharp.Json
 // TODO: Move this into settings.json
 module Settings = 
     type AppSettings = { SwatDirectory: string }
-    
-    let fetchSettings filename =
-        File.ReadAllText filename
-        |> Json.deserialize<AppSettings>
 
-    let currentSettings = {
-        SwatDirectory = @"C:\GOG Games\SWAT 4"
-    }
+    let [<Literal>] private settingsPath = "settings.json"
+    let load =
+        File.ReadAllText settingsPath
+        |> Json.deserialize<AppSettings>
