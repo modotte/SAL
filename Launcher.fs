@@ -125,7 +125,7 @@ module Client =
             log.Information("Launching mod..")
             let launcher = @"..\..\ContentExpansion\System\Swat4X.exe"
             if not (File.Exists(launcher)) then
-                let err = launcher + " doesn't exist! Possible corrupted mod installation!"
+                let err = Path.Combine(swatDir, launcher) + " doesn't exist! Possible corrupted mod installation!"
                 log.Error(err)
                 Error err
 
