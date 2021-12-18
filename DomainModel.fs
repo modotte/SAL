@@ -115,9 +115,9 @@ module DomainModel =
         }
     |]
 
-    let init = 
-        {
-            SwatDirectory = @"C:\GOG Games\SWAT 4"
-            Mods = defaultMods
-            Status = ""
-        }, Cmd.none
+    let init = function
+    | Some oldModel -> (oldModel, Cmd.none)
+    | _ -> {
+        SwatDirectory = @"C:\GOG Games\SWAT 4"
+        Mods = defaultMods
+        Status = "" }, Cmd.none
