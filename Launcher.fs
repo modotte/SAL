@@ -145,9 +145,9 @@ module Launcher =
         |> Array.filter (fun m -> m.Id = id)
         |> Array.head
 
-    let OnSwatDirectoryEntryChanged directory model = { model with SwatDirectory = directory }, Cmd.none
+    let WithSwatDirectoryEntryChanged directory model = { model with SwatDirectory = directory }, Cmd.none
 
-    let OnInstall id model =
+    let WithInstall id model =
         let selectedMod = getModById id model
         match Client.downloadMod selectedMod model.SwatDirectory with
         | Error err -> { model with Status = err }, Cmd.none
@@ -155,24 +155,26 @@ module Launcher =
             Client.extractArchive selectedMod model.SwatDirectory
             { model with Status = msg }, Cmd.none
 
-    let OnUninstall id model = 
+    let WithUninstall id model = 
         let selectedMod = getModById id model
         match Client.uninstallMod selectedMod model.SwatDirectory with
         | Ok msg -> { model with Status = msg }, Cmd.none
         | Error err -> { model with Status = err }, Cmd.none
 
-    let OnLaunch id model = 
+    let WithLaunch id model = 
         let selectedMod = getModById id model
         match Client.launchMod selectedMod model.SwatDirectory with
         | Ok msg -> { model with Status = msg }, Cmd.none
         | Error err -> { model with Status = err }, Cmd.none
 
+    
+
     let update (msg: Message) (model: Model): Model * Cmd<Message> =
         match msg with
         | Failure err -> log.Error err; model, Cmd.none
-        | SwatDirectoryEntryChanged directory -> OnSwatDirectoryEntryChanged directory model
-        | Install id -> OnInstall id model
-        | Uninstall id -> OnUninstall id model
-        | Launch id -> OnLaunch id model
+        | SwatDirectoryEntryChanged directory -> WithSwatDirectoryEntryChanged directory model
+        | Install id -> WithInstall id model
+        | Uninstall id -> WithUninstall id model
+        | Launch id -> WithLaunch id model
         | SettingsFetched settings -> model, Cmd.none
         | FetchSettings -> model, Cmd.none
