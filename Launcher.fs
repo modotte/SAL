@@ -140,41 +140,40 @@ module Client =
 
 
 module Launcher =
-    let private getModById id model =
-        model.GameMods
-        |> Array.filter (fun m -> m.Id = id)
-        |> Array.head
+    module UpdateHandlers =
+        let private getModById id model =
+            model.GameMods
+            |> Array.filter (fun m -> m.Id = id)
+            |> Array.head
 
-    let withSwatDirectoryEntryChanged directory model = { model with SwatDirectory = directory }, Cmd.none
+        let withSwatDirectoryEntryChanged directory model = { model with SwatDirectory = directory }, Cmd.none
 
-    let withInstall id model =
-        let selectedMod = getModById id model
-        match Client.downloadMod selectedMod model.SwatDirectory with
-        | Error err -> { model with Status = err }, Cmd.none
-        | Ok msg -> 
-            Client.extractArchive selectedMod model.SwatDirectory
-            { model with Status = msg }, Cmd.none
+        let withInstall id model =
+            let selectedMod = getModById id model
+            match Client.downloadMod selectedMod model.SwatDirectory with
+            | Error err -> { model with Status = err }, Cmd.none
+            | Ok msg -> 
+                Client.extractArchive selectedMod model.SwatDirectory
+                { model with Status = msg }, Cmd.none
 
-    let withUninstall id model = 
-        let selectedMod = getModById id model
-        match Client.uninstallMod selectedMod model.SwatDirectory with
-        | Ok msg -> { model with Status = msg }, Cmd.none
-        | Error err -> { model with Status = err }, Cmd.none
+        let withUninstall id model = 
+            let selectedMod = getModById id model
+            match Client.uninstallMod selectedMod model.SwatDirectory with
+            | Ok msg -> { model with Status = msg }, Cmd.none
+            | Error err -> { model with Status = err }, Cmd.none
 
-    let withLaunch id model = 
-        let selectedMod = getModById id model
-        match Client.launchMod selectedMod model.SwatDirectory with
-        | Ok msg -> { model with Status = msg }, Cmd.none
-        | Error err -> { model with Status = err }, Cmd.none
-
+        let withLaunch id model = 
+            let selectedMod = getModById id model
+            match Client.launchMod selectedMod model.SwatDirectory with
+            | Ok msg -> { model with Status = msg }, Cmd.none
+            | Error err -> { model with Status = err }, Cmd.none
     
-
     let update (msg: Message) (model: Model): Model * Cmd<Message> =
         match msg with
         | Failure err -> log.Error err; model, Cmd.none
-        | SwatDirectoryEntryChanged directory -> withSwatDirectoryEntryChanged directory model
-        | Install id -> withInstall id model
-        | Uninstall id -> withUninstall id model
-        | Launch id -> withLaunch id model
+        | SwatDirectoryEntryChanged directory -> UpdateHandlers.withSwatDirectoryEntryChanged directory model
+        | Install id -> UpdateHandlers.withInstall id model
+        | Uninstall id -> UpdateHandlers.withUninstall id model
+        | Launch id -> UpdateHandlers.withLaunch id model
         | SettingsFetched settings -> model, Cmd.none
         | FetchSettings -> model, Cmd.none
