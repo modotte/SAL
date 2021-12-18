@@ -99,6 +99,7 @@ module View =
 
                                 TextBox.create [
                                     TextBox.minWidth 500
+                                    // TODO: Don't update like this. Useless amount of computation
                                     TextBox.onTextChanged (SwatDirectoryEntryChanged >> dispatch)
                                     TextBox.text model.SwatDirectory
                                 ]
