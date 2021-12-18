@@ -2,7 +2,7 @@
     "SwatDirectory": "C:\\GOG Games\\SWAT 4",
     "Mods": [
         {
-            "Id": "e1a56550-a472-446e-af8a-a735cbc14d8e",
+            "Id": 0,
             "Category": "SEF",
             "Maintainer": "eezstreet",
             "Version": "v7.0",
@@ -15,7 +15,7 @@
         },
 
         {
-            "Id": "ec52dfa1-6d01-4378-9d06-74cbff2be0d3",
+            "Id": 1,
             "Category": "SEF_FR",
             "Maintainer": "beppe_goodoldrebel",
             "Version": "v0.66",

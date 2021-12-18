@@ -10,7 +10,7 @@ module DomainModel =
     type ArchiveFormatType = Zip | Rar
 
     type Mod = {
-        Id: Guid
+        Id: int
         Category: CategoryType
         Maintainer: string
         Version: string
@@ -30,14 +30,14 @@ module DomainModel =
 
     type Message =
         | SwatDirectoryEntryChanged of string
-        | Install of Guid
-        | Uninstall of Guid
-        | Launch of Guid
+        | Install of int
+        | Uninstall of int
+        | Launch of int
         | Failure of string
 
     let defaultMods: Mod array = [|
         {
-            Id = System.Guid.NewGuid()
+            Id = 0
             Category = SEF
             Maintainer = "eezstreet"
             Version = "v7.0"
@@ -50,7 +50,7 @@ module DomainModel =
         }
 
         {
-            Id = System.Guid.NewGuid()
+            Id = 1
             Category = SEF_FR
             Maintainer = "beppe_goodoldrebel"
             Version = "v0.66"
