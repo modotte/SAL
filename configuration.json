@@ -1,3 +1,31 @@
 {
-    
+    "SwatDirectory": "C:\\GOG Games\\SWAT 4",
+    "Mods": [
+        {
+            "Id": 1,
+            "Category": "SEF",
+            "Maintainer": "eezstreet",
+            "Version": "v7.0",
+            "Url": "http://localhost:6792/SEF-v7.0.zip",
+            "Origin": "Official",
+            "PreExtractFolder": "SEF",
+            "Stability": "Stable",
+            "ArchiveFormat": "Zip",
+            "IsInstalled": false
+        },
+
+        {
+            "Id": 2,
+            "Category": "SEF_FR",
+            "Maintainer": "beppe_goodoldrebel",
+            "Version": "v0.66",
+            "Url": "http://localhost:6792/SEF-v7.0.zip",
+            "Origin": "Official",
+            "PreExtractFolder": "SEF_FR",
+            "Stability": "Beta",
+            "ArchiveFormat": "Rar",
+            "IsInstalled": false
+        }
+    ],
+    "Status": ""
 }
