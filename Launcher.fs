@@ -153,14 +153,22 @@ module Launcher =
             match Client.downloadMod selectedMod model.SwatDirectory with
             | Error err -> { model with Status = err }, Cmd.none
             | Ok msg -> 
+                let updateMod selectedMod =
+                    if selectedMod.Id = id then { selectedMod with IsInstalled = true }
+                    else selectedMod
+
                 Client.extractArchive selectedMod model.SwatDirectory
-                { model with Status = msg }, Cmd.none
+                { model with Status = msg; Mods = Array.map updateMod model.Mods }, Cmd.none
 
         let withUninstall id model = 
             let selectedMod = getModById id model
             match Client.uninstallMod selectedMod model.SwatDirectory with
-            | Ok msg -> { model with Status = msg }, Cmd.none
             | Error err -> { model with Status = err }, Cmd.none
+            | Ok msg -> 
+                let updateMod selectedMod =
+                    if selectedMod.Id = id then { selectedMod with IsInstalled = false }
+                    else selectedMod
+                { model with Status = msg; Mods = Array.map updateMod model.Mods }, Cmd.none
 
         let withLaunch id model = 
             let selectedMod = getModById id model
