@@ -9,5 +9,4 @@ module Settings =
 
     let [<Literal>] private settingsPath = "settings.json"
     let load =
-        File.ReadAllText settingsPath
-        |> Json.deserialize<AppSettings>
+        File.ReadAllText settingsPath |> Json.deserialize<AppSettings>
