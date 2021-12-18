@@ -14,17 +14,17 @@ module DomainModel =
         Status: string
     }
 
-    let private sid = currentSettings.SwatInstallationDirectory
+    type Message =
+    | SwatDirectoryEntryChanged of string
+    | Install of Guid
+    | Uninstall of Guid
+    | Launch of Guid
+    | Failure of string
+
+    let private sid = currentSettings.SwatDirectory
     let init = 
         {
             SwatInstallationDirectory = sid
             GameMods = mods
             Status = ""
         }, Cmd.none
-
-    type Message =
-        | SwatInstallationDirectoryEntryChanged of string
-        | Install of Guid
-        | Uninstall of Guid
-        | Launch of Guid
-        | Failure of string

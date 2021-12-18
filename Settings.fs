@@ -2,8 +2,8 @@ namespace SAL.Data
 
 // TODO: Move this into settings.json
 module Settings = 
-    type SettingsType = { SwatInstallationDirectory: string }
+    type SettingsType = { SwatDirectory: string }
 
     let currentSettings = {
-        SwatInstallationDirectory = @"C:\GOG Games\SWAT 4"
+        SwatDirectory = @"C:\GOG Games\SWAT 4"
     }

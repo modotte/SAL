@@ -170,7 +170,7 @@ module Launcher =
     let update (message: Message) (model: Model) =
         match message with
         | Failure err -> log.Error err; model, Cmd.none
-        | SwatInstallationDirectoryEntryChanged directory -> OnSwatInstallationDirectoryEntryChanged directory model
+        | SwatDirectoryEntryChanged directory -> OnSwatInstallationDirectoryEntryChanged directory model
         | Install id -> OnInstall id model
         | Uninstall id -> OnUninstall id model
         | Launch id -> OnLaunch id model
