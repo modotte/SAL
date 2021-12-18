@@ -4,12 +4,11 @@ open System.IO
 
 module DomainModel =
     open System
-    open SAL.Data.Settings
-    open SAL.Data.Mods
+    open SAL.Data.Storage
     open Elmish
 
     type Model = {
-        GameMods: Mod array
+        Mods: Mod array
         SwatDirectory: string
         Status: string
     }
@@ -20,12 +19,10 @@ module DomainModel =
         | Uninstall of Guid
         | Launch of Guid
         | Failure of string
-        | FetchSettings
-        | SettingsFetched of AppSettings
 
     let init = 
         {
             SwatDirectory = @"C:\GOG Games\SWAT 4"
-            GameMods = mods
+            Mods = defaultMods
             Status = ""
         }, Cmd.none

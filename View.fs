@@ -4,7 +4,7 @@ module View =
     open Avalonia.Controls
     open Avalonia.FuncUI.DSL
     open Avalonia.Layout
-    open SAL.Data.Mods
+    open SAL.Data.Storage
     open SAL.DomainModel
 
     let makeModStackView (selectedMod: Mod) (model: Model) dispatch =
@@ -117,7 +117,7 @@ module View =
                                 ]
                             ]
                         ]
-                        makeModCategoriesView mods model dispatch
+                        makeModCategoriesView defaultMods model dispatch
                     ]
                 ]
             ]

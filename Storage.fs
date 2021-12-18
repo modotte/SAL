@@ -1,7 +1,7 @@
 namespace SAL.Data
 
 // TODO: Move this into mods.json.
-module Mods =
+module Storage =
     type OriginType = Official | Fork
     type CategoryType = SEF | SEF_FR | SEF_BTLA
     type StabilityType = Stable | Beta | Alpha | Nightly | Experimental
@@ -25,7 +25,7 @@ module Mods =
     | SEF_FR -> "SEF_FR"
     | SEF_BTLA -> "SEF_BTLA"
 
-    let mods: Mod array = [|
+    let defaultMods: Mod array = [|
         {
             Id = System.Guid.NewGuid()
             Category = SEF

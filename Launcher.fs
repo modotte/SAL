@@ -10,14 +10,14 @@ module Client =
     open System.Net
     open System.Diagnostics
     
-    let private modDirectoryOutput (gameMod: Mods.Mod) = 
-        $"{gameMod.Maintainer}-{Mods.getCategory gameMod.Category}-{gameMod.Version}"
+    let private modDirectoryOutput (gameMod: Storage.Mod) = 
+        $"{gameMod.Maintainer}-{Storage.getCategory gameMod.Category}-{gameMod.Version}"
 
     let private asArchiveFile gameMod =
         let modArchiveName = modDirectoryOutput gameMod
         match gameMod.ArchiveFormat with
-        | Mods.Zip -> modArchiveName + ".zip"
-        | Mods.Rar -> modArchiveName + ".rar"
+        | Storage.Zip -> modArchiveName + ".zip"
+        | Storage.Rar -> modArchiveName + ".rar"
 
     let downloadMod gameMod swatDir = 
         let modInstallDir = modDirectoryOutput gameMod
@@ -71,8 +71,8 @@ module Client =
 
         log.Information("Extracting mod archive..")
         match gameMod.ArchiveFormat with
-        | Mods.Zip -> Archive.extractZipArchiveTo archivePath tempDirPath
-        | Mods.Rar -> Archive.extractRarArchiveTo archivePath tempDirPath
+        | Storage.Zip -> Archive.extractZipArchiveTo archivePath tempDirPath
+        | Storage.Rar -> Archive.extractRarArchiveTo archivePath tempDirPath
         log.Information("Finished extracting mod archive")
 
         log.Information("Renaming extracted folder...")
@@ -142,7 +142,7 @@ module Client =
 module Launcher =
     module UpdateHandlers =
         let private getModById id model =
-            model.GameMods
+            model.Mods
             |> Array.filter (fun m -> m.Id = id)
             |> Array.head
 
@@ -175,5 +175,3 @@ module Launcher =
         | Install id -> UpdateHandlers.withInstall id model
         | Uninstall id -> UpdateHandlers.withUninstall id model
         | Launch id -> UpdateHandlers.withLaunch id model
-        | SettingsFetched settings -> model, Cmd.none
-        | FetchSettings -> model, Cmd.none
