@@ -145,32 +145,32 @@ module Launcher =
         |> Array.filter (fun m -> m.Id = id)
         |> Array.head
 
-    let OnSwatInstallationDirectoryEntryChanged directory model = { model with SwatInstallationDirectory = directory }, Cmd.none
+    let OnSwatDirectoryEntryChanged directory model = { model with SwatDirectory = directory }, Cmd.none
 
     let OnInstall id model =
         let selectedMod = getModById id model
-        match Client.downloadMod selectedMod model.SwatInstallationDirectory with
+        match Client.downloadMod selectedMod model.SwatDirectory with
         | Error err -> { model with Status = err }, Cmd.none
         | Ok msg -> 
-            Client.extractArchive selectedMod model.SwatInstallationDirectory
+            Client.extractArchive selectedMod model.SwatDirectory
             { model with Status = msg }, Cmd.none
 
     let OnUninstall id model = 
         let selectedMod = getModById id model
-        match Client.uninstallMod selectedMod model.SwatInstallationDirectory with
+        match Client.uninstallMod selectedMod model.SwatDirectory with
         | Ok msg -> { model with Status = msg }, Cmd.none
         | Error err -> { model with Status = err }, Cmd.none
 
     let OnLaunch id model = 
         let selectedMod = getModById id model
-        match Client.launchMod selectedMod model.SwatInstallationDirectory with
+        match Client.launchMod selectedMod model.SwatDirectory with
         | Ok msg -> { model with Status = msg }, Cmd.none
         | Error err -> { model with Status = err }, Cmd.none
 
     let update (message: Message) (model: Model) =
         match message with
         | Failure err -> log.Error err; model, Cmd.none
-        | SwatDirectoryEntryChanged directory -> OnSwatInstallationDirectoryEntryChanged directory model
+        | SwatDirectoryEntryChanged directory -> OnSwatDirectoryEntryChanged directory model
         | Install id -> OnInstall id model
         | Uninstall id -> OnUninstall id model
         | Launch id -> OnLaunch id model

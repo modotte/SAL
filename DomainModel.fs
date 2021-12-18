@@ -10,7 +10,7 @@ module DomainModel =
 
     type Model = {
         GameMods: Mod array
-        SwatInstallationDirectory: string
+        SwatDirectory: string
         Status: string
     }
 
@@ -26,7 +26,7 @@ module DomainModel =
     let private sid = currentSettings.SwatDirectory
     let init = 
         {
-            SwatInstallationDirectory = sid
+            SwatDirectory = sid
             GameMods = mods
             Status = ""
         }, Cmd.none

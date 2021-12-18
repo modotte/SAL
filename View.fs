@@ -113,7 +113,7 @@ module View =
                                 TextBox.create [
                                     TextBox.minWidth 500
                                     TextBox.onTextChanged (SwatDirectoryEntryChanged >> dispatch)
-                                    TextBox.text model.SwatInstallationDirectory
+                                    TextBox.text model.SwatDirectory
                                 ]
                             ]
                         ]
