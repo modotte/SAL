@@ -12,15 +12,15 @@ module DomainModel =
         GameMods: Mod array
         SwatInstallationDirectory: string
         Status: string
-        IsAModRunning: bool
     }
 
     let private sid = currentSettings.SwatInstallationDirectory
-    let init = {
-        SwatInstallationDirectory = sid
-        GameMods = mods
-        Status = ""
-        IsAModRunning = false }, Cmd.none
+    let init = 
+        {
+            SwatInstallationDirectory = sid
+            GameMods = mods
+            Status = ""
+        }, Cmd.none
 
     type Message =
         | SwatInstallationDirectoryEntryChanged of string
