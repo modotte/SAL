@@ -167,10 +167,12 @@ module Launcher =
         | Ok msg -> { model with Status = msg }, Cmd.none
         | Error err -> { model with Status = err }, Cmd.none
 
-    let update (message: Message) (model: Model) =
-        match message with
+    let update (msg: Message) (model: Model): Model * Cmd<Message> =
+        match msg with
         | Failure err -> log.Error err; model, Cmd.none
         | SwatDirectoryEntryChanged directory -> OnSwatDirectoryEntryChanged directory model
         | Install id -> OnInstall id model
         | Uninstall id -> OnUninstall id model
         | Launch id -> OnLaunch id model
+        | SettingsFetched settings -> model, Cmd.none
+        | FetchSettings -> model, Cmd.none
