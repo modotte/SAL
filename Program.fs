@@ -7,6 +7,8 @@ open Avalonia.FuncUI
 open Avalonia.FuncUI.Elmish
 open Avalonia.FuncUI.Components.Hosts
 
+open SAL.Data
+
 type MainWindow() as this =
     inherit HostWindow()
     do
@@ -18,7 +20,7 @@ type MainWindow() as this =
         //this.VisualRoot.VisualRoot.Renderer.DrawDirtyRects <- true
 
 
-        Program.mkProgram (fun () -> DomainModel.init) Launcher.update View.view
+        Program.mkProgram (Storage.load >> DomainModel.init) Launcher.update View.view
         |> Program.withHost this
         |> Program.run
 

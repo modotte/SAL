@@ -10,14 +10,14 @@ module Client =
     open System.Net
     open System.Diagnostics
     
-    let private modDirectoryOutput (gameMod: Storage.Mod) = 
+    let private modDirectoryOutput (gameMod: Mod) = 
         $"{gameMod.Maintainer}-{Storage.getCategory gameMod.Category}-{gameMod.Version}"
 
     let private asArchiveFile gameMod =
         let modArchiveName = modDirectoryOutput gameMod
         match gameMod.ArchiveFormat with
-        | Storage.Zip -> modArchiveName + ".zip"
-        | Storage.Rar -> modArchiveName + ".rar"
+        | Zip -> modArchiveName + ".zip"
+        | Rar -> modArchiveName + ".rar"
 
     let downloadMod gameMod swatDir = 
         let modInstallDir = modDirectoryOutput gameMod
@@ -71,8 +71,8 @@ module Client =
 
         log.Information("Extracting mod archive..")
         match gameMod.ArchiveFormat with
-        | Storage.Zip -> Archive.extractZipArchiveTo archivePath tempDirPath
-        | Storage.Rar -> Archive.extractRarArchiveTo archivePath tempDirPath
+        | Zip -> Archive.extractZipArchiveTo archivePath tempDirPath
+        | Rar -> Archive.extractRarArchiveTo archivePath tempDirPath
         log.Information("Finished extracting mod archive")
 
         log.Information("Renaming extracted folder...")

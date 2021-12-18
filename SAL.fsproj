@@ -9,8 +9,8 @@
 
   <ItemGroup>
     <Compile Include="Logger.fs" />
-    <Compile Include="Storage.fs" />
     <Compile Include="DomainModel.fs" />
+    <Compile Include="Storage.fs" />
     <Compile Include="Archive.fs" />
     <Compile Include="View.fs" />
     <Compile Include="Launcher.fs" />

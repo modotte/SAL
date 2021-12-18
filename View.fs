@@ -4,8 +4,8 @@ module View =
     open Avalonia.Controls
     open Avalonia.FuncUI.DSL
     open Avalonia.Layout
-    open SAL.Data.Storage
     open SAL.DomainModel
+    open SAL.Data.Storage
 
     let makeModStackView (selectedMod: Mod) (model: Model) dispatch =
         WrapPanel.create [
