@@ -20,7 +20,7 @@ type MainWindow() as this =
         //this.VisualRoot.VisualRoot.Renderer.DrawDirtyRects <- true
 
 
-        Program.mkProgram (Storage.load >> DomainModel.init) Launcher.update View.view
+        Program.mkProgram (Storage.load >> DomainModel.init) (Storage.updateStorage Launcher.update) View.view
         |> Program.withHost this
         |> Program.run
 
