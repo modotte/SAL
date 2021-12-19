@@ -55,6 +55,17 @@ module View =
                             ProgressBar.value 50.0
                         ]
                         
+                        if model.Loading then
+                            TextBlock.create [ TextBlock.text "LOADING...." ]
+                        else
+                            TextBlock.create [ TextBlock.text model.Status ]
+                            
+                        Button.create [
+                            Button.isEnabled (not model.Loading)
+                            Button.onClick (fun _ -> dispatch StatusDelayed)
+                            Button.content "Delayed Status"
+                        ]
+                            
                         TextBlock.create [ TextBlock.text "SEF" ]
                         StackPanel.create [
                             StackPanel.children (

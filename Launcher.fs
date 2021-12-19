@@ -58,7 +58,7 @@ module Client =
         name
 
     let private deleteTemporaryFolder tempDirPath =
-        log.Information ("Deleting temporary extraction folder ..")
+        log.Information("Deleting temporary extraction folder ..")
         Directory.Delete(tempDirPath, true)
         log.Information("Deleted temporary extraction folder " + tempDirPath)
 
@@ -184,3 +184,16 @@ module Launcher =
         | Install id -> UpdateHandlers.withInstall id model
         | Uninstall id -> UpdateHandlers.withUninstall id model
         | Launch id -> UpdateHandlers.withLaunch id model
+        // Tests
+        | NowUpdateStatus when (not model.Loading) -> model, Cmd.none
+        | NowUpdateStatus -> { model with Status = "aws2838238asawsa"; Loading = false }, Cmd.none
+        | StatusDelayed ->
+            let statusDelayedCmd (dispatch: Message -> unit) : unit =
+                let delayedDispatch = async {
+                    do! Async.Sleep 1000
+                    dispatch NowUpdateStatus 
+                }
+                
+                Async.StartImmediate delayedDispatch
+                
+            { model with Loading = true }, Cmd.ofSub statusDelayedCmd

@@ -34,6 +34,7 @@
     <Content Include="configuration.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Compile Include="Deferred.fs" />
   </ItemGroup>
 
   <ItemGroup>

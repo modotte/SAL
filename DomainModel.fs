@@ -1,13 +1,21 @@
 namespace SAL
 
 module DomainModel =
-    open System
     open Elmish
 
     type OriginType = Official | Fork
     type CategoryType = SEF | SEF_FR | SEF_BTLA
     type StabilityType = Stable | Beta | Alpha | Nightly | Experimental
     type ArchiveFormatType = Zip | Rar
+    
+    type Deferred<'a> =
+      | HasNotStartedYet
+      | InProgress
+      | Resolved of 'a
+
+    type AsyncOperationStatus<'a> =
+      | Started
+      | Finished of 'a
 
     type Mod = {
         Id: int
@@ -26,6 +34,7 @@ module DomainModel =
         Mods: Mod array
         SwatDirectory: string
         Status: string
+        Loading: bool
     }
 
     type Message =
@@ -34,6 +43,8 @@ module DomainModel =
         | Uninstall of int
         | Launch of int
         | Failure of string
+        | NowUpdateStatus
+        | StatusDelayed
 
     let defaultMods: Mod array = [|
         {
@@ -69,5 +80,6 @@ module DomainModel =
         {
             SwatDirectory = @"C:\GOG Games\SWAT 4"
             Mods = defaultMods
-            Status = "" 
+            Status = ""
+            Loading = false
         }, Cmd.none
