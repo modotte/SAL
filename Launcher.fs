@@ -152,30 +152,30 @@ module Launcher =
         let withInstall id model =
             let selectedMod = getModById id model
             match Client.downloadMod selectedMod model.SwatDirectory with
-            | Error err -> { model with Status = err }, Cmd.none
-            | Ok msg -> 
+            | Error _ -> model, Cmd.none
+            | Ok _ -> 
                 let updateMod selectedMod =
                     if selectedMod.Id = id then { selectedMod with IsInstalled = true }
                     else selectedMod
 
                 Client.extractArchive selectedMod model.SwatDirectory
-                { model with Status = msg; Mods = Array.map updateMod model.Mods }, Cmd.none
+                { model with Mods = Array.map updateMod model.Mods }, Cmd.none
 
         let withUninstall id model = 
             let selectedMod = getModById id model
             match Client.uninstallMod selectedMod model.SwatDirectory with
-            | Error err -> { model with Status = err }, Cmd.none
-            | Ok msg -> 
+            | Error _ -> model, Cmd.none
+            | Ok _ -> 
                 let updateMod selectedMod =
                     if selectedMod.Id = id then { selectedMod with IsInstalled = false }
                     else selectedMod
-                { model with Status = msg; Mods = Array.map updateMod model.Mods }, Cmd.none
+                { model with Mods = Array.map updateMod model.Mods }, Cmd.none
 
         let withLaunch id model = 
             let selectedMod = getModById id model
             match Client.launchMod selectedMod model.SwatDirectory with
-            | Ok msg -> { model with Status = msg }, Cmd.none
-            | Error err -> { model with Status = err }, Cmd.none
+            | Ok _ -> model, Cmd.none
+            | Error _ -> model, Cmd.none
     
     let update (msg: Message) (model: Model): Model * Cmd<Message> =
         match msg with
@@ -184,16 +184,3 @@ module Launcher =
         | Install id -> UpdateHandlers.withInstall id model
         | Uninstall id -> UpdateHandlers.withUninstall id model
         | Launch id -> UpdateHandlers.withLaunch id model
-        // Tests
-        | NowUpdateStatus when (not model.Loading) -> model, Cmd.none
-        | NowUpdateStatus -> { model with Status = "aws2838238asawsa"; Loading = false }, Cmd.none
-        | StatusDelayed ->
-            let statusDelayedCmd (dispatch: Message -> unit) : unit =
-                let delayedDispatch = async {
-                    do! Async.Sleep 1000
-                    dispatch NowUpdateStatus 
-                }
-                
-                Async.StartImmediate delayedDispatch
-                
-            { model with Loading = true }, Cmd.ofSub statusDelayedCmd

@@ -17,7 +17,7 @@
             "Category": "SEF_FR",
             "Maintainer": "beppe_goodoldrebel",
             "Version": "v0.66",
-            "Url": "http://localhost:6792/SEF-v7.0.zip",
+            "Url": "http://localhost:6792/SEF_FRv66b.1.rar",
             "Origin": "Official",
             "PreExtractFolder": "SEF_FR",
             "Stability": "Beta",
@@ -25,7 +25,5 @@
             "IsInstalled": false
         }
     ],
-    "SwatDirectory": "C:\\GOG Games\\SWAT 4",
-    "Status": "",
-    "Loading": false
+    "SwatDirectory": "C:\\GOG Games\\SWAT 4"
 }

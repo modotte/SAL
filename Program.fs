@@ -22,7 +22,7 @@ type MainWindow() as this =
 
         // TODO: Turn Launcher.update to (Storage.updateStorage Launcher.update) when auto update is needed
         // for configuration.json
-        Program.mkProgram (Storage.load >> DomainModel.init) Launcher.update View.view
+        Program.mkProgram (Storage.load >> DomainModel.init) (Storage.updateStorage Launcher.update) View.view
         |> Program.withHost this
         |> Program.run
 
