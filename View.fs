@@ -43,11 +43,18 @@ module View =
     let makeModCategoriesView (model: Model) dispatch =
         StackPanel.create [
             StackPanel.horizontalAlignment HorizontalAlignment.Center
-            StackPanel.spacing 32
+            StackPanel.spacing 32.0
             StackPanel.children [
                 
                 StackPanel.create [
                     StackPanel.children [
+                        
+                        ProgressBar.create [
+                            ProgressBar.orientation Orientation.Horizontal
+                            ProgressBar.height 20.0
+                            ProgressBar.value 50.0
+                        ]
+                        
                         TextBlock.create [ TextBlock.text "SEF" ]
                         StackPanel.create [
                             StackPanel.children (
@@ -98,7 +105,7 @@ module View =
                                 ]
 
                                 TextBox.create [
-                                    TextBox.minWidth 500
+                                    TextBox.minWidth 500.0
                                     // TODO: Don't update like this. Useless amount of computation
                                     TextBox.onTextChanged (SwatDirectoryEntryChanged >> dispatch)
                                     TextBox.text model.SwatDirectory
