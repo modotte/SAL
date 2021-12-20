@@ -6,6 +6,23 @@ module View =
     open Avalonia.Layout
     open SAL.Domain
 
+    let menuBar dispatch =
+        Menu.create [
+            Menu.dock Dock.Top
+            Menu.viewItems [
+                MenuItem.create [
+                    MenuItem.header "File"
+                    MenuItem.viewItems [
+                        MenuItem.create [
+                            MenuItem.header "Select Folder"
+                            MenuItem.onClick (fun _ -> dispatch OpenFolder)
+                        ]
+                    ]
+                ]
+            ]
+        ]
+
+
     let makeModStackView (selectedMod: Mod) dispatch =
         WrapPanel.create [
             WrapPanel.children [
@@ -95,6 +112,7 @@ module View =
             StackPanel.spacing 8.0
             StackPanel.margin 8.0
             StackPanel.children [    
+                menuBar dispatch
                 StackPanel.create [
                     StackPanel.orientation Orientation.Vertical
                     StackPanel.children [

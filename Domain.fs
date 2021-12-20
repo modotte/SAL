@@ -39,6 +39,8 @@ module Domain =
         | Uninstall of int
         | Launch of int
         | Failure of string
+        | OpenFolder
+        | FolderOpened of string
 
     let defaultMods: Mod array = [|
         {
