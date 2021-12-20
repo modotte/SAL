@@ -56,7 +56,6 @@ module Shell =
         let withOpenNewFolderDialog window model =
             let dialog = Dialog.getFolderDialog model.SwatDirectory
             let showDialog w = dialog.ShowAsync(w) |> Async.AwaitTask
-
             model, Cmd.OfAsync.perform showDialog window NewFolderDialogOpened
 
         let withNewFolderFolderOpened directory model =
