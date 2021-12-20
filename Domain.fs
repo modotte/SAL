@@ -37,6 +37,10 @@ module Domain =
         | Failure of string
         | QuitProgram
         | SwatDirectoryEntryChanged of string
+        | DownloadModArchive
+        | ModArchiveDownloaded
+        | ExtractModArchive
+        | ModArchiveExtracted
         | Install of int
         | Uninstall of int
         | Launch of int
