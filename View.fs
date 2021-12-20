@@ -19,6 +19,21 @@ module View =
                         ]
                     ]
                 ]
+
+                MenuItem.create [
+                    MenuItem.header "Help"
+                    MenuItem.viewItems [
+                        MenuItem.create [
+                            MenuItem.header "About SAL"
+                        ]
+                        MenuItem.create [
+                            MenuItem.header "Report bugs or suggest feedbacks"
+                        ]
+                        MenuItem.create [
+                            MenuItem.header "Visit source code repository"
+                        ]
+                    ]
+                ]
             ]
         ]
 
