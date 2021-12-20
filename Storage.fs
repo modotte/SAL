@@ -5,8 +5,15 @@ open Elmish
 open Thoth.Json.Net
 
 open SAL.Domain
-
-// TODO: Move this into mods.json.
+open System
+open Elmish
+open Avalonia
+open Avalonia.Controls
+open Avalonia.Input
+open Avalonia.Layout
+open Avalonia.FuncUI.Elmish
+open Avalonia.FuncUI.Components.Hosts
+open Avalonia.FuncUI.DSL
 module Storage =
 
     let [<Literal>] private storageFilename = "configuration.json"
@@ -22,12 +29,12 @@ module Storage =
     let save (model: Model) =
         File.WriteAllText(storageFilename, Encode.Auto.toString(4, model))
 
-    let updateStorage update (message: Message) (model: Model) = 
+    let updateStorage update (message: Message) (model: Model) (window: HostWindow)  = 
         let setStorage (model: Model) =
             Cmd.OfFunc.attempt save model (string >> Failure)
         
         match message with
         | Failure _ -> (model, Cmd.none)
         | _ ->
-            let (newModel, commands) = update message model
+            let (newModel, commands) = update message model window
             (newModel, Cmd.batch [ setStorage newModel; commands ])

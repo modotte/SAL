@@ -57,6 +57,12 @@ module Shell =
         | Install id -> UpdateHandler.withInstall id model
         | Uninstall id -> UpdateHandler.withUninstall id model
         | Launch id -> UpdateHandler.withLaunch id model
+        | OpenFolder -> 
+            let dialog = Dialog.getFolderDialog model.SwatDirectory
+            let showDialog w = dialog.ShowAsync(w) |> Async.AwaitTask
+            model, Cmd.OfAsync.perform showDialog window FolderOpened
+        | FolderOpened directory ->
+            { model with SwatDirectory = directory }, Cmd.none
 
 
     type ShellWindow() as this =
@@ -75,7 +81,7 @@ module Shell =
             this.AttachDevTools(KeyGesture(Key.F12))
     #endif
             let updateWithServices (message: Message) (model: Model) =
-                update message model this
+                Storage.updateStorage update message model this
             
             Program.mkProgram (Storage.load >> init) updateWithServices View.view
             |> Program.withHost this
