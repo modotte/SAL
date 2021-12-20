@@ -9,8 +9,16 @@ open SharpCompress.Readers.Rar
 
 module Archive =
     let extractZipArchiveTo archive outputDir =
-        ZipFile.ExtractToDirectory(archive, outputDir)
-       
+        use reader = ZipFile.Open(archive, ZipArchiveMode.Read)
+        try
+            try
+                reader.ExtractToDirectory(outputDir)
+            with
+            | :? IOException as exn ->
+                Logger.log.Error(exn.Message)
+        finally
+            reader.Dispose()
+
  
     // BUG: Doesn't work yet due unable to dispose opened
     // archive file
