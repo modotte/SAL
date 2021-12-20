@@ -100,10 +100,11 @@ module Client =
         else
             log.Information("Beginning to uninstall mod..")
             log.Information($"Deleting {modPath}..gonna take a few seconds..")
-            // BUG: Throws violated memory protection access when
-            // clicking uninstall after closing a direct launched game.
-            // Possibly resource was not fully released and cause this issue.
-            Directory.Delete(Path.Combine(swatDir, modPath), true)
+
+            try
+                Directory.Delete(Path.Combine(swatDir, modPath), true)
+            with
+            | :? IOException as exn -> log.Error(exn.Message)
 
             log.Information("Finished uninstalling..")
 
@@ -121,7 +122,11 @@ module Client =
             Error err
 
         else
+            let beforeLaunchDirectory = Directory.GetCurrentDirectory()
+            log.Information(beforeLaunchDirectory)
+
             Directory.SetCurrentDirectory(systemDir)
+
             log.Information($"Change current working directory into {systemDir}")
 
             log.Information("Launching mod..")
@@ -138,6 +143,8 @@ module Client =
                 externalProcess.Start() |> ignore
                 externalProcess.WaitForExit()
                 log.Information($"SWAT4 + {modDirectoryOutput gameMod} closed gracefully")
+
+                Directory.SetCurrentDirectory(beforeLaunchDirectory)
 
                 Ok $"{launcher} executed and closed gracefully"
 
