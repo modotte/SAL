@@ -21,6 +21,11 @@ module Domain =
         IsInstalled: bool
     }
 
+    let getCategory = function
+        | SEF -> "SEF"
+        | SEF_FR -> "SEF_FR"
+        | SEF_BTLA -> "SEF_BTLA"
+
     // Set Mod array to Mod array option in
     // stable version 
     type Model = {

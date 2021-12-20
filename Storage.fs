@@ -8,10 +8,6 @@ open SAL.Domain
 
 // TODO: Move this into mods.json.
 module Storage =
-    let getCategory = function
-    | SEF -> "SEF"
-    | SEF_FR -> "SEF_FR"
-    | SEF_BTLA -> "SEF_BTLA"
 
     let [<Literal>] private storageFilename = "configuration.json"
     let private decoder = Decode.Auto.generateDecoder<Model>()

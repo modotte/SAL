@@ -9,9 +9,9 @@ open SAL.Data
 module Client =
     open System.Net
     open System.Diagnostics
-    
+
     let private modDirectoryOutput (gameMod: Mod) = 
-        $"{gameMod.Maintainer}-{Storage.getCategory gameMod.Category}-{gameMod.Version}"
+        $"{gameMod.Maintainer}-{getCategory gameMod.Category}-{gameMod.Version}"
 
     let private asArchiveFile gameMod =
         let modArchiveName = modDirectoryOutput gameMod
