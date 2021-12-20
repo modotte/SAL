@@ -10,7 +10,7 @@
             "PreExtractFolder": "SEF",
             "Stability": "Stable",
             "ArchiveFormat": "Zip",
-            "IsInstalled": true
+            "IsInstalled": false
         },
         {
             "Id": 1,

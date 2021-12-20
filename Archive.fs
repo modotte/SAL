@@ -19,12 +19,14 @@ module Archive =
         finally
             reader.Dispose()
 
- 
-    // BUG: Doesn't work yet due unable to dispose opened
-    // archive file
     let extractRarArchiveTo archive outputDir =
-        use reader = RarReader.Open(File.OpenRead(archive))
-        while reader.MoveToNextEntry() do
-                let extractOptions = ExtractionOptions()
-                extractOptions.ExtractFullPath <- true
-                reader.WriteEntryToDirectory(outputDir, extractOptions)
+        use fileReader = File.OpenRead(archive)
+        use rarReader = RarReader.Open(fileReader)
+        try
+            while rarReader.MoveToNextEntry() do
+                    let extractOptions = ExtractionOptions()
+                    extractOptions.ExtractFullPath <- true
+                    rarReader.WriteEntryToDirectory(outputDir, extractOptions)
+        finally
+            fileReader.Dispose()
+            rarReader.Dispose()
