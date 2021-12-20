@@ -23,6 +23,10 @@ module Shell =
             |> Array.filter (fun m -> m.Id = id)
             |> Array.head
 
+        let withQuitProgram (window: HostWindow) model =
+            window.Close()
+            model, Cmd.none
+
         let withSwatDirectoryEntryChanged directory model = { model with SwatDirectory = directory }, Cmd.none
 
         let withInstall id model =
@@ -65,6 +69,7 @@ module Shell =
     let update (message: Message) (model: Model) (window: HostWindow): Model * Cmd<Message> =
         match message with
         | Failure err -> log.Error err; model, Cmd.none
+        | QuitProgram -> UpdateHandler.withQuitProgram window model
         | SwatDirectoryEntryChanged directory -> UpdateHandler.withSwatDirectoryEntryChanged directory model
         | Install id -> UpdateHandler.withInstall id model
         | Uninstall id -> UpdateHandler.withUninstall id model

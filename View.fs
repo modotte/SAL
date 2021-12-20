@@ -14,8 +14,8 @@ module View =
                     MenuItem.header "File"
                     MenuItem.viewItems [
                         MenuItem.create [
-                            MenuItem.header "Select Folder"
-                            MenuItem.onClick (fun _ -> dispatch OpenNewFolderDialog)
+                            MenuItem.header "Quit"
+                            MenuItem.onClick (fun _ -> dispatch QuitProgram)
                         ]
                     ]
                 ]
@@ -124,16 +124,21 @@ module View =
                             StackPanel.margin 8.0
                             StackPanel.orientation Orientation.Horizontal
                             StackPanel.children [
+                                
                                 TextBlock.create [
                                     TextBlock.fontSize 15.0
                                     TextBlock.text "SWAT4 Folder: "
                                 ]
 
                                 TextBox.create [
+                                    TextBlock.isEnabled false
                                     TextBox.minWidth 500.0
-                                    // TODO: Don't update like this. Useless amount of computation
-                                    TextBox.onTextChanged (SwatDirectoryEntryChanged >> dispatch)
                                     TextBox.text model.SwatDirectory
+                                ]
+
+                                Button.create [
+                                    Button.content "Choose SWAT4 folder"
+                                    Button.onClick (fun _ -> dispatch OpenNewFolderDialog)
                                 ]
                             ]
                         ]

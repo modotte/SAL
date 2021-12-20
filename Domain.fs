@@ -34,11 +34,12 @@ module Domain =
     }
 
     type Message =
+        | Failure of string
+        | QuitProgram
         | SwatDirectoryEntryChanged of string
         | Install of int
         | Uninstall of int
         | Launch of int
-        | Failure of string
         | OpenNewFolderDialog
         | NewFolderDialogOpened of string
 
