@@ -4,7 +4,6 @@ open System.IO
 open Logger
 open Elmish
 open Domain
-open SAL.Data
 
 module Client =
     open System.Net
@@ -18,6 +17,7 @@ module Client =
         match gameMod.ArchiveFormat with
         | Zip -> modArchiveName + ".zip"
         | Rar -> modArchiveName + ".rar"
+        | SevenZip -> modArchiveName + ".7z"
 
     let downloadMod gameMod swatDir = 
         let modInstallDir = modDirectoryOutput gameMod
@@ -74,6 +74,8 @@ module Client =
         match gameMod.ArchiveFormat with
         | Zip -> Archive.extractZipArchiveTo archivePath tempDirPath
         | Rar -> Archive.extractRarArchiveTo archivePath tempDirPath
+        | SevenZip -> Archive.extractSevenZipArchiveTo archivePath tempDirPath
+
         log.Information("Finished extracting mod archive")
 
         log.Information("Renaming extracted folder...")

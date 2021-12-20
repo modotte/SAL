@@ -73,6 +73,19 @@ module View =
                         ]
                     ]
                 ]
+
+                StackPanel.create [
+                    StackPanel.children [
+                        TextBlock.create [ TextBlock.text "SEF - Back To Los Angeles" ]
+                        StackPanel.create [
+                            StackPanel.children (
+                                getMods SEF_BTLA model.Mods
+                                |> Array.toList
+                                |> List.map  (fun m -> makeModStackView m dispatch)
+                            )
+                        ]
+                    ]
+                ]
             ]
         ]
     

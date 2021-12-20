@@ -47,6 +47,18 @@
             "Stability": "Stable",
             "ArchiveFormat": "Rar",
             "IsInstalled": false
+        },
+        {
+            "Id": 4,
+            "Category": "SEF_BTLA",
+            "Maintainer": "Effedee",
+            "Version": "v1.5.7",
+            "Url": "http://localhost:6792/SEF-BTLA_v1.5.7z",
+            "Origin": "Official",
+            "PreExtractFolder": "SEF-BTLA",
+            "Stability": "Stable",
+            "ArchiveFormat": "SevenZip",
+            "IsInstalled": false
         }
     ],
     "SwatDirectory": "C:\\GOG Games\\SWAT 4"

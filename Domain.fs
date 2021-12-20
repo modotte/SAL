@@ -6,7 +6,7 @@ module Domain =
     type OriginType = Official | Fork
     type CategoryType = SEF | SEF_FR | SEF_BTLA
     type StabilityType = Stable | Beta | Alpha | Nightly | Experimental
-    type ArchiveFormatType = Zip | Rar
+    type ArchiveFormatType = Zip | Rar | SevenZip
 
     type Mod = {
         Id: int
