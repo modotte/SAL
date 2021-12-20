@@ -1,3 +1,6 @@
+// Copyright (c) 2021 Modotte
+// Copyright (c) 2019 Josua Jäger under MIT license
+
 namespace SAL
 
 module Shell =
@@ -50,6 +53,16 @@ module Shell =
             | Ok _ -> model, Cmd.none
             | Error _ -> model, Cmd.none
 
+        let withOpenNewFolderDialog window model =
+            let dialog = Dialog.getFolderDialog model.SwatDirectory
+            let showDialog w = dialog.ShowAsync(w) |> Async.AwaitTask
+
+            model, Cmd.OfAsync.perform showDialog window NewFolderDialogOpened
+
+        let withNewFolderFolderOpened directory model =
+            { model with SwatDirectory = directory }, Cmd.none
+        
+
     let update (message: Message) (model: Model) (window: HostWindow): Model * Cmd<Message> =
         match message with
         | Failure err -> log.Error err; model, Cmd.none
@@ -57,12 +70,8 @@ module Shell =
         | Install id -> UpdateHandler.withInstall id model
         | Uninstall id -> UpdateHandler.withUninstall id model
         | Launch id -> UpdateHandler.withLaunch id model
-        | OpenFolder -> 
-            let dialog = Dialog.getFolderDialog model.SwatDirectory
-            let showDialog w = dialog.ShowAsync(w) |> Async.AwaitTask
-            model, Cmd.OfAsync.perform showDialog window FolderOpened
-        | FolderOpened directory ->
-            { model with SwatDirectory = directory }, Cmd.none
+        | OpenNewFolderDialog -> UpdateHandler.withOpenNewFolderDialog window model
+        | NewFolderDialogOpened directory -> UpdateHandler.withNewFolderFolderOpened directory model
 
 
     type ShellWindow() as this =
@@ -74,9 +83,6 @@ module Shell =
             base.MinWidth <- 526.0
             base.MinHeight <- 526.0
             
-
-            //this.VisualRoot.VisualRoot.Renderer.DrawFps <- true
-            //this.VisualRoot.VisualRoot.Renderer.DrawDirtyRects <- true
     #if DEBUG
             this.AttachDevTools(KeyGesture(Key.F12))
     #endif

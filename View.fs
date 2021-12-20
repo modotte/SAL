@@ -15,7 +15,7 @@ module View =
                     MenuItem.viewItems [
                         MenuItem.create [
                             MenuItem.header "Select Folder"
-                            MenuItem.onClick (fun _ -> dispatch OpenFolder)
+                            MenuItem.onClick (fun _ -> dispatch OpenNewFolderDialog)
                         ]
                     ]
                 ]
