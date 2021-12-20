@@ -77,7 +77,6 @@ module Shell =
         | OpenNewFolderDialog -> UpdateHandler.withOpenNewFolderDialog window model
         | NewFolderDialogOpened directory -> UpdateHandler.withNewFolderFolderOpened directory model
 
-
     type ShellWindow() as this =
         inherit HostWindow()
         do
@@ -86,7 +85,6 @@ module Shell =
             base.Height <- 600.0
             base.MinWidth <- 526.0
             base.MinHeight <- 526.0
-            
     #if DEBUG
             this.AttachDevTools(KeyGesture(Key.F12))
     #endif
