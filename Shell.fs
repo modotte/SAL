@@ -80,7 +80,7 @@ module Shell =
     type ShellWindow() as this =
         inherit HostWindow()
         do
-            base.Title <- "Music Player in F# :)"
+            base.Title <- "SAL: SEF Alternative Launcher"
             base.Width <- 800.0
             base.Height <- 600.0
             base.MinWidth <- 526.0
