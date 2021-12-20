@@ -3,7 +3,7 @@
 open System.IO
 open Logger
 open Elmish
-open DomainModel
+open Domain
 open SAL.Data
 
 module Client =

@@ -9,7 +9,7 @@
 
   <ItemGroup>
     <Compile Include="Logger.fs" />
-    <Compile Include="DomainModel.fs" />
+    <Compile Include="Domain.fs" />
     <Compile Include="Storage.fs" />
     <Compile Include="Archive.fs" />
     <Compile Include="View.fs" />

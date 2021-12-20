@@ -4,7 +4,7 @@ open System.IO
 open Elmish
 open Thoth.Json.Net
 
-open SAL.DomainModel
+open SAL.Domain
 
 // TODO: Move this into mods.json.
 module Storage =

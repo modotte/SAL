@@ -1,6 +1,6 @@
 namespace SAL
 
-module DomainModel =
+module Domain =
     open Elmish
 
     type OriginType = Official | Fork
