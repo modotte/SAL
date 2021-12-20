@@ -35,6 +35,18 @@
             "Stability": "Stable",
             "ArchiveFormat": "Zip",
             "IsInstalled": false
+        },
+        {
+            "Id": 3,
+            "Category": "SEF_FR",
+            "Maintainer": "beppe_goodoldrebel",
+            "Version": "v0.65",
+            "Url": "http://localhost:6792/SEF_FRv065Stable.rar",
+            "Origin": "Official",
+            "PreExtractFolder": "SEF_FR",
+            "Stability": "Stable",
+            "ArchiveFormat": "Rar",
+            "IsInstalled": false
         }
     ],
     "SwatDirectory": "C:\\GOG Games\\SWAT 4"
