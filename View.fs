@@ -153,7 +153,7 @@ module View =
 
                                 Button.create [
                                     Button.content "Choose SWAT4 folder"
-                                    Button.onClick (fun _ -> dispatch OpenNewFolderDialog)
+                                    Button.onClick (fun _ -> dispatch OpenFolderDialog)
                                 ]
                             ]
                         ]

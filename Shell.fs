@@ -60,7 +60,7 @@ module Shell =
         let withOpenNewFolderDialog window model =
             let dialog = Dialog.getFolderDialog model.SwatDirectory
             let showDialog w = dialog.ShowAsync(w) |> Async.AwaitTask
-            model, Cmd.OfAsync.perform showDialog window NewFolderDialogOpened
+            model, Cmd.OfAsync.perform showDialog window FolderDialogOpened
 
         let withNewFolderFolderOpened directory model =
             { model with SwatDirectory = directory }, Cmd.none
@@ -74,8 +74,8 @@ module Shell =
         | Install id -> UpdateHandler.withInstall id model
         | Uninstall id -> UpdateHandler.withUninstall id model
         | Launch id -> UpdateHandler.withLaunch id model
-        | OpenNewFolderDialog -> UpdateHandler.withOpenNewFolderDialog window model
-        | NewFolderDialogOpened directory -> UpdateHandler.withNewFolderFolderOpened directory model
+        | OpenFolderDialog -> UpdateHandler.withOpenNewFolderDialog window model
+        | FolderDialogOpened directory -> UpdateHandler.withNewFolderFolderOpened directory model
 
     type ShellWindow() as this =
         inherit HostWindow()

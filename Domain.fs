@@ -40,8 +40,8 @@ module Domain =
         | Install of int
         | Uninstall of int
         | Launch of int
-        | OpenNewFolderDialog
-        | NewFolderDialogOpened of string
+        | OpenFolderDialog
+        | FolderDialogOpened of string
 
     let defaultMods: Mod array = [|
         {
