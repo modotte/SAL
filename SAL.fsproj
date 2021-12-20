@@ -19,11 +19,9 @@
 
   <ItemGroup>
     <PackageReference Include="Avalonia.Desktop" Version="0.9.11" />
-    <PackageReference Include="FSharp.Json" Version="0.4.1" />
     <PackageReference Include="JaggerJo.Avalonia.FuncUI" Version="0.4.1" />
     <PackageReference Include="JaggerJo.Avalonia.FuncUI.DSL" Version="0.4.3" />
     <PackageReference Include="JaggerJo.Avalonia.FuncUI.Elmish" Version="0.4.0" />
-    <PackageReference Include="LibGit2Sharp" Version="0.27.0-preview-0158" />
     <PackageReference Include="Serilog" Version="2.10.0" />
     <PackageReference Include="Serilog.Sinks.Console" Version="4.0.1" />
     <PackageReference Include="SharpCompress" Version="0.30.1" />
