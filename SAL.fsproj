@@ -13,7 +13,8 @@
     <Compile Include="Storage.fs" />
     <Compile Include="Archive.fs" />
     <Compile Include="View.fs" />
-    <Compile Include="Launcher.fs" />
+    <Compile Include="IOHandler.fs" />
+    <Compile Include="Shell.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
 

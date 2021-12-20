@@ -5,7 +5,7 @@ open Logger
 open Elmish
 open Domain
 
-module Client =
+module IOHandler =
     open System.Net
     open System.Diagnostics
 
@@ -147,49 +147,3 @@ module Client =
                 Directory.SetCurrentDirectory(beforeLaunchDirectory)
 
                 Ok $"{launcher} executed and closed gracefully"
-
-
-module Launcher =
-    module UpdateHandlers =
-        let private getModById id model =
-            model.Mods
-            |> Array.filter (fun m -> m.Id = id)
-            |> Array.head
-
-        let withSwatDirectoryEntryChanged directory model = { model with SwatDirectory = directory }, Cmd.none
-
-        let withInstall id model =
-            let selectedMod = getModById id model
-            match Client.downloadMod selectedMod model.SwatDirectory with
-            | Error _ -> model, Cmd.none
-            | Ok _ -> 
-                let updateMod selectedMod =
-                    if selectedMod.Id = id then { selectedMod with IsInstalled = true }
-                    else selectedMod
-
-                Client.extractArchive selectedMod model.SwatDirectory
-                { model with Mods = Array.map updateMod model.Mods }, Cmd.none
-
-        let withUninstall id model = 
-            let selectedMod = getModById id model
-            match Client.uninstallMod selectedMod model.SwatDirectory with
-            | Error _ -> model, Cmd.none
-            | Ok _ -> 
-                let updateMod selectedMod =
-                    if selectedMod.Id = id then { selectedMod with IsInstalled = false }
-                    else selectedMod
-                { model with Mods = Array.map updateMod model.Mods }, Cmd.none
-
-        let withLaunch id model = 
-            let selectedMod = getModById id model
-            match Client.launchMod selectedMod model.SwatDirectory with
-            | Ok _ -> model, Cmd.none
-            | Error _ -> model, Cmd.none
-    
-    let update (msg: Message) (model: Model): Model * Cmd<Message> =
-        match msg with
-        | Failure err -> log.Error err; model, Cmd.none
-        | SwatDirectoryEntryChanged directory -> UpdateHandlers.withSwatDirectoryEntryChanged directory model
-        | Install id -> UpdateHandlers.withInstall id model
-        | Uninstall id -> UpdateHandlers.withUninstall id model
-        | Launch id -> UpdateHandlers.withLaunch id model
