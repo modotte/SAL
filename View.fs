@@ -120,6 +120,25 @@ module View =
                 ]
             ]
         ]
+
+    let makeSwatDirectoryChooser model dispatch =
+        StackPanel.children [
+            TextBlock.create [
+                TextBlock.fontSize 15.0
+                TextBlock.text "SWAT4 Folder: "
+            ]
+
+            TextBox.create [
+                TextBlock.isEnabled false
+                TextBox.minWidth 500.0
+                TextBox.text model.SwatDirectory
+            ]
+
+            Button.create [
+                Button.content "Choose SWAT4 folder"
+                Button.onClick (fun _ -> dispatch OpenFolderDialog)
+            ]
+        ]
     
     let view (model: Model) dispatch =
         StackPanel.create [
@@ -138,24 +157,7 @@ module View =
                             StackPanel.spacing 8.0
                             StackPanel.margin 8.0
                             StackPanel.orientation Orientation.Horizontal
-                            StackPanel.children [
-                                
-                                TextBlock.create [
-                                    TextBlock.fontSize 15.0
-                                    TextBlock.text "SWAT4 Folder: "
-                                ]
-
-                                TextBox.create [
-                                    TextBlock.isEnabled false
-                                    TextBox.minWidth 500.0
-                                    TextBox.text model.SwatDirectory
-                                ]
-
-                                Button.create [
-                                    Button.content "Choose SWAT4 folder"
-                                    Button.onClick (fun _ -> dispatch OpenFolderDialog)
-                                ]
-                            ]
+                            makeSwatDirectoryChooser model dispatch
                         ]
                         makeModCategoriesView model dispatch
                     ]
