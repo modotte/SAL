@@ -42,7 +42,6 @@ module View =
         WrapPanel.create [
             WrapPanel.children [
                 TextBlock.create [ TextBlock.text $"{selectedMod.Maintainer}-{selectedMod.Version}-{selectedMod.Stability.ToString()}" ]
-                
                 if selectedMod.IsInstalled then
                     Button.create [
                         Button.dock Dock.Bottom
@@ -160,6 +159,36 @@ module View =
                     StackPanel.children [
                         makeSwatDirectoryChooser model dispatch
                         makeModCategoriesView model dispatch
+                    ]
+                ]
+
+                StackPanel.create [
+                    StackPanel.dock Dock.Bottom
+                    StackPanel.verticalAlignment VerticalAlignment.Top
+                    StackPanel.children [
+                        ComboBox.create [
+                            ComboBox.dataItems (
+                                model.Mods
+                                |> Array.map (fun m -> $"{m.Category} by {m.Maintainer}: {m.Version}-{m.Stability.ToString()}")
+                            )
+                            ComboBox.selectedItem model.Mods
+                        ]
+
+                        Button.create [
+                            Button.content "Launch"
+                        ]
+
+                        Button.create [
+                            Button.content "More info"
+                        ]
+
+                        Button.create [
+                            Button.content "Install"
+                        ]
+                        Button.create [
+                            Button.content "Uninstall"
+                        ]
+
                     ]
                 ]
             ]
