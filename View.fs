@@ -4,6 +4,8 @@ module View =
     open Avalonia.Controls
     open Avalonia.FuncUI.DSL
     open Avalonia.Layout
+    open Avalonia.FuncUI.Components
+
     open SAL.Domain
 
     let menuBar dispatch =
@@ -167,11 +169,23 @@ module View =
                     StackPanel.verticalAlignment VerticalAlignment.Top
                     StackPanel.children [
                         ComboBox.create [
+                            ComboBox.minWidth 200
                             ComboBox.dataItems (
                                 model.Mods
-                                |> Array.map (fun m -> $"{m.Category} by {m.Maintainer}: {m.Version}-{m.Stability.ToString()}")
                             )
-                            ComboBox.selectedItem model.Mods
+                            ComboBox.selectedItem model.Mods.[model.SelectedMod]
+                            ComboBox.onSelectedItemChanged (
+                                fun i ->
+                                    if i <> null then
+                                        let m = i |> unbox<Mod>
+                                        
+                                        dispatch (SelectMod m.Id)
+                            )
+                            ComboBox.itemTemplate (
+                                DataTemplateView<Mod>.create(
+                                    (fun m -> TextBlock.create [ TextBlock.text $"{m.Maintainer}-{m.Version}-{m.Stability.ToString()}" ])
+                                )
+                            )
                         ]
 
                         Button.create [

@@ -76,6 +76,7 @@ module Shell =
         | Launch id -> UpdateHandler.withLaunch id model
         | OpenFolderDialog -> UpdateHandler.withOpenNewFolderDialog window model
         | FolderDialogOpened directory -> UpdateHandler.withNewFolderFolderOpened directory model
+        | SelectMod id -> log.Information(id.ToString()); { model with SelectedMod = id }, Cmd.none
 
     type ShellWindow() as this =
         inherit HostWindow()
