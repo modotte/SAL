@@ -3,6 +3,11 @@ namespace SAL
 open Avalonia.FuncUI.DSL
 open Avalonia.FuncUI.DSL
 open Avalonia.FuncUI.DSL
+open Avalonia.FuncUI.DSL
+open Avalonia.FuncUI.DSL
+open Avalonia.FuncUI.DSL
+open Avalonia.FuncUI.DSL
+open Avalonia.FuncUI.DSL
 
 module View =
     open Avalonia.Controls
@@ -47,33 +52,114 @@ module View =
         mods |> Array.filter (fun m -> m.Category = category)
 
     let makeSwatDirectoryChooser model dispatch =
-            StackPanel.create [
-                StackPanel.verticalAlignment VerticalAlignment.Top
-                StackPanel.horizontalAlignment HorizontalAlignment.Center
-                StackPanel.spacing 8.0
-                StackPanel.margin 8.0
-                StackPanel.orientation Orientation.Horizontal
-                                
-                // BUG: Reuse previous value if user close dialog
-                StackPanel.children [
-                    TextBlock.create [
-                        TextBlock.fontSize 15.0
-                        TextBlock.text "SWAT4 Folder: "
-                    ]
+        StackPanel.create [
+            StackPanel.verticalAlignment VerticalAlignment.Top
+            StackPanel.horizontalAlignment HorizontalAlignment.Center
+            StackPanel.spacing 8.0
+            StackPanel.margin 8.0
+            StackPanel.orientation Orientation.Horizontal
+                            
+            // BUG: Reuse previous value if user close dialog
+            StackPanel.children [
+                TextBlock.create [
+                    TextBlock.fontSize 15.0
+                    TextBlock.text "SWAT4 Folder: "
+                ]
 
-                    TextBox.create [
-                        TextBlock.isEnabled false
-                        TextBox.minWidth 500.0
-                        TextBox.text model.SwatDirectory
-                    ]
+                TextBox.create [
+                    TextBlock.isEnabled false
+                    TextBox.minWidth 500.0
+                    TextBox.text model.SwatDirectory
+                ]
+
+                Button.create [
+                    Button.isEnabled (not model.IsInProgress)
+                    Button.content "Choose SWAT4 folder"
+                    Button.onClick (fun _ -> dispatch OpenFolderDialog)
+                ]
+            ]
+        ]
+    
+    let makeModStackView (selectedMod: Mod) dispatch =
+        WrapPanel.create [
+            WrapPanel.children [
+                TextBlock.create [ TextBlock.text $"{selectedMod.Maintainer}-{selectedMod.Version}-{selectedMod.Stability.ToString()}" ]
+                
+                if selectedMod.IsInstalled then
+                    Button.create [
+                        Button.dock Dock.Bottom
+                        // FIXME: Find a way to emit this state change.
+                        // Button.isEnabled model.IsModRunning
+                        Button.background "Green"
+                        Button.onClick (fun _ -> dispatch (Launch selectedMod.Id))
+                        Button.content "Launch Mod"
+                    ]                
 
                     Button.create [
-                        Button.isEnabled (not model.IsInProgress)
-                        Button.content "Choose SWAT4 folder"
-                        Button.onClick (fun _ -> dispatch OpenFolderDialog)
+                        Button.dock Dock.Bottom
+                        Button.background "Red"
+                        Button.onClick (fun _ -> dispatch (Uninstall selectedMod.Id))
+                        Button.content "Uninstall"
+                    ]
+
+                else
+                    Button.create [
+                        Button.dock Dock.Bottom
+                        Button.onClick (fun _ -> dispatch (InstallDownload selectedMod.Id))
+                        Button.content "Install"
+                    ]
+            ]
+        ]
+        
+
+    let makeModCategoriesView model dispatch =
+        StackPanel.create [
+            StackPanel.horizontalAlignment HorizontalAlignment.Center
+            StackPanel.spacing 32.0
+            StackPanel.children [
+                
+                StackPanel.create [
+                    StackPanel.children [
+                            
+                        TextBlock.create [ TextBlock.text "SEF" ]
+                        StackPanel.create [
+                            StackPanel.children (
+                                getMods SEF model.Mods
+                                |> Array.toList
+                                |> List.map  (fun m -> makeModStackView m dispatch)
+                            )
+                        ]
+                    ]
+                ]
+                
+
+                StackPanel.create [
+                    StackPanel.children [
+                        TextBlock.create [ TextBlock.text "SEF - First Responders" ]
+                        StackPanel.create [
+                            StackPanel.children (
+                                getMods SEF_FR model.Mods
+                                |> Array.toList
+                                |> List.map  (fun m -> makeModStackView m dispatch)
+                            )
+                        ]
+                    ]
+                ]
+
+                StackPanel.create [
+                    StackPanel.children [
+                        TextBlock.create [ TextBlock.text "SEF - Back To Los Angeles" ]
+                        StackPanel.create [
+                            StackPanel.children (
+                                getMods SEF_BTLA model.Mods
+                                |> Array.toList
+                                |> List.map  (fun m -> makeModStackView m dispatch)
+                            )
+                        ]
                     ]
                 ]
             ]
+        ]
     
     let view (model: Model) dispatch =
         StackPanel.create [
@@ -86,18 +172,7 @@ module View =
                     StackPanel.orientation Orientation.Vertical
                     StackPanel.children [
                         makeSwatDirectoryChooser model dispatch
-                    ]
-                ]
-
-                StackPanel.create [
-                    StackPanel.dock Dock.Bottom
-                    StackPanel.verticalAlignment VerticalAlignment.Top
-                    StackPanel.children [
-                        ScrollViewer.create [
-                            ScrollViewer.content [
-                                
-                            ]
-                        ]
+                        makeModCategoriesView model dispatch
                     ]
                 ]
             ]

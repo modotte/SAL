@@ -135,9 +135,6 @@ module Shell =
             base.Height <- 600.0
             base.MinWidth <- 526.0
             base.MinHeight <- 526.0
-    #if DEBUG
-            this.AttachDevTools(KeyGesture(Key.F12))
-    #endif
             let updateWithServices (message: Message) (model: Model) =
                 Storage.updateStorage update message model this
             
