@@ -57,7 +57,7 @@ module Shell =
             | InstallExtractionResult.Failure (m, err) -> { model with IsLoading = false }, Cmd.none
             | InstallExtractionResult.Success m -> 
                 let updateMod selectedMod =
-                        if selectedMod.Id = m.Id then { selectedMod with IsInstalled = false }
+                        if selectedMod.Id = m.Id then { selectedMod with IsInstalled = true }
                         else selectedMod
                 { model with Mods = Array.map updateMod model.Mods; IsLoading = false }, Cmd.none
 

@@ -14,18 +14,6 @@
         },
         {
             "Id": 1,
-            "Category": "SEF_FR",
-            "Maintainer": "beppe_goodoldrebel",
-            "Version": "v0.66",
-            "Url": "http://localhost:6792/SEF_FRv66b.1.rar",
-            "Origin": "Official",
-            "PreExtractFolder": "SEF_FR",
-            "Stability": "Beta",
-            "ArchiveFormat": "Rar",
-            "IsInstalled": false
-        },
-        {
-            "Id": 2,
             "Category": "SEF",
             "Maintainer": "eezstreet",
             "Version": "v6.0",
@@ -34,6 +22,18 @@
             "PreExtractFolder": "SEF",
             "Stability": "Stable",
             "ArchiveFormat": "Zip",
+            "IsInstalled": false
+        },
+        {
+            "Id": 2,
+            "Category": "SEF_FR",
+            "Maintainer": "beppe_goodoldrebel",
+            "Version": "v0.66",
+            "Url": "http://localhost:6792/SEF_FRv66b.1.rar",
+            "Origin": "Official",
+            "PreExtractFolder": "SEF_FR",
+            "Stability": "Beta",
+            "ArchiveFormat": "Rar",
             "IsInstalled": false
         },
         {
