@@ -32,18 +32,18 @@ module Domain =
         Mods: Mod array
         SwatDirectory: string
         SelectedMod: int
+        IsLoading: bool
     }
 
     type Message =
         | Failure of string
         | QuitProgram
         | SwatDirectoryEntryChanged of string
-        | DownloadModArchive
-        | ModArchiveDownloaded
-        | ExtractModArchive
-        | ModArchiveExtracted
         | Install of int
+
         | Uninstall of int
+        | AfterUninstall of Mod
+
         | Launch of int
         | OpenFolderDialog
         | FolderDialogOpened of string
@@ -78,10 +78,12 @@ module Domain =
     |]
 
     let init = function
-    | Some oldModel -> oldModel, Cmd.none
+    // Always set IsLoading to false on application startup
+    | Some oldModel -> { oldModel with IsLoading = false }, Cmd.none
     | _ -> 
         {
             SwatDirectory = @"C:\GOG Games\SWAT 4"
             Mods = defaultMods
             SelectedMod = 0
+            IsLoading = false
         }, Cmd.none

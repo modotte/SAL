@@ -43,13 +43,20 @@ module Shell =
 
         let withUninstall id model = 
             let selectedMod = getModById id model
-            match IOHandler.uninstallMod selectedMod model.SwatDirectory with
-            | Error _ -> model, Cmd.none
-            | Ok _ -> 
-                let updateMod selectedMod =
-                    if selectedMod.Id = id then { selectedMod with IsInstalled = false }
-                    else selectedMod
-                { model with Mods = Array.map updateMod model.Mods }, Cmd.none
+            let message = async {
+                do! Async.Sleep 10000
+                IOHandler.uninstallMod selectedMod model.SwatDirectory |> ignore
+
+                return AfterUninstall selectedMod
+            }
+
+            { model with IsLoading = true }, Cmd.OfAsync.result message
+
+        let withAfterUninstall currentMod model =
+            let updateMod selectedMod =
+                if selectedMod.Id = currentMod.Id then { selectedMod with IsInstalled = false }
+                else selectedMod
+            { model with Mods = Array.map updateMod model.Mods; IsLoading = false }, Cmd.none
 
         let withLaunch id model = 
             let selectedMod = getModById id model
@@ -71,8 +78,12 @@ module Shell =
         | Failure err -> log.Error err; model, Cmd.none
         | QuitProgram -> UpdateHandler.withQuitProgram window model
         | SwatDirectoryEntryChanged directory -> UpdateHandler.withSwatDirectoryEntryChanged directory model
+
         | Install id -> UpdateHandler.withInstall id model
+
         | Uninstall id -> UpdateHandler.withUninstall id model
+        | AfterUninstall selectedMod -> UpdateHandler.withAfterUninstall selectedMod model
+
         | Launch id -> UpdateHandler.withLaunch id model
         | OpenFolderDialog -> UpdateHandler.withOpenNewFolderDialog window model
         | FolderDialogOpened directory -> UpdateHandler.withNewFolderFolderOpened directory model
@@ -94,7 +105,4 @@ module Shell =
             
             Program.mkProgram (Storage.load >> init) updateWithServices View.view
             |> Program.withHost this
-    #if DEBUG
-            |> Program.withConsoleTrace
-    #endif
             |> Program.run

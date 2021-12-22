@@ -63,6 +63,7 @@ module View =
                     ]
 
                     Button.create [
+                        Button.isEnabled (not model.IsLoading)
                         Button.content "Choose SWAT4 folder"
                         Button.onClick (fun _ -> dispatch OpenFolderDialog)
                     ]
@@ -88,6 +89,7 @@ module View =
                     StackPanel.verticalAlignment VerticalAlignment.Top
                     StackPanel.children [
                         ComboBox.create [
+                            ComboBox.isEnabled (not model.IsLoading)
                             ComboBox.minWidth 200
                             ComboBox.dataItems (
                                 model.Mods
@@ -122,6 +124,7 @@ module View =
                                 Button.dock Dock.Bottom
                                 // FIXME: Find a way to emit this state change.
                                 // Button.isEnabled model.IsModRunning
+                                Button.isEnabled (not model.IsLoading)
                                 Button.background "Green"
                                 Button.onClick (fun _ -> dispatch (Launch currentMod.Id))
                                 Button.content "Launch Mod"
@@ -129,6 +132,7 @@ module View =
 
                             Button.create [
                                 Button.dock Dock.Bottom
+                                Button.isEnabled (not model.IsLoading)
                                 Button.background "Red"
                                 Button.onClick (fun _ -> dispatch (Uninstall currentMod.Id))
                                 Button.content "Uninstall"
@@ -137,6 +141,7 @@ module View =
                         else
                             Button.create [
                                 Button.dock Dock.Bottom
+                                Button.isEnabled (not model.IsLoading)
                                 Button.onClick (fun _ -> dispatch (Install currentMod.Id))
                                 Button.content "Install"
                         ]
