@@ -14,6 +14,7 @@ module Domain =
         Maintainer: string
         Version: string
         Url: string
+        Description: string option
         Origin: OriginType
         PreExtractFolder: string
         Stability: StabilityType
@@ -65,6 +66,8 @@ module Domain =
         
         | OpenFolderDialog
         | FolderDialogOpened of string
+        | OpenAboutDialog
+        | AboutDialogOpened
         | SelectMod of int
 
     let defaultMods: Mod array = [|
@@ -74,6 +77,7 @@ module Domain =
             Maintainer = "eezstreet"
             Version = "v7.0"
             Url = "http://localhost:6792/SEF-v7.0.zip"
+            Description = None
             Origin = Official
             PreExtractFolder = "SEF"
             Stability = Stable
@@ -87,6 +91,7 @@ module Domain =
             Maintainer = "beppe_goodoldrebel"
             Version = "v0.66"
             Url = "http://localhost:6792/SEF_FRv66b.1.rar"
+            Description = None
             Origin = Official
             PreExtractFolder = "SEF_FR"
             Stability = Beta

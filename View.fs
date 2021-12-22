@@ -1,19 +1,10 @@
 namespace SAL
 
 open Avalonia.FuncUI.DSL
-open Avalonia.FuncUI.DSL
-open Avalonia.FuncUI.DSL
-open Avalonia.FuncUI.DSL
-open Avalonia.FuncUI.DSL
-open Avalonia.FuncUI.DSL
-open Avalonia.FuncUI.DSL
-open Avalonia.FuncUI.DSL
 
 module View =
     open Avalonia.Controls
-    open Avalonia.FuncUI.DSL
     open Avalonia.Layout
-    open Avalonia.FuncUI.Components
 
     open SAL.Domain
 
@@ -36,6 +27,7 @@ module View =
                     MenuItem.viewItems [
                         MenuItem.create [
                             MenuItem.header "About SAL"
+                            MenuItem.onClick (fun _ -> dispatch OpenAboutDialog)
                         ]
                         MenuItem.create [
                             MenuItem.header "Report bugs or suggest feedbacks"
@@ -86,6 +78,15 @@ module View =
             StackPanel.children [
                 let isInstalledText = if selectedMod.IsInstalled then "[INSTALLED]" else ""
                 TextBlock.create [ TextBlock.text $"{selectedMod.Maintainer}-{selectedMod.Version}-{selectedMod.Stability.ToString()} {isInstalledText}" ]
+                
+                match selectedMod.Description with
+                | None -> ()
+                | Some desc ->
+                    Button.create [
+                        Button.dock Dock.Bottom
+                        Button.content "More Info"
+                    ]
+
                 
                 if selectedMod.IsInstalled then
                     Button.create [
@@ -178,7 +179,11 @@ module View =
                     StackPanel.orientation Orientation.Vertical
                     StackPanel.children [
                         makeSwatDirectoryChooser model dispatch
-                        makeModCategoriesView model dispatch
+                        
+                        ScrollViewer.create [
+                            ScrollViewer.content (makeModCategoriesView model dispatch)
+                            
+                        ]
                     ]
                 ]
             ]
