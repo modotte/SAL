@@ -41,6 +41,10 @@ module Shell =
                 IOHandler.extractArchive selectedMod model.SwatDirectory
                 { model with Mods = Array.map updateMod model.Mods }, Cmd.none
 
+        let withAfterInstallExtraction result model =
+            let selectedMod = getModById id model
+            ()
+
         let withUninstall id model = 
             let selectedMod = getModById id model
             let message = async {
@@ -84,6 +88,7 @@ module Shell =
         | SwatDirectoryEntryChanged directory -> UpdateHandler.withSwatDirectoryEntryChanged directory model
 
         | Install id -> UpdateHandler.withInstall id model
+        | AfterInstallExtraction installExtractionResult -> UpdateHandler.withAfterInstallExtraction installExtractionResult model
 
         | Uninstall id -> UpdateHandler.withUninstall id model
         | AfterUninstall uninstallResult -> UpdateHandler.withAfterUninstall uninstallResult model

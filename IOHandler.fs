@@ -2,12 +2,14 @@
 
 open System.IO
 open Logger
-open Elmish
 open Domain
 
 module IOHandler =
     open System.Net
     open System.Diagnostics
+
+    exception TemporaryFolderCreationException of string
+    exception TemporaryFolderDeletionException of string
 
     let private modDirectoryOutput (gameMod: Mod) = 
         $"{gameMod.Maintainer}-{getCategory gameMod.Category}-{gameMod.Version}"
@@ -47,22 +49,29 @@ module IOHandler =
                     Error exn.Message
 
     let private makeTemporaryFolder swatDir =
-        log.Information("Creating temporary folder for archive extraction..")
+        try
+            log.Information("Creating temporary folder for archive extraction..")
 
-        let name = System.Guid.NewGuid().ToString()
-        let tempDirPath = Path.Combine(swatDir, name)
-        Directory.CreateDirectory(tempDirPath) |> ignore
+            let name = System.Guid.NewGuid().ToString()
+            let tempDirPath = Path.Combine(swatDir, name)
+            Directory.CreateDirectory(tempDirPath) |> ignore
 
-        log.Information("Temporary folder " + name + " has been created..")
+            log.Information("Temporary folder " + name + " has been created..")
 
-        name
+            name
+        with
+        | :? IOException as exn -> 
+            raise (TemporaryFolderCreationException exn.Message)
 
     let private deleteTemporaryFolder tempDirPath =
-        log.Information("Deleting temporary extraction folder ..")
-        Directory.Delete(tempDirPath, true)
-        log.Information("Deleted temporary extraction folder " + tempDirPath)
+        try
+            log.Information("Deleting temporary extraction folder ..")
+            Directory.Delete(tempDirPath, true)
+            log.Information("Deleted temporary extraction folder " + tempDirPath)
+        with
+        | :? IOException as exn ->
+            raise (TemporaryFolderDeletionException $"Failed to make temporary folder. Error: {exn.Message}")
 
-    // TODO: Add error handling monads
     let extractArchive gameMod swatDir =
         log.Information("Beginning to extract mod archive..")
 
@@ -78,17 +87,30 @@ module IOHandler =
 
         log.Information("Finished extracting mod archive")
 
-        log.Information("Renaming extracted folder...")
-        Directory.Move(
-            Path.Combine(tempDirPath, gameMod.PreExtractFolder),
-            Path.Combine(swatDir, modDirectoryOutput gameMod)
-        )
-        log.Information("Finished renaming extracted folder..")
+        try
+            log.Information("Renaming extracted folder...")
+            Directory.Move(
+                Path.Combine(tempDirPath, gameMod.PreExtractFolder),
+                Path.Combine(swatDir, modDirectoryOutput gameMod)
+            )
 
-        deleteTemporaryFolder tempDirPath
-        log.Information("Deleted temporary folder..")
-        
-        log.Information(modDirectoryOutput gameMod + " installed successfully")
+            log.Information("Finished renaming extracted folder..")
+
+            deleteTemporaryFolder tempDirPath
+            log.Information("Deleted temporary folder..")
+            
+            log.Information(modDirectoryOutput gameMod + " installed successfully")
+            InstallExtractionResult.Success gameMod
+
+        with
+        | :? IOException as exn ->
+            log.Error(exn.Message)
+            InstallExtractionResult.Failure (gameMod, exn.Message)
+        | :? TemporaryFolderCreationException as exn ->
+            InstallExtractionResult.Failure (gameMod, exn.Message)
+        | :? TemporaryFolderDeletionException as exn ->
+            log.Error(exn.Message)
+            InstallExtractionResult.Failure (gameMod, exn.Message)
 
     let uninstallMod gameMod swatDir =
         let modPath = modDirectoryOutput gameMod
