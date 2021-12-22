@@ -39,40 +39,30 @@ module View =
             ]
         ]
 
-    let makeModStackView (selectedMod: Mod) dispatch =
-        WrapPanel.create [
-            WrapPanel.children [
-                TextBlock.create [ TextBlock.text $"{selectedMod.Maintainer}-{selectedMod.Version}-{selectedMod.Stability.ToString()}" ]
-                
-                if selectedMod.IsInstalled then
-                    Button.create [
-                        Button.dock Dock.Bottom
-                        // FIXME: Find a way to emit this state change.
-                        // Button.isEnabled model.IsModRunning
-                        Button.background "Green"
-                        Button.onClick (fun _ -> dispatch (Launch selectedMod.Id))
-                        Button.content "Launch Mod"
-                    ]                
-
-                    Button.create [
-                        Button.dock Dock.Bottom
-                        Button.background "Red"
-                        Button.onClick (fun _ -> dispatch (Uninstall selectedMod.Id))
-                        Button.content "Uninstall"
-                    ]
-
-                else
-                    Button.create [
-                        Button.dock Dock.Bottom
-                        Button.onClick (fun _ -> dispatch (InstallDownload selectedMod.Id))
-                        Button.content "Install"
-                    ]
-            ]
-        ]    
-
-
     let getMods category mods =
         mods |> Array.filter (fun m -> m.Category = category)
+        
+    let makeModsChooser model dispatch =
+        ComboBox.create [
+            ComboBox.isEnabled (not model.IsLoading)
+            ComboBox.minWidth 200.0
+            ComboBox.dataItems model.Mods
+            ComboBox.selectedItem model.Mods.[model.SelectedMod]
+            ComboBox.onSelectedItemChanged (
+                fun i ->
+                    if i <> null then
+                        let m = i |> unbox<Mod>                        
+                        dispatch (SelectMod m.Id)
+            )
+            ComboBox.itemTemplate (
+                DataTemplateView<Mod>.create(
+                    fun m -> TextBlock.create [ 
+                        let installedText = if m.IsInstalled then "[INSTALLED]" else ""
+                        TextBlock.text $"{m.Maintainer}-{m.Version}-{m.Stability.ToString()} {installedText}" 
+                    ]
+                )
+            )
+        ]
 
     let makeSwatDirectoryChooser model dispatch =
             StackPanel.create [
@@ -117,51 +107,26 @@ module View =
                     ]
                 ]
 
-                makeModStackView model.Mods.[1] dispatch
-
                 StackPanel.create [
                     StackPanel.dock Dock.Bottom
                     StackPanel.verticalAlignment VerticalAlignment.Top
                     StackPanel.children [
-                        ComboBox.create [
-                            ComboBox.isEnabled (not model.IsLoading)
-                            ComboBox.minWidth 200
-                            ComboBox.dataItems (
-                                model.Mods
-                            )
-                            ComboBox.selectedItem model.Mods.[model.SelectedMod]
-                            ComboBox.onSelectedItemChanged (
-                                fun i ->
-                                    if i <> null then
-                                        let m = i |> unbox<Mod>
-                                        
-                                        dispatch (SelectMod m.Id)
-                            )
-                            ComboBox.itemTemplate (
-                                DataTemplateView<Mod>.create(
-                                    (fun m -> TextBlock.create [ 
-                                        let installedText = if m.IsInstalled then "[INSTALLED]" else ""
-                                        TextBlock.text $"{m.Maintainer}-{m.Version}-{m.Stability.ToString()} {installedText}" 
-                                        ]
-                                    )
-                                )
-                            )
-                        ]
+                        makeModsChooser model dispatch
 
-                        let currentMod = 
+                        let selectedMod = 
                             model.Mods
                             |> Array.filter (fun m -> m.Id = model.SelectedMod)
                             |> Array.head
 
                         // BUG: Id is not synchronized on selection
-                        if currentMod.IsInstalled then
+                        if selectedMod.IsInstalled then
                             Button.create [
                                 Button.dock Dock.Bottom
                                 // FIXME: Find a way to emit this state change.
                                 // Button.isEnabled model.IsModRunning
                                 Button.isEnabled (not model.IsLoading)
                                 Button.background "Green"
-                                Button.onClick (fun _ -> dispatch (Launch currentMod.Id))
+                                Button.onClick (fun _ -> dispatch (Launch selectedMod.Id))
                                 Button.content "Launch Mod"
                             ]                
 
@@ -169,7 +134,7 @@ module View =
                                 Button.dock Dock.Bottom
                                 Button.isEnabled (not model.IsLoading)
                                 Button.background "Red"
-                                Button.onClick (fun _ -> dispatch (Uninstall currentMod.Id))
+                                Button.onClick (fun _ -> dispatch (Uninstall selectedMod.Id))
                                 Button.content "Uninstall"
                             ]
 
@@ -177,8 +142,8 @@ module View =
                             Button.create [
                                 Button.dock Dock.Bottom
                                 Button.isEnabled (not model.IsLoading)
-                                Button.onClick (fun _ -> dispatch (InstallDownload currentMod.Id))
-                                Button.content ("Install " + currentMod.Category.ToString() + currentMod.Version.ToString())
+                                Button.onClick (fun _ -> dispatch (InstallDownload selectedMod.Id))
+                                Button.content ("Install " + selectedMod.Category.ToString() + selectedMod.Version.ToString())
                         ]
 
                     ]
