@@ -55,7 +55,11 @@ module Shell =
         let withAfterInstallExtract result model =
             match result with
             | InstallExtractionResult.Failure (m, err) -> { model with IsLoading = false }, Cmd.none
-            | InstallExtractionResult.Success m -> { model with IsLoading = false }, Cmd.none
+            | InstallExtractionResult.Success m -> 
+                let updateMod selectedMod =
+                        if selectedMod.Id = m.Id then { selectedMod with IsInstalled = false }
+                        else selectedMod
+                { model with Mods = Array.map updateMod model.Mods; IsLoading = false }, Cmd.none
 
         let withUninstall id model = 
             let selectedMod = getModById id model
