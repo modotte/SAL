@@ -10,7 +10,7 @@
             "PreExtractFolder": "SEF",
             "Stability": "Stable",
             "ArchiveFormat": "Zip",
-            "IsInstalled": true
+            "IsInstalled": false
         },
         {
             "Id": 1,
@@ -63,5 +63,5 @@
     ],
     "SwatDirectory": "C:\\GOG Games\\SWAT 4",
     "SelectedMod": 0,
-    "IsInProgress": true
+    "IsInProgress": false
 }
