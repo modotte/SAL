@@ -50,6 +50,7 @@ module View =
                 StackPanel.margin 8.0
                 StackPanel.orientation Orientation.Horizontal
                                 
+                // BUG: Reuse previous value if user close dialog
                 StackPanel.children [
                     TextBlock.create [
                         TextBlock.fontSize 15.0

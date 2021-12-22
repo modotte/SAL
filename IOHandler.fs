@@ -108,6 +108,7 @@ module IOHandler =
             log.Error(exn.Message)
             InstallExtractionResult.Failure (gameMod, exn.Message)
         | :? TemporaryFolderCreationException as exn ->
+            log.Error(exn.Message)
             InstallExtractionResult.Failure (gameMod, exn.Message)
         | :? TemporaryFolderDeletionException as exn ->
             log.Error(exn.Message)

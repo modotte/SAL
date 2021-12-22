@@ -41,7 +41,7 @@ module Shell =
         let withAfterInstallDownload result model =
             match result with
             | InstallDownloadResult.Failure (m, err) -> { model with IsLoading = false }, Cmd.none
-            | InstallDownloadResult.Success m -> model, Cmd.ofMsg (InstallDownload m.Id)
+            | InstallDownloadResult.Success m -> model, Cmd.ofMsg (InstallExtract m.Id)
         
         let withInstallExtract id model =
             let selectedMod = getModById id model
