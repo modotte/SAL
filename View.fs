@@ -21,22 +21,6 @@ module View =
                         ]
                     ]
                 ]
-
-                MenuItem.create [
-                    MenuItem.header "Help"
-                    MenuItem.viewItems [
-                        MenuItem.create [
-                            MenuItem.header "About SAL"
-                            MenuItem.onClick (fun _ -> dispatch OpenAboutDialog)
-                        ]
-                        MenuItem.create [
-                            MenuItem.header "Report bugs or suggest feedbacks"
-                        ]
-                        MenuItem.create [
-                            MenuItem.header "Visit source code repository"
-                        ]
-                    ]
-                ]
             ]
         ]
 
@@ -82,9 +66,9 @@ module View =
                 match selectedMod.Description with
                 | None -> ()
                 | Some desc ->
-                    Button.create [
-                        Button.dock Dock.Bottom
-                        Button.content "More Info"
+                    Expander.create [
+                        Expander.header "More Info"
+                        Expander.content (StackPanel.create [ StackPanel.children [ TextBlock.create [ TextBlock.text desc ] ] ])
                     ]
 
                 

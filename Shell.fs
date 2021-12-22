@@ -103,14 +103,6 @@ module Shell =
 
         let withNewFolderFolderOpened directory model =
             { model with SwatDirectory = directory }, Cmd.none
-            
-        let withOpenAboutDialog window model =
-            let dialog = Dialog.getInfoDialog "About SAL"
-            let showDialog w = dialog.ShowDialog(w) |> Async.AwaitTask
-            Cmd.OfAsync.start (showDialog window)
-            model, Cmd.none
-            
-        let withAboutDialogOpened model = model, Cmd.none
         
 
     let update (message: Message) (model: Model) (window: HostWindow): Model * Cmd<Message> =
@@ -132,10 +124,7 @@ module Shell =
         | AfterLaunch launchResult -> UpdateHandler.withAfterLaunch launchResult model
 
         | OpenFolderDialog -> UpdateHandler.withOpenNewFolderDialog window model
-        | OpenAboutDialog -> UpdateHandler.withOpenAboutDialog window model
         | FolderDialogOpened directory -> UpdateHandler.withNewFolderFolderOpened directory model
-        | AboutDialogOpened -> UpdateHandler.withAboutDialogOpened model
-        | SelectMod id -> { model with SelectedMod = id }, Cmd.none
 
     type ShellWindow() as this =
         inherit HostWindow()

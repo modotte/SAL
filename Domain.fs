@@ -32,7 +32,6 @@ module Domain =
     type Model = {
         Mods: Mod array
         SwatDirectory: string
-        SelectedMod: int
         IsInProgress: bool
     }
 
@@ -66,9 +65,6 @@ module Domain =
         
         | OpenFolderDialog
         | FolderDialogOpened of string
-        | OpenAboutDialog
-        | AboutDialogOpened
-        | SelectMod of int
 
     let defaultMods: Mod array = [|
         {
@@ -107,6 +103,5 @@ module Domain =
         {
             SwatDirectory = @"C:\GOG Games\SWAT 4"
             Mods = defaultMods
-            SelectedMod = 0
             IsInProgress = false
         }, Cmd.none
