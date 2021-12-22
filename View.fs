@@ -47,7 +47,7 @@ module View =
             ComboBox.isEnabled (not model.IsInProgress)
             ComboBox.minWidth 200.0
             ComboBox.dataItems model.Mods
-            ComboBox.selectedItem model.Mods.[model.SelectedMod]
+            ComboBox.selectedItem (model.Mods |> Array.filter (fun m -> m.Id = model.SelectedMod) |> Array.head )
             ComboBox.onSelectedItemChanged (
                 fun i ->
                     if i <> null then

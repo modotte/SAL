@@ -82,9 +82,19 @@ module Shell =
 
         let withLaunch id model = 
             let selectedMod = getModById id model
-            match IOHandler.launchMod selectedMod model.SwatDirectory with
-            | Ok _ -> model, Cmd.none
-            | Error _ -> model, Cmd.none
+            let message = async {
+                let result = IOHandler.launchMod selectedMod model.SwatDirectory
+                
+                return AfterLaunch result
+            }
+            
+            { model with IsInProgress = true }, Cmd.OfAsync.result message
+            
+        let withAfterLaunch result model =
+            match result with
+            | LaunchResult.Failure (m, err) -> { model with IsInProgress = false }, Cmd.none
+            | LaunchResult.Success m ->
+                { model with IsInProgress = false }, Cmd.none
 
         let withOpenNewFolderDialog window model =
             let dialog = Dialog.getFolderDialog model.SwatDirectory
@@ -109,8 +119,10 @@ module Shell =
 
         | Uninstall id -> UpdateHandler.withUninstall id model
         | AfterUninstall uninstallResult -> UpdateHandler.withAfterUninstall uninstallResult model
-
+        
         | Launch id -> UpdateHandler.withLaunch id model
+        | AfterLaunch launchResult -> UpdateHandler.withAfterLaunch launchResult model
+
         | OpenFolderDialog -> UpdateHandler.withOpenNewFolderDialog window model
         | FolderDialogOpened directory -> UpdateHandler.withNewFolderFolderOpened directory model
         | SelectMod id -> log.Information(id.ToString()); { model with SelectedMod = id }, Cmd.none

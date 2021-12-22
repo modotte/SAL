@@ -142,8 +142,8 @@ module IOHandler =
         
         if not (Directory.Exists(systemDir)) then
             let err = (modDirectoryOutput gameMod) + " is not installed!"
-            log.Error err
-            Error err
+            log.Error(err)
+            LaunchResult.Failure (gameMod, err)
 
         else
             let beforeLaunchDirectory = Directory.GetCurrentDirectory()
@@ -158,7 +158,7 @@ module IOHandler =
             if not (File.Exists(launcher)) then
                 let err = Path.Combine(swatDir, launcher) + " doesn't exist! Possible corrupted mod installation!"
                 log.Error(err)
-                Error err
+                LaunchResult.Failure (gameMod, err)
 
             else
                 let externalProcess = new Process()
@@ -169,5 +169,5 @@ module IOHandler =
                 log.Information($"SWAT4 + {modDirectoryOutput gameMod} closed gracefully")
 
                 Directory.SetCurrentDirectory(beforeLaunchDirectory)
-
-                Ok $"{launcher} executed and closed gracefully"
+                log.Information($"{launcher} executed and closed gracefully")
+                LaunchResult.Success gameMod

@@ -43,6 +43,8 @@ module Domain =
     type InstallationResult = Success of Mod | Failure of Mod * string
     [<RequireQualifiedAccess>]
     type UninstallationResult = Success of Mod | Failure of Mod * string
+    [<RequireQualifiedAccess>]
+    type LaunchResult = Success of Mod | Failure of Mod * string
 
     type Message =
         | Failure of string
@@ -57,8 +59,10 @@ module Domain =
 
         | Uninstall of int
         | AfterUninstall of UninstallationResult
-
+        
         | Launch of int
+        | AfterLaunch of LaunchResult
+        
         | OpenFolderDialog
         | FolderDialogOpened of string
         | SelectMod of int
