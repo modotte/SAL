@@ -80,16 +80,19 @@ module View =
             ]
         ]
     
-    let makeModStackView (selectedMod: Mod) dispatch =
-        WrapPanel.create [
-            WrapPanel.children [
-                TextBlock.create [ TextBlock.text $"{selectedMod.Maintainer}-{selectedMod.Version}-{selectedMod.Stability.ToString()}" ]
+    let makeModStackView selectedMod model dispatch =
+        StackPanel.create [
+            StackPanel.orientation Orientation.Horizontal
+            StackPanel.children [
+                let isInstalledText = if selectedMod.IsInstalled then "[INSTALLED]" else ""
+                TextBlock.create [ TextBlock.text $"{selectedMod.Maintainer}-{selectedMod.Version}-{selectedMod.Stability.ToString()} {isInstalledText}" ]
                 
                 if selectedMod.IsInstalled then
                     Button.create [
                         Button.dock Dock.Bottom
                         // FIXME: Find a way to emit this state change.
                         // Button.isEnabled model.IsModRunning
+                        Button.isEnabled (not model.IsInProgress)
                         Button.background "Green"
                         Button.onClick (fun _ -> dispatch (Launch selectedMod.Id))
                         Button.content "Launch Mod"
@@ -97,6 +100,7 @@ module View =
 
                     Button.create [
                         Button.dock Dock.Bottom
+                        Button.isEnabled (not model.IsInProgress)
                         Button.background "Red"
                         Button.onClick (fun _ -> dispatch (Uninstall selectedMod.Id))
                         Button.content "Uninstall"
@@ -105,6 +109,8 @@ module View =
                 else
                     Button.create [
                         Button.dock Dock.Bottom
+                        Button.background "Gray"
+                        Button.isEnabled (not model.IsInProgress)
                         Button.onClick (fun _ -> dispatch (InstallDownload selectedMod.Id))
                         Button.content "Install"
                     ]
@@ -126,7 +132,7 @@ module View =
                             StackPanel.children (
                                 getMods SEF model.Mods
                                 |> Array.toList
-                                |> List.map  (fun m -> makeModStackView m dispatch)
+                                |> List.map  (fun m -> makeModStackView m model dispatch)
                             )
                         ]
                     ]
@@ -140,7 +146,7 @@ module View =
                             StackPanel.children (
                                 getMods SEF_FR model.Mods
                                 |> Array.toList
-                                |> List.map  (fun m -> makeModStackView m dispatch)
+                                |> List.map  (fun m -> makeModStackView m model dispatch)
                             )
                         ]
                     ]
@@ -153,7 +159,7 @@ module View =
                             StackPanel.children (
                                 getMods SEF_BTLA model.Mods
                                 |> Array.toList
-                                |> List.map  (fun m -> makeModStackView m dispatch)
+                                |> List.map  (fun m -> makeModStackView m model dispatch)
                             )
                         ]
                     ]
