@@ -66,5 +66,6 @@
         }
     ],
     "SwatDirectory": "C:\\GOG Games\\SWAT 4",
-    "IsInProgress": false
+    "IsInProgress": false,
+    "SelectedMod": 4
 }

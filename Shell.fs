@@ -125,6 +125,7 @@ module Shell =
 
         | OpenFolderDialog -> UpdateHandler.withOpenNewFolderDialog window model
         | FolderDialogOpened directory -> UpdateHandler.withNewFolderFolderOpened directory model
+        | SelectMod id -> { model with SelectedMod = id }, Cmd.none
 
     type ShellWindow() as this =
         inherit HostWindow()
