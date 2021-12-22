@@ -36,7 +36,11 @@ module Domain =
     }
 
     [<RequireQualifiedAccess>]
+    type InstallDownloadResult = Success of Mod | Failure of Mod * string
+    [<RequireQualifiedAccess>]
     type InstallExtractionResult = Success of Mod | Failure of Mod * string
+    [<RequireQualifiedAccess>]
+    type InstallationResult = Success of Mod | Failure of Mod * string
     [<RequireQualifiedAccess>]
     type UninstallationResult = Success of Mod | Failure of Mod * string
 
@@ -44,8 +48,12 @@ module Domain =
         | Failure of string
         | QuitProgram
         | SwatDirectoryEntryChanged of string
-        | Install of int
-        | AfterInstallExtraction of InstallExtractionResult
+
+        | InstallDownload of int
+        | AfterInstallDownload of InstallDownloadResult
+
+        | InstallExtract of int
+        | AfterInstallExtract of InstallExtractionResult
 
         | Uninstall of int
         | AfterUninstall of UninstallationResult

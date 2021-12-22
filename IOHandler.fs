@@ -21,32 +21,33 @@ module IOHandler =
         | Rar -> modArchiveName + ".rar"
         | SevenZip -> modArchiveName + ".7z"
 
-    let downloadMod gameMod swatDir = 
+    let downloadArchive gameMod swatDir = 
         let modInstallDir = modDirectoryOutput gameMod
         let archivePath = Path.Combine(swatDir, asArchiveFile gameMod)
 
         if Directory.Exists(Path.Combine(swatDir, modInstallDir)) then
             let err = $"{modInstallDir} already installed!"
-            log.Error err
-            Error err
+            log.Error(err)
+            InstallDownloadResult.Failure (gameMod, err)
+            
         else
             if File.Exists(archivePath) then
                 let msg = $"{archivePath} already exist. Reusing it to save resources.."
                 log.Information(msg)
-                Ok msg
+                InstallDownloadResult.Success gameMod
                 
             else
-                // TODO: Replace with async stuff and update
                 log.Information("Starting to download the mod archive file..")
                 log.Information("Downloading from: " + gameMod.Url)
                 try
                     let client = new WebClient() 
                     client.DownloadFile(gameMod.Url, archivePath)
-                    Ok $"{archivePath} has been downloaded"
+                    log.Information($"{archivePath} has been downloaded")
+                    InstallDownloadResult.Success gameMod
                 with
                 | :? WebException as exn ->
                     log.Error(exn.Message)
-                    Error exn.Message
+                    InstallDownloadResult.Failure (gameMod, exn.Message)
 
     let private makeTemporaryFolder swatDir =
         try

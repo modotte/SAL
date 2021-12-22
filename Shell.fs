@@ -29,33 +29,43 @@ module Shell =
 
         let withSwatDirectoryEntryChanged directory model = { model with SwatDirectory = directory }, Cmd.none
 
-        let withInstall id model =
+        let withInstallDownload id model =
             let selectedMod = getModById id model
-            match IOHandler.downloadMod selectedMod model.SwatDirectory with
-            | Error _ -> model, Cmd.none
-            | Ok _ -> 
-                let updateMod selectedMod =
-                    if selectedMod.Id = id then { selectedMod with IsInstalled = true }
-                    else selectedMod
+            let message = async {
+                let result = IOHandler.downloadArchive selectedMod model.SwatDirectory
+                return AfterInstallDownload result
+            }
 
-                IOHandler.extractArchive selectedMod model.SwatDirectory
-                { model with Mods = Array.map updateMod model.Mods }, Cmd.none
-
-        let withAfterInstallExtraction result model =
+            { model with IsLoading = true }, Cmd.OfAsync.result message
+        
+        let withAfterInstallDownload result model =
+            match result with
+            | InstallDownloadResult.Failure (m, err) -> { model with IsLoading = false }, Cmd.none
+            | InstallDownloadResult.Success m -> model, Cmd.ofMsg (InstallDownload m.Id)
+        
+        let withInstallExtract id model =
             let selectedMod = getModById id model
-            ()
+            let message = async {
+                let result = IOHandler.extractArchive selectedMod model.SwatDirectory
+                return AfterInstallExtract result
+            }
+
+            { model with IsLoading = true }, Cmd.OfAsync.result message
+            
+        let withAfterInstallExtract result model =
+            match result with
+            | InstallExtractionResult.Failure (m, err) -> { model with IsLoading = false }, Cmd.none
+            | InstallExtractionResult.Success m -> { model with IsLoading = false }, Cmd.none
 
         let withUninstall id model = 
             let selectedMod = getModById id model
             let message = async {
-                do! Async.Sleep 10000
-                let uninstallResult = IOHandler.uninstallMod selectedMod model.SwatDirectory 
+                let result = IOHandler.uninstallMod selectedMod model.SwatDirectory 
 
-                return AfterUninstall uninstallResult
+                return AfterUninstall result
             }
 
             { model with IsLoading = true }, Cmd.OfAsync.result message
-
         let withAfterUninstall result model =
             match result with
             // TODO: Add error message to ui
@@ -87,8 +97,11 @@ module Shell =
         | QuitProgram -> UpdateHandler.withQuitProgram window model
         | SwatDirectoryEntryChanged directory -> UpdateHandler.withSwatDirectoryEntryChanged directory model
 
-        | Install id -> UpdateHandler.withInstall id model
-        | AfterInstallExtraction installExtractionResult -> UpdateHandler.withAfterInstallExtraction installExtractionResult model
+        | InstallDownload id -> UpdateHandler.withInstallDownload id model
+        | AfterInstallDownload installDownloadResult -> UpdateHandler.withAfterInstallDownload installDownloadResult model
+
+        | InstallExtract id -> UpdateHandler.withInstallExtract id model
+        | AfterInstallExtract installExtractResult -> UpdateHandler.withAfterInstallExtract installExtractResult model
 
         | Uninstall id -> UpdateHandler.withUninstall id model
         | AfterUninstall uninstallResult -> UpdateHandler.withAfterUninstall uninstallResult model

@@ -142,7 +142,7 @@ module View =
                             Button.create [
                                 Button.dock Dock.Bottom
                                 Button.isEnabled (not model.IsLoading)
-                                Button.onClick (fun _ -> dispatch (Install currentMod.Id))
+                                Button.onClick (fun _ -> dispatch (InstallDownload currentMod.Id))
                                 Button.content "Install"
                         ]
 
