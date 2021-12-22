@@ -36,11 +36,11 @@ module Shell =
                 return AfterInstallDownload result
             }
 
-            { model with IsLoading = true }, Cmd.OfAsync.result message
+            { model with IsInProgress = true }, Cmd.OfAsync.result message
         
         let withAfterInstallDownload result model =
             match result with
-            | InstallDownloadResult.Failure (m, err) -> { model with IsLoading = false }, Cmd.none
+            | InstallDownloadResult.Failure (m, err) -> { model with IsInProgress = false }, Cmd.none
             | InstallDownloadResult.Success m -> model, Cmd.ofMsg (InstallExtract m.Id)
         
         let withInstallExtract id model =
@@ -50,16 +50,16 @@ module Shell =
                 return AfterInstallExtract result
             }
 
-            { model with IsLoading = true }, Cmd.OfAsync.result message
+            { model with IsInProgress = true }, Cmd.OfAsync.result message
             
         let withAfterInstallExtract result model =
             match result with
-            | InstallExtractionResult.Failure (m, err) -> { model with IsLoading = false }, Cmd.none
+            | InstallExtractionResult.Failure (m, err) -> { model with IsInProgress = false }, Cmd.none
             | InstallExtractionResult.Success m -> 
                 let updateMod selectedMod =
                         if selectedMod.Id = m.Id then { selectedMod with IsInstalled = true }
                         else selectedMod
-                { model with Mods = Array.map updateMod model.Mods; IsLoading = false }, Cmd.none
+                { model with Mods = Array.map updateMod model.Mods; IsInProgress = false }, Cmd.none
 
         let withUninstall id model = 
             let selectedMod = getModById id model
@@ -69,16 +69,16 @@ module Shell =
                 return AfterUninstall result
             }
 
-            { model with IsLoading = true }, Cmd.OfAsync.result message
+            { model with IsInProgress = true }, Cmd.OfAsync.result message
         let withAfterUninstall result model =
             match result with
             // TODO: Add error message to ui
-            | UninstallationResult.Failure (m, err) -> { model with IsLoading = false }, Cmd.none
+            | UninstallationResult.Failure (m, err) -> { model with IsInProgress = false }, Cmd.none
             | UninstallationResult.Success m ->
                 let updateMod selectedMod =
                     if selectedMod.Id = m.Id then { selectedMod with IsInstalled = false }
                     else selectedMod
-                { model with Mods = Array.map updateMod model.Mods; IsLoading = false }, Cmd.none
+                { model with Mods = Array.map updateMod model.Mods; IsInProgress = false }, Cmd.none
 
         let withLaunch id model = 
             let selectedMod = getModById id model

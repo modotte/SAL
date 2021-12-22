@@ -44,7 +44,7 @@ module View =
         
     let makeModsChooser model dispatch =
         ComboBox.create [
-            ComboBox.isEnabled (not model.IsLoading)
+            ComboBox.isEnabled (not model.IsInProgress)
             ComboBox.minWidth 200.0
             ComboBox.dataItems model.Mods
             ComboBox.selectedItem model.Mods.[model.SelectedMod]
@@ -86,7 +86,7 @@ module View =
                     ]
 
                     Button.create [
-                        Button.isEnabled (not model.IsLoading)
+                        Button.isEnabled (not model.IsInProgress)
                         Button.content "Choose SWAT4 folder"
                         Button.onClick (fun _ -> dispatch OpenFolderDialog)
                     ]
@@ -124,7 +124,7 @@ module View =
                                 Button.dock Dock.Bottom
                                 // FIXME: Find a way to emit this state change.
                                 // Button.isEnabled model.IsModRunning
-                                Button.isEnabled (not model.IsLoading)
+                                Button.isEnabled (not model.IsInProgress)
                                 Button.background "Green"
                                 Button.onClick (fun _ -> dispatch (Launch selectedMod.Id))
                                 Button.content "Launch Mod"
@@ -132,7 +132,7 @@ module View =
 
                             Button.create [
                                 Button.dock Dock.Bottom
-                                Button.isEnabled (not model.IsLoading)
+                                Button.isEnabled (not model.IsInProgress)
                                 Button.background "Red"
                                 Button.onClick (fun _ -> dispatch (Uninstall selectedMod.Id))
                                 Button.content "Uninstall"
@@ -141,7 +141,7 @@ module View =
                         else
                             Button.create [
                                 Button.dock Dock.Bottom
-                                Button.isEnabled (not model.IsLoading)
+                                Button.isEnabled (not model.IsInProgress)
                                 Button.onClick (fun _ -> dispatch (InstallDownload selectedMod.Id))
                                 Button.content ("Install " + selectedMod.Category.ToString() + selectedMod.Version.ToString())
                         ]
