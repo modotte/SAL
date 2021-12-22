@@ -45,18 +45,22 @@ module Shell =
             let selectedMod = getModById id model
             let message = async {
                 do! Async.Sleep 10000
-                IOHandler.uninstallMod selectedMod model.SwatDirectory |> ignore
+                let uninstallResult = IOHandler.uninstallMod selectedMod model.SwatDirectory 
 
-                return AfterUninstall selectedMod
+                return AfterUninstall uninstallResult
             }
 
             { model with IsLoading = true }, Cmd.OfAsync.result message
 
-        let withAfterUninstall currentMod model =
-            let updateMod selectedMod =
-                if selectedMod.Id = currentMod.Id then { selectedMod with IsInstalled = false }
-                else selectedMod
-            { model with Mods = Array.map updateMod model.Mods; IsLoading = false }, Cmd.none
+        let withAfterUninstall result model =
+            match result with
+            // TODO: Add error message to ui
+            | UninstallationResult.Failure (m, err) -> { model with IsLoading = false }, Cmd.none
+            | UninstallationResult.Success m ->
+                let updateMod selectedMod =
+                    if selectedMod.Id = m.Id then { selectedMod with IsInstalled = false }
+                    else selectedMod
+                { model with Mods = Array.map updateMod model.Mods; IsLoading = false }, Cmd.none
 
         let withLaunch id model = 
             let selectedMod = getModById id model
@@ -82,7 +86,7 @@ module Shell =
         | Install id -> UpdateHandler.withInstall id model
 
         | Uninstall id -> UpdateHandler.withUninstall id model
-        | AfterUninstall selectedMod -> UpdateHandler.withAfterUninstall selectedMod model
+        | AfterUninstall uninstallResult -> UpdateHandler.withAfterUninstall uninstallResult model
 
         | Launch id -> UpdateHandler.withLaunch id model
         | OpenFolderDialog -> UpdateHandler.withOpenNewFolderDialog window model

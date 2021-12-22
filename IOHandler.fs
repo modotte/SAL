@@ -95,7 +95,7 @@ module IOHandler =
         if not (Directory.Exists(Path.Combine(swatDir, modPath))) then
             let err = (modDirectoryOutput gameMod) + " is not even installed!"
             log.Error err
-            Error err
+            UninstallationResult.Failure (gameMod, err)
 
         else
             log.Information("Beginning to uninstall mod..")
@@ -110,7 +110,7 @@ module IOHandler =
 
             let msg = modPath + " uninstalled successfully"
             log.Information(msg)
-            Ok msg
+            UninstallationResult.Success gameMod
 
     let launchMod gameMod swatDir =
         let modDir = Path.Combine(swatDir, modDirectoryOutput gameMod)

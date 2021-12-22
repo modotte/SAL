@@ -35,6 +35,9 @@ module Domain =
         IsLoading: bool
     }
 
+    [<RequireQualifiedAccess>]
+    type UninstallationResult = Success of Mod | Failure of Mod * string
+
     type Message =
         | Failure of string
         | QuitProgram
@@ -42,7 +45,7 @@ module Domain =
         | Install of int
 
         | Uninstall of int
-        | AfterUninstall of Mod
+        | AfterUninstall of UninstallationResult
 
         | Launch of int
         | OpenFolderDialog
