@@ -33,7 +33,6 @@ module Domain =
         Mods: Mod array
         SwatDirectory: string
         IsInProgress: bool
-        SelectedMod: int
     }
 
     [<RequireQualifiedAccess>]
@@ -66,8 +65,6 @@ module Domain =
         
         | OpenFolderDialog
         | FolderDialogOpened of string
-        
-        | SelectMod of int
 
     let defaultMods: Mod array = [|
         {
@@ -107,5 +104,4 @@ module Domain =
             SwatDirectory = @"C:\GOG Games\SWAT 4"
             Mods = defaultMods
             IsInProgress = false
-            SelectedMod = 0
         }, Cmd.none

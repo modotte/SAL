@@ -166,62 +166,6 @@ module View =
                     StackPanel.children [
                         makeSwatDirectoryChooser model dispatch
                         makeModCategoriesView model dispatch
-                        
-                        StackPanel.create [
-                            StackPanel.children [
-                                ComboBox.create [
-                                    ComboBox.dataItems model.Mods
-                                    ComboBox.itemTemplate (
-                                        DataTemplateView<Mod>.create(
-                                            fun m ->
-                                                TextBlock.create [
-                                                 let installedText = if m.IsInstalled then "[INSTALLED]" else ""
-                                                 TextBlock.text $"{m.Maintainer}-{m.Version}-{m.Stability.ToString()} {installedText}"    
-                                                ]
-                                        )
-                                    )
-                                    ComboBox.onSelectedItemChanged (
-                                        fun i ->
-                                            if i <> null then
-                                                let m = i |> unbox<Mod>                        
-                                                dispatch (SelectMod m.Id)
-                                    )
-                                ]
-                                
-                                let selectedMod = 
-                                    model.Mods
-                                    |> Array.filter (fun m -> m.Id = model.SelectedMod)
-                                    |> Array.head
-
-                                // BUG: Id is not synchronized on selection
-                                if selectedMod.IsInstalled then
-                                    Button.create [
-                                        Button.dock Dock.Bottom
-                                        // FIXME: Find a way to emit this state change.
-                                        // Button.isEnabled model.IsModRunning
-                                        Button.isEnabled (not model.IsInProgress)
-                                        Button.background "Green"
-                                        Button.onClick (fun _ -> dispatch (Launch selectedMod.Id))
-                                        Button.content "Launch Mod"
-                                    ]                
-
-                                    Button.create [
-                                        Button.dock Dock.Bottom
-                                        Button.isEnabled (not model.IsInProgress)
-                                        Button.background "Red"
-                                        Button.onClick (fun _ -> dispatch (Uninstall selectedMod.Id))
-                                        Button.content "Uninstall"
-                                    ]
-
-                                else
-                                    Button.create [
-                                        Button.dock Dock.Bottom
-                                        Button.isEnabled (not model.IsInProgress)
-                                        Button.onClick (fun _ -> dispatch (InstallDownload selectedMod.Id))
-                                        Button.content ("Install " + selectedMod.Category.ToString() + selectedMod.Version.ToString())
-                                ]
-                            ]
-                        ]
                     ]
                 ]
             ]
