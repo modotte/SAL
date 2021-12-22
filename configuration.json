@@ -62,10 +62,10 @@
             "PreExtractFolder": "SEF-BTLA",
             "Stability": "Stable",
             "ArchiveFormat": "SevenZip",
-            "IsInstalled": false
+            "IsInstalled": true
         }
     ],
     "SwatDirectory": "C:\\GOG Games\\SWAT 4",
     "IsInProgress": false,
-    "SelectedMod": 4
+    "SelectedMod": 0
 }
