@@ -145,6 +145,7 @@ module Shell =
             { model with CurrentScreen = ErrorPopup; ProgressCompletedStatus = Some message }, Cmd.none
         | CloseErrorPopup ->
             { model with CurrentScreen = Primary }, Cmd.none
+            
 
     type ShellWindow() as this =
         inherit HostWindow()

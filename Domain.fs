@@ -8,7 +8,7 @@ module Domain =
     type StabilityType = Stable | Beta | Alpha | Nightly | Experimental
     type ArchiveFormatType = Zip | Rar | SevenZip
 
-    type ScreenType = Primary | InfoPopup | ErrorPopup | ConfirmPopup
+    type ScreenType = Primary | InfoPopup | ErrorPopup
 
     type Mod = {
         Id: int
