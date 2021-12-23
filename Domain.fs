@@ -7,6 +7,7 @@ module Domain =
     type CategoryType = SEF | SEF_FR | SEF_BTLA
     type StabilityType = Stable | Beta | Alpha | Nightly | Experimental
     type ArchiveFormatType = Zip | Rar | SevenZip
+    type ScreenType = Primary | Info
 
     type Mod = {
         Id: int
@@ -34,6 +35,7 @@ module Domain =
         SwatDirectory: string
         IsInProgress: bool
         ProgressStatus: string option
+        CurrentScreen: ScreenType
     }
 
     [<RequireQualifiedAccess>]
@@ -67,6 +69,9 @@ module Domain =
         | OpenFolderDialog
         | FolderDialogOpened of string
 
+        | OpenInfoPopup of string
+        | CloseInfoPopup
+
     let defaultMods: Mod array = [|
         {
             Id = 0
@@ -99,11 +104,12 @@ module Domain =
 
     let init = function
     // Always set IsLoading to false on application startup
-    | Some oldModel -> { oldModel with IsInProgress = false; ProgressStatus = None }, Cmd.none
+    | Some oldModel -> { oldModel with IsInProgress = false; ProgressStatus = None; CurrentScreen = Primary }, Cmd.none
     | _ -> 
         {
             SwatDirectory = @"C:\GOG Games\SWAT 4"
             Mods = defaultMods
             IsInProgress = false
             ProgressStatus = None
+            CurrentScreen = Primary
         }, Cmd.none

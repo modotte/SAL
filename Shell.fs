@@ -40,7 +40,8 @@ module Shell =
         
         let withAfterInstallDownload result model =
             match result with
-            | InstallDownloadResult.Failure (m, err) -> { model with IsInProgress = false }, Cmd.none
+            | InstallDownloadResult.Failure (m, err) -> 
+                { model with IsInProgress = false }, Cmd.ofMsg (OpenInfoPopup err)
             | InstallDownloadResult.Success m -> model, Cmd.ofMsg (InstallExtract m.Id)
         
         let withInstallExtract id model =
@@ -136,12 +137,17 @@ module Shell =
         | OpenFolderDialog -> UpdateHandler.withOpenNewFolderDialog window model
         | FolderDialogOpened directory -> UpdateHandler.withNewFolderFolderOpened directory model
 
+        | OpenInfoPopup message ->
+            { model with CurrentScreen = Info; ProgressStatus = Some message }, Cmd.none
+        | CloseInfoPopup ->
+            { model with CurrentScreen = Primary }, Cmd.none
+
     type ShellWindow() as this =
         inherit HostWindow()
         do
             base.Title <- "SAL: SEF Alternative Launcher"
             base.Width <- 800.0
-            base.Height <- 600.0
+            base.Height <- 400.0
             base.MinWidth <- 526.0
             base.MinHeight <- 526.0
             let updateWithServices (message: Message) (model: Model) =

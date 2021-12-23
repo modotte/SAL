@@ -67,5 +67,6 @@
     ],
     "SwatDirectory": "C:\\GOG Games\\SWAT 4",
     "IsInProgress": false,
-    "ProgressStatus": "Uninstalling mod..."
+    "ProgressStatus": "This is an info!",
+    "CurrentScreen": "Primary"
 }

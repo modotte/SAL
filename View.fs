@@ -165,13 +165,36 @@ module View =
             StackPanel.margin 8.0
             StackPanel.children [    
                 menuBar dispatch
-                StackPanel.create [
-                    StackPanel.orientation Orientation.Vertical
-                    StackPanel.children [
-                        makeSwatDirectoryChooser model dispatch
-                        makeProgressBarIndicator model
-                        makeModCategoriesView model dispatch
+
+                match model.CurrentScreen with
+                | Primary ->
+                    StackPanel.create [
+                        StackPanel.orientation Orientation.Vertical
+                        StackPanel.children [
+                            makeSwatDirectoryChooser model dispatch
+                            makeProgressBarIndicator model
+                            makeModCategoriesView model dispatch
+
+                            // TODO: Remove these
+                            Utility.simpleTextBlock "Testing only below"
+                            Button.create [
+                                Button.onClick (fun _ -> dispatch (OpenInfoPopup "This is an info!"))
+                                Button.content "Show Info!"
+                            ]
+
+                        ]
                     ]
-                ]
+                | Info ->
+                    StackPanel.create [
+                        StackPanel.verticalAlignment VerticalAlignment.Center
+                        StackPanel.orientation Orientation.Vertical
+                        StackPanel.children [
+                            Utility.simpleTextBlock model.ProgressStatus.Value
+                            Button.create [
+                                Button.onClick (fun _ -> dispatch CloseInfoPopup)
+                                Button.content "Ok"
+                            ]
+                        ]
+                    ]
             ]
         ]
