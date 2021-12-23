@@ -146,15 +146,13 @@ module View =
 
     let makeProgressBarIndicator model =
         if model.IsInProgress then
-            match model.ProgressStatus with
-            | Some status ->
-                StackPanel.create [
-                    StackPanel.children [
-                        Utility.simpleTextBlock status
-                        ProgressBar.create [ ProgressBar.isIndeterminate true ]
+            StackPanel.create [
+                StackPanel.children [
+                    match model.ProgressStatus with
+                    | Some status -> Utility.simpleTextBlock status
+                    | _ -> ()
+                    ProgressBar.create [ ProgressBar.isIndeterminate true ]
                 ]]
-            | None ->
-                StackPanel.create []
         else
             StackPanel.create []
     
