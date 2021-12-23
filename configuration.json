@@ -62,12 +62,12 @@
             "PreExtractFolder": "SEF-BTLA",
             "Stability": "Stable",
             "ArchiveFormat": "SevenZip",
-            "IsInstalled": false
+            "IsInstalled": true
         }
     ],
-    "SwatDirectory": "C:\\GOG Games\\SWAT 4",
-    "IsInProgress": false,
-    "ProgressStatus": "Downloading mod archive..",
+    "SwatDirectory": "Z:\\tmp\\SWAT4",
+    "IsInProgress": true,
+    "ProgressStatus": "Launching mod...",
     "ProgressCompletedStatus": "Connection refused. [::ffff:127.0.0.1]:6792 (localhost:6792)",
     "CurrentScreen": "Primary"
 }

@@ -156,6 +156,25 @@ module View =
         else
             StackPanel.create []
 
+    let makePopup prefixMessage (borderBackgroundColor: string) closeMessage model dispatch =
+        Border.create [
+            Border.background borderBackgroundColor
+            Border.child (
+                StackPanel.create [
+                    StackPanel.margin 32.0
+                    StackPanel.spacing 32.0
+                    StackPanel.children [
+                        Utility.simpleTextBlock 
+                            $"{prefixMessage} {model.ProgressCompletedStatus.Value}"
+                        Button.create [
+                            Button.onClick (fun _ -> dispatch closeMessage)
+                            Button.content "Ok"
+                        ]
+                    ]
+                ]
+            )
+        ]
+
     let rootScreen model dispatch = 
         StackPanel.create [
             
@@ -176,17 +195,9 @@ module View =
                     makeProgressBarIndicator model
                     makeModCategoriesView model dispatch
                 | InfoPopup ->
-                    Utility.simpleTextBlock model.ProgressCompletedStatus.Value
-                    Button.create [
-                        Button.onClick (fun _ -> dispatch CloseInfoPopup)
-                        Button.content "Ok"
-                    ]
+                    makePopup "Info: " "Black" CloseInfoPopup model dispatch
                 | ErrorPopup ->
-                    Utility.simpleTextBlock model.ProgressCompletedStatus.Value
-                    Button.create [
-                        Button.onClick (fun _ -> dispatch CloseErrorPopup)
-                        Button.content "Ok"
-                    ]
+                    makePopup "Error occured. Reason: " "Red" CloseErrorPopup model dispatch
             ]
 
         ]
