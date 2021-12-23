@@ -108,7 +108,7 @@ module View =
                     Button.create [
                         Button.dock Dock.Bottom
                         Button.isEnabled (not model.IsInProgress)
-                        Button.background "Light Green"
+                        Button.background "Green"
                         Button.onClick (fun _ -> dispatch (Launch selectedMod.Id))
                         Button.content "Launch Mod"
                     ]                
