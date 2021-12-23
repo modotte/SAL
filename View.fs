@@ -1,15 +1,16 @@
 namespace SAL
 
 open Avalonia.Controls
-open Avalonia.FuncUI.Components
 open Avalonia.FuncUI.DSL
+open Avalonia.Layout
+
+open SAL.Domain
+
+[<RequireQualifiedAccess>]
+module Utility =
+    let simpleTextBlock text = TextBlock.create [ TextBlock.text text ]
 
 module View =
-    open Avalonia.Controls
-    open Avalonia.Layout
-
-    open SAL.Domain
-
     let menuBar dispatch =
         Menu.create [
             Menu.dock Dock.Top
@@ -62,22 +63,20 @@ module View =
             StackPanel.orientation Orientation.Horizontal
             StackPanel.children [
                 let isInstalledText = if selectedMod.IsInstalled then "[INSTALLED]" else ""
-                TextBlock.create [ TextBlock.text $"{selectedMod.Maintainer}-{selectedMod.Version}-{selectedMod.Stability.ToString()} {isInstalledText}" ]
+                Utility.simpleTextBlock $"{selectedMod.Maintainer}-{selectedMod.Version}-{selectedMod.Stability.ToString()} {isInstalledText}"
                 
                 match selectedMod.Description with
                 | None -> ()
                 | Some desc ->
                     Expander.create [
                         Expander.header "More Info"
-                        Expander.content (StackPanel.create [ StackPanel.children [ TextBlock.create [ TextBlock.text desc ] ] ])
+                        Expander.content (StackPanel.create [ StackPanel.children [ Utility.simpleTextBlock desc ] ])
                     ]
 
                 
                 if selectedMod.IsInstalled then
                     Button.create [
                         Button.dock Dock.Bottom
-                        // FIXME: Find a way to emit this state change.
-                        // Button.isEnabled model.IsModRunning
                         Button.isEnabled (not model.IsInProgress)
                         Button.background "Green"
                         Button.onClick (fun _ -> dispatch (Launch selectedMod.Id))
@@ -110,16 +109,16 @@ module View =
             StackPanel.spacing 32.0
             StackPanel.children [
                 
+                let showMods category =
+                    getMods category model.Mods
+                    |> Array.map (fun m -> makeModStackView m model dispatch :> Avalonia.FuncUI.Types.IView)
+                    |> Array.toList
+
                 StackPanel.create [
                     StackPanel.children [
-                            
-                        TextBlock.create [ TextBlock.text "SEF" ]
+                        Utility.simpleTextBlock "SEF"
                         StackPanel.create [
-                            StackPanel.children (
-                                getMods SEF model.Mods
-                                |> Array.toList
-                                |> List.map  (fun m -> makeModStackView m model dispatch)
-                            )
+                            StackPanel.children (showMods SEF)
                         ]
                     ]
                 ]
@@ -127,26 +126,18 @@ module View =
 
                 StackPanel.create [
                     StackPanel.children [
-                        TextBlock.create [ TextBlock.text "SEF - First Responders" ]
+                        Utility.simpleTextBlock "SEF - First Responders"
                         StackPanel.create [
-                            StackPanel.children (
-                                getMods SEF_FR model.Mods
-                                |> Array.toList
-                                |> List.map  (fun m -> makeModStackView m model dispatch)
-                            )
+                            StackPanel.children (showMods SEF_FR)
                         ]
                     ]
                 ]
 
                 StackPanel.create [
                     StackPanel.children [
-                        TextBlock.create [ TextBlock.text "SEF - Back To Los Angeles" ]
+                        Utility.simpleTextBlock "SEF - Back To Los Angeles"
                         StackPanel.create [
-                            StackPanel.children (
-                                getMods SEF_BTLA model.Mods
-                                |> Array.toList
-                                |> List.map  (fun m -> makeModStackView m model dispatch)
-                            )
+                            StackPanel.children (showMods SEF_BTLA)
                         ]
                     ]
                 ]
