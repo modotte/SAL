@@ -1,3 +1,6 @@
+// Copyright (c) 2021 Modotte
+// For further details about license, see LICENSE file.
+
 namespace SAL
 
 open Avalonia.Controls

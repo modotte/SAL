@@ -5,15 +5,8 @@ open Elmish
 open Thoth.Json.Net
 
 open SAL.Domain
-open System
-open Elmish
-open Avalonia
-open Avalonia.Controls
-open Avalonia.Input
-open Avalonia.Layout
-open Avalonia.FuncUI.Elmish
 open Avalonia.FuncUI.Components.Hosts
-open Avalonia.FuncUI.DSL
+
 module Storage =
 
     let [<Literal>] private storageFilename = "configuration.json"
