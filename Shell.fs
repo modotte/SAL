@@ -36,7 +36,7 @@ module Shell =
                 return AfterInstallDownload result
             }
 
-            { model with IsInProgress = true }, Cmd.OfAsync.result message
+            { model with IsInProgress = true; ProgressStatus = Some "Downloading mod archive.." }, Cmd.OfAsync.result message
         
         let withAfterInstallDownload result model =
             match result with
@@ -50,7 +50,7 @@ module Shell =
                 return AfterInstallExtract result
             }
 
-            { model with IsInProgress = true }, Cmd.OfAsync.result message
+            { model with IsInProgress = true; ProgressStatus = Some "Extracting mod archive.." }, Cmd.OfAsync.result message
             
         let withAfterInstallExtract result model =
             match result with
@@ -69,7 +69,7 @@ module Shell =
                 return AfterUninstall result
             }
 
-            { model with IsInProgress = true }, Cmd.OfAsync.result message
+            { model with IsInProgress = true; ProgressStatus = Some "Uninstalling mod..." }, Cmd.OfAsync.result message
         let withAfterUninstall result model =
             match result with
             // TODO: Add error message to ui
@@ -88,7 +88,7 @@ module Shell =
                 return AfterLaunch result
             }
             
-            { model with IsInProgress = true }, Cmd.OfAsync.result message
+            { model with IsInProgress = true; ProgressStatus = Some "Launching mod..." }, Cmd.OfAsync.result message
             
         let withAfterLaunch result model =
             match result with

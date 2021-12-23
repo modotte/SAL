@@ -33,6 +33,7 @@ module Domain =
         Mods: Mod array
         SwatDirectory: string
         IsInProgress: bool
+        ProgressStatus: string option
     }
 
     [<RequireQualifiedAccess>]
@@ -98,10 +99,11 @@ module Domain =
 
     let init = function
     // Always set IsLoading to false on application startup
-    | Some oldModel -> { oldModel with IsInProgress = false }, Cmd.none
+    | Some oldModel -> { oldModel with IsInProgress = false; ProgressStatus = None }, Cmd.none
     | _ -> 
         {
             SwatDirectory = @"C:\GOG Games\SWAT 4"
             Mods = defaultMods
             IsInProgress = false
+            ProgressStatus = None
         }, Cmd.none

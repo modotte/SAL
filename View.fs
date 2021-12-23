@@ -146,7 +146,15 @@ module View =
 
     let makeProgressBarIndicator model =
         if model.IsInProgress then
-            ProgressBar.create [ ProgressBar.isIndeterminate true ] :> Avalonia.FuncUI.Types.IView
+            match model.ProgressStatus with
+            | Some status ->
+                StackPanel.create [
+                    StackPanel.children [
+                        Utility.simpleTextBlock status
+                        ProgressBar.create [ ProgressBar.isIndeterminate true ]
+                ]]
+            | None ->
+                StackPanel.create []
         else
             StackPanel.create []
     
