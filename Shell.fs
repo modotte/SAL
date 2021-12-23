@@ -41,7 +41,7 @@ module Shell =
         let withAfterInstallDownload result model =
             match result with
             | InstallDownloadResult.Failure (m, err) -> 
-                { model with IsInProgress = false }, Cmd.ofMsg (OpenInfoPopup err)
+                { model with IsInProgress = false }, Cmd.ofMsg (OpenErrorPopup err)
             | InstallDownloadResult.Success m -> model, Cmd.ofMsg (InstallExtract m.Id)
         
         let withInstallExtract id model =
@@ -55,7 +55,7 @@ module Shell =
             
         let withAfterInstallExtract result model =
             match result with
-            | InstallExtractionResult.Failure (m, err) -> { model with IsInProgress = false }, Cmd.none
+            | InstallExtractionResult.Failure (m, err) -> { model with IsInProgress = false }, Cmd.ofMsg (OpenErrorPopup err)
             | InstallExtractionResult.Success m -> 
                 let updateMod selectedMod =
                         if selectedMod.Id = m.Id then { selectedMod with IsInstalled = true }
@@ -73,8 +73,7 @@ module Shell =
             { model with IsInProgress = true; ProgressStatus = Some "Uninstalling mod..." }, Cmd.OfAsync.result message
         let withAfterUninstall result model =
             match result with
-            // TODO: Add error message to ui
-            | UninstallationResult.Failure (m, err) -> { model with IsInProgress = false }, Cmd.none
+            | UninstallationResult.Failure (m, err) -> { model with IsInProgress = false }, Cmd.ofMsg (OpenErrorPopup err)
             | UninstallationResult.Success m ->
                 let updateMod selectedMod =
                     if selectedMod.Id = m.Id then { selectedMod with IsInstalled = false }
@@ -93,7 +92,7 @@ module Shell =
             
         let withAfterLaunch result model =
             match result with
-            | LaunchResult.Failure (m, err) -> { model with IsInProgress = false }, Cmd.none
+            | LaunchResult.Failure (m, err) -> { model with IsInProgress = false }, Cmd.ofMsg (OpenErrorPopup err)
             | LaunchResult.Success m ->
                 { model with IsInProgress = false }, Cmd.none
 
@@ -138,8 +137,13 @@ module Shell =
         | FolderDialogOpened directory -> UpdateHandler.withNewFolderFolderOpened directory model
 
         | OpenInfoPopup message ->
-            { model with CurrentScreen = Info; ProgressStatus = Some message }, Cmd.none
+            { model with CurrentScreen = InfoPopup; ProgressCompletedStatus = Some message }, Cmd.none
         | CloseInfoPopup ->
+            { model with CurrentScreen = Primary }, Cmd.none
+
+        | OpenErrorPopup message ->
+            { model with CurrentScreen = ErrorPopup; ProgressCompletedStatus = Some message }, Cmd.none
+        | CloseErrorPopup ->
             { model with CurrentScreen = Primary }, Cmd.none
 
     type ShellWindow() as this =

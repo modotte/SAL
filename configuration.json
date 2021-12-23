@@ -67,6 +67,7 @@
     ],
     "SwatDirectory": "C:\\GOG Games\\SWAT 4",
     "IsInProgress": false,
-    "ProgressStatus": "This is an info!",
-    "CurrentScreen": "Primary"
+    "ProgressStatus": "Downloading mod archive..",
+    "ProgressCompletedStatus": "Connection refused. [::ffff:127.0.0.1]:6792 (localhost:6792)",
+    "CurrentScreen": "ErrorPopup"
 }

@@ -174,27 +174,32 @@ module View =
                             makeSwatDirectoryChooser model dispatch
                             makeProgressBarIndicator model
                             makeModCategoriesView model dispatch
-
-                            // TODO: Remove these
-                            Utility.simpleTextBlock "Testing only below"
-                            Button.create [
-                                Button.onClick (fun _ -> dispatch (OpenInfoPopup "This is an info!"))
-                                Button.content "Show Info!"
-                            ]
-
                         ]
                     ]
-                | Info ->
+                | InfoPopup ->
                     StackPanel.create [
                         StackPanel.verticalAlignment VerticalAlignment.Center
                         StackPanel.orientation Orientation.Vertical
                         StackPanel.children [
-                            Utility.simpleTextBlock model.ProgressStatus.Value
+                            Utility.simpleTextBlock model.ProgressCompletedStatus.Value
                             Button.create [
                                 Button.onClick (fun _ -> dispatch CloseInfoPopup)
                                 Button.content "Ok"
                             ]
                         ]
                     ]
+                | ErrorPopup ->
+                    StackPanel.create [
+                        StackPanel.verticalAlignment VerticalAlignment.Center
+                        StackPanel.orientation Orientation.Vertical
+                        StackPanel.children [
+                            Utility.simpleTextBlock model.ProgressCompletedStatus.Value
+                            Button.create [
+                                Button.onClick (fun _ -> dispatch CloseErrorPopup)
+                                Button.content "Ok"
+                            ]
+                        ]
+                    ]
+
             ]
         ]
