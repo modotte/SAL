@@ -98,8 +98,18 @@ module Shell =
 
         let withOpenNewFolderDialog window model =
             let dialog = Dialog.getFolderDialog model.SwatDirectory
-            let showDialog w = dialog.ShowAsync(w) |> Async.AwaitTask
-            model, Cmd.OfAsync.perform showDialog window FolderDialogOpened
+            let previousSwatDir = model.SwatDirectory
+            let showDialog w = async {
+                let! result = dialog.ShowAsync(w) |> Async.AwaitTask
+
+                // Use previous entered SwatDirectory value if user
+                // close the dialog by closing or clicking cancel button.
+                if String.IsNullOrEmpty result then
+                    return previousSwatDir
+                else
+                    return result
+            }
+            model, Cmd.OfAsync.perform showDialog (window :> Window) FolderDialogOpened
 
         let withNewFolderFolderOpened directory model =
             { model with SwatDirectory = directory }, Cmd.none
