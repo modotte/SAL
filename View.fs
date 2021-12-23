@@ -26,6 +26,26 @@ module View =
                         ]
                     ]
                 ]
+
+                MenuItem.create [
+                    MenuItem.header "Help"
+                    MenuItem.viewItems [
+                        MenuItem.create [
+                            MenuItem.header "About SAL"
+                            MenuItem.onClick (fun _ -> dispatch QuitProgram)
+                        ]
+
+                        MenuItem.create [
+                            MenuItem.header "Report bugs or suggest feedbacks"
+                            MenuItem.onClick (fun _ -> dispatch QuitProgram)
+                        ]
+
+                        MenuItem.create [
+                            MenuItem.header "Visit source code repository on Github"
+                            MenuItem.onClick (fun _ -> dispatch QuitProgram)
+                        ]
+                    ]
+                ]
             ]
         ]
 

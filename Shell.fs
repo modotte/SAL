@@ -1,5 +1,5 @@
 // Copyright (c) 2021 Modotte
-// Copyright (c) 2019 Josua Jäger under MIT license
+// Copyright (c) 2019 Josua Jäger Original template under MIT license
 
 namespace SAL
 
