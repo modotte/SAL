@@ -76,6 +76,8 @@ module Domain =
         | OpenErrorPopup of string
         | CloseErrorPopup
 
+        | VisitLink of string
+
     let defaultMods: Mod array = [|
         {
             Id = 0

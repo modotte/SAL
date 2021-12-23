@@ -6,13 +6,9 @@ namespace SAL
 module Shell =
     open System
     open Elmish
-    open Avalonia
     open Avalonia.Controls
-    open Avalonia.Input
-    open Avalonia.Layout
     open Avalonia.FuncUI.Elmish
     open Avalonia.FuncUI.Components.Hosts
-    open Avalonia.FuncUI.DSL
     open SAL.Data
     open Domain
     open Logger
@@ -149,12 +145,16 @@ module Shell =
             { model with CurrentScreen = ErrorPopup; ProgressCompletedStatus = Some message }, Cmd.none
         | CloseErrorPopup ->
             { model with CurrentScreen = Primary }, Cmd.none
+
+        | VisitLink link ->
+            Avalonia.Dialogs.AboutAvaloniaDialog.OpenBrowser(link)
+            model, Cmd.none
             
 
     type ShellWindow() as this =
         inherit HostWindow()
         do
-            base.Title <- "SAL: SEF Alternative Launcher"
+            base.Title <- "SAL: SEF Alternative Launcher (v0.1.0)"
             base.Width <- 800.0
             base.Height <- 400.0
             base.MinWidth <- 526.0
