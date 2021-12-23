@@ -155,49 +155,41 @@ module View =
                 ]]
         else
             StackPanel.create []
-    
-    let view (model: Model) dispatch =
+
+    let rootScreen model dispatch = 
         StackPanel.create [
-            StackPanel.verticalAlignment VerticalAlignment.Top
-            StackPanel.spacing 8.0
-            StackPanel.margin 8.0
-            StackPanel.children [    
-                menuBar dispatch
+            
+            match model.CurrentScreen with
+            | Primary ->
+                StackPanel.verticalAlignment VerticalAlignment.Top
+                StackPanel.spacing 8.0
+                StackPanel.margin 8.0
+            | _ -> 
+                StackPanel.verticalAlignment VerticalAlignment.Center
+
+            StackPanel.children [
 
                 match model.CurrentScreen with
                 | Primary ->
-                    StackPanel.create [
-                        StackPanel.orientation Orientation.Vertical
-                        StackPanel.children [
-                            makeSwatDirectoryChooser model dispatch
-                            makeProgressBarIndicator model
-                            makeModCategoriesView model dispatch
-                        ]
-                    ]
+                    menuBar dispatch
+                    makeSwatDirectoryChooser model dispatch
+                    makeProgressBarIndicator model
+                    makeModCategoriesView model dispatch
                 | InfoPopup ->
-                    StackPanel.create [
-                        StackPanel.verticalAlignment VerticalAlignment.Center
-                        StackPanel.orientation Orientation.Vertical
-                        StackPanel.children [
-                            Utility.simpleTextBlock model.ProgressCompletedStatus.Value
-                            Button.create [
-                                Button.onClick (fun _ -> dispatch CloseInfoPopup)
-                                Button.content "Ok"
-                            ]
-                        ]
+                    Utility.simpleTextBlock model.ProgressCompletedStatus.Value
+                    Button.create [
+                        Button.onClick (fun _ -> dispatch CloseInfoPopup)
+                        Button.content "Ok"
                     ]
                 | ErrorPopup ->
-                    StackPanel.create [
-                        StackPanel.verticalAlignment VerticalAlignment.Center
-                        StackPanel.orientation Orientation.Vertical
-                        StackPanel.children [
-                            Utility.simpleTextBlock model.ProgressCompletedStatus.Value
-                            Button.create [
-                                Button.onClick (fun _ -> dispatch CloseErrorPopup)
-                                Button.content "Ok"
-                            ]
-                        ]
+                    Utility.simpleTextBlock model.ProgressCompletedStatus.Value
+                    Button.create [
+                        Button.onClick (fun _ -> dispatch CloseErrorPopup)
+                        Button.content "Ok"
                     ]
-
             ]
+
         ]
+    
+    let view (model: Model) dispatch =
+        rootScreen model dispatch

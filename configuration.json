@@ -69,5 +69,5 @@
     "IsInProgress": false,
     "ProgressStatus": "Downloading mod archive..",
     "ProgressCompletedStatus": "Connection refused. [::ffff:127.0.0.1]:6792 (localhost:6792)",
-    "CurrentScreen": "ErrorPopup"
+    "CurrentScreen": "Primary"
 }
