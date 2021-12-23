@@ -143,6 +143,12 @@ module View =
                 ]
             ]
         ]
+
+    let makeProgressBarIndicator model =
+        if model.IsInProgress then
+            ProgressBar.create [ ProgressBar.isIndeterminate true ] :> Avalonia.FuncUI.Types.IView
+        else
+            StackPanel.create []
     
     let view (model: Model) dispatch =
         StackPanel.create [
@@ -155,6 +161,7 @@ module View =
                     StackPanel.orientation Orientation.Vertical
                     StackPanel.children [
                         makeSwatDirectoryChooser model dispatch
+                        makeProgressBarIndicator model
                         makeModCategoriesView model dispatch
                     ]
                 ]
