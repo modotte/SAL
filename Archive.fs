@@ -9,12 +9,6 @@ open SharpCompress.Readers.Rar
 
 open SharpCompress.Archives.SevenZip
 
-open SharpCompress.Archives
-open SharpCompress.Archives.Zip
-open SharpCompress.Archives.Rar
-open SharpCompress.Archives.SevenZip
-open SharpCompress.Common
-
 module Archive =
     let extractZipArchiveTo archive outputDir =
         use reader = ZipFile.Open(archive, ZipArchiveMode.Read)
