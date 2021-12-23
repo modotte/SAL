@@ -11,7 +11,7 @@ module IOHandler =
     exception TemporaryFolderCreationException of string
     exception TemporaryFolderDeletionException of string
 
-    let private modDirectoryOutput (gameMod: Mod) = 
+    let modDirectoryOutput (gameMod: Mod) = 
         $"{gameMod.Maintainer}-{getCategory gameMod.Category}-{gameMod.Version}"
 
     let private asArchiveFile gameMod =

@@ -36,7 +36,8 @@ module Shell =
                 return AfterInstallDownload result
             }
 
-            { model with IsInProgress = true; ProgressStatus = Some "Downloading mod archive.." }, Cmd.OfAsync.result message
+            let status = $"Downloading {IOHandler.modDirectoryOutput selectedMod} mod archive.."
+            { model with IsInProgress = true; ProgressStatus = Some status }, Cmd.OfAsync.result message
         
         let withAfterInstallDownload result model =
             match result with
@@ -51,7 +52,8 @@ module Shell =
                 return AfterInstallExtract result
             }
 
-            { model with IsInProgress = true; ProgressStatus = Some "Extracting mod archive.." }, Cmd.OfAsync.result message
+            let status = $"Extracting {IOHandler.modDirectoryOutput selectedMod} mod archive.."
+            { model with IsInProgress = true; ProgressStatus = Some status }, Cmd.OfAsync.result message
             
         let withAfterInstallExtract result model =
             match result with
@@ -70,7 +72,8 @@ module Shell =
                 return AfterUninstall result
             }
 
-            { model with IsInProgress = true; ProgressStatus = Some "Uninstalling mod..." }, Cmd.OfAsync.result message
+            let status = $"Uninstalling {IOHandler.modDirectoryOutput selectedMod} mod.."
+            { model with IsInProgress = true; ProgressStatus = Some status }, Cmd.OfAsync.result message
         let withAfterUninstall result model =
             match result with
             | UninstallationResult.Failure (m, err) -> { model with IsInProgress = false }, Cmd.ofMsg (OpenErrorPopup err)
@@ -88,7 +91,8 @@ module Shell =
                 return AfterLaunch result
             }
             
-            { model with IsInProgress = true; ProgressStatus = Some "Launching mod..." }, Cmd.OfAsync.result message
+            let status = $"Launching {IOHandler.modDirectoryOutput selectedMod} mod.."
+            { model with IsInProgress = true; ProgressStatus = Some status }, Cmd.OfAsync.result message
             
         let withAfterLaunch result model =
             match result with
@@ -154,7 +158,7 @@ module Shell =
             base.Width <- 800.0
             base.Height <- 400.0
             base.MinWidth <- 526.0
-            base.MinHeight <- 526.0
+            base.MinHeight <- 326.0
             let updateWithServices (message: Message) (model: Model) =
                 Storage.updateStorage update message model this
             

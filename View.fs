@@ -3,6 +3,8 @@ namespace SAL
 open Avalonia.Controls
 open Avalonia.FuncUI.DSL
 open Avalonia.Layout
+open Avalonia.FuncUI.Components
+open Avalonia.Media
 
 open SAL.Domain
 
@@ -37,7 +39,7 @@ module View =
             StackPanel.spacing 8.0
             StackPanel.margin 8.0
             StackPanel.orientation Orientation.Horizontal
-                            
+                              
             StackPanel.children [
                 TextBlock.create [
                     TextBlock.fontSize 15.0
@@ -62,23 +64,28 @@ module View =
         StackPanel.create [
             StackPanel.orientation Orientation.Horizontal
             StackPanel.children [
+                let category = 
+                    match selectedMod.Category with
+                    | SEF -> "SEF"
+                    | SEF_FR -> "SEF - First Responders"
+                    | SEF_BTLA -> "SEF - Back To Los Angeles"
+
                 let isInstalledText = if selectedMod.IsInstalled then "[INSTALLED]" else ""
-                Utility.simpleTextBlock $"{selectedMod.Maintainer}-{selectedMod.Version}-{selectedMod.Stability.ToString()} {isInstalledText}"
-                
-                match selectedMod.Description with
-                | None -> ()
-                | Some desc ->
-                    Expander.create [
-                        Expander.header "More Info"
-                        Expander.content (StackPanel.create [ StackPanel.children [ Utility.simpleTextBlock desc ] ])
-                    ]
+                TextBlock.create [ 
+                    TextBlock.fontSize 16.0
+                    TextBlock.fontWeight FontWeight.ExtraBold
+                    TextBlock.text category
+                ]
+                TextBlock.create [
+                    TextBlock.text $": {selectedMod.Maintainer}-{selectedMod.Version}-{selectedMod.Stability.ToString()} {isInstalledText}"
+                ]
 
                 
                 if selectedMod.IsInstalled then
                     Button.create [
                         Button.dock Dock.Bottom
                         Button.isEnabled (not model.IsInProgress)
-                        Button.background "Green"
+                        Button.background "Light Green"
                         Button.onClick (fun _ -> dispatch (Launch selectedMod.Id))
                         Button.content "Launch Mod"
                     ]                
@@ -103,45 +110,19 @@ module View =
         ]
         
 
-    let makeModCategoriesView model dispatch =
+    let modItemTemplate selectedMod model dispatch =
         StackPanel.create [
-            StackPanel.horizontalAlignment HorizontalAlignment.Center
-            StackPanel.spacing 32.0
-            StackPanel.children [
-                
-                let showMods category =
-                    getMods category model.Mods
-                    |> Array.map (fun m -> makeModStackView m model dispatch :> Avalonia.FuncUI.Types.IView)
-                    |> Array.toList
-
-                StackPanel.create [
-                    StackPanel.children [
-                        Utility.simpleTextBlock "SEF"
-                        StackPanel.create [
-                            StackPanel.children (showMods SEF)
-                        ]
-                    ]
-                ]
-                
-
-                StackPanel.create [
-                    StackPanel.children [
-                        Utility.simpleTextBlock "SEF - First Responders"
-                        StackPanel.create [
-                            StackPanel.children (showMods SEF_FR)
-                        ]
-                    ]
-                ]
-
-                StackPanel.create [
-                    StackPanel.children [
-                        Utility.simpleTextBlock "SEF - Back To Los Angeles"
-                        StackPanel.create [
-                            StackPanel.children (showMods SEF_BTLA)
-                        ]
-                    ]
-                ]
-            ]
+            StackPanel.orientation Orientation.Horizontal
+            StackPanel.children [ makeModStackView selectedMod model dispatch ]
+        ]
+    let makeModCategoriesView model dispatch =
+        ListBox.create [
+            ListBox.verticalAlignment VerticalAlignment.Top
+            ListBox.width 800.0
+            ListBox.minWidth 400.0
+            ListBox.horizontalAlignment HorizontalAlignment.Center
+            ListBox.dataItems model.Mods
+            ListBox.itemTemplate (DataTemplateView<Mod>.create(fun m-> modItemTemplate m model dispatch))
         ]
 
     let makeProgressBarIndicator model =
