@@ -1,0 +1,9 @@
+Avalonia.Desktop
+JaggerJo.Avalonia.FuncUI
+JaggerJo.Avalonia.FuncUI.DSL
+JaggerJo.Avalonia.FuncUI.Elmish
+Serilog
+Serilog.Sinks.Console
+SharpCompress
+Thoth.Json.Net
+FSharp.Core

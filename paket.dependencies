@@ -1,0 +1,11 @@
+source https://www.nuget.org/api/v2
+
+nuget FSharp.Core
+nuget Avalonia.Desktop 0.10.0-rc1 prerelease
+nuget JaggerJo.Avalonia.FuncUI 0.5.0-beta prerelease
+nuget JaggerJo.Avalonia.FuncUI.DSL 0.5.0-beta prerelease
+nuget JaggerJo.Avalonia.FuncUI.Elmish 0.5.0-beta prerelease
+nuget Serilog 2.10.0
+nuget Serilog.Sinks.Console 4.0.1
+nuget SharpCompress 0.30.1
+nuget Thoth.Json.Net 7.1.0

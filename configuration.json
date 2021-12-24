@@ -63,7 +63,7 @@
     ],
     "SwatDirectory": "C:\\GOG Games\\SWAT 4",
     "IsInProgress": false,
-    "ProgressStatus": "Uninstalling beppe_goodoldrebel-SEF_FR-v0.65 mod..",
-    "ProgressCompletedStatus": "beppe_goodoldrebel-SEF_FR-v0.66 already installed!",
+    "ProgressStatus": "Uninstalling beppe_goodoldrebel-SEF_FR-v0.66 mod..",
+    "ProgressCompletedStatus": "Connection refused. [::ffff:127.0.0.1]:6792 (localhost:6792)",
     "CurrentScreen": "Primary"
 }
