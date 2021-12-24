@@ -16,6 +16,7 @@
     <Compile Include="View.fs" />
     <Compile Include="IOHandler.fs" />
     <Compile Include="Dialog.fs" />
+    <Compile Include="UpdateHandler.fs" />
     <Compile Include="Shell.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
