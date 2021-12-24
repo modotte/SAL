@@ -90,9 +90,13 @@ module View =
                 let category = 
                     match selectedMod.Category with
                     | SEF -> "SEF"
-                    | SEF_FR -> "SEF - First Responders"
-                    | SEF_BTLA -> "SEF - Back To Los Angeles"
+                    | SEF_FR -> "First Responders"
+                    | SEF_BTLA -> "Back To Los Angeles"
 
+                let getOrigin = function
+                    | Official -> "[OFFICIAL]"
+                    | Fork -> "[FORK]"
+                
                 let isInstalledText = if selectedMod.IsInstalled then "[INSTALLED]" else ""
                 TextBlock.create [ 
                     TextBlock.fontSize 16.0
@@ -100,7 +104,7 @@ module View =
                     TextBlock.text category
                 ]
                 TextBlock.create [
-                    TextBlock.text $": {selectedMod.Maintainer}-{selectedMod.Version}-{selectedMod.Stability.ToString()} {isInstalledText}"
+                    TextBlock.text $" {getOrigin selectedMod.Origin}: {selectedMod.Maintainer}-{selectedMod.Version}-{selectedMod.Stability.ToString()} {isInstalledText}"
                 ]
 
                 
@@ -138,11 +142,14 @@ module View =
             StackPanel.orientation Orientation.Horizontal
             StackPanel.children [ makeModStackView selectedMod model dispatch ]
         ]
+
     let makeModCategoriesView model dispatch =
         ListBox.create [
+            ListBox.isEnabled (not model.IsInProgress)
             ListBox.verticalAlignment VerticalAlignment.Top
             ListBox.width 800.0
             ListBox.minWidth 400.0
+            ListBox.minHeight 300.0
             ListBox.horizontalAlignment HorizontalAlignment.Center
             ListBox.dataItems model.Mods
             ListBox.itemTemplate (DataTemplateView<Mod>.create(fun m-> modItemTemplate m model dispatch))

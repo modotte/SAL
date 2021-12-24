@@ -151,7 +151,7 @@ module Shell =
     type ShellWindow() as this =
         inherit HostWindow()
         do
-            base.Title <- "SAL: SEF Alternative Launcher (v0.1.0)"
+            base.Title <- "SAL: SWAT4 (for SEF based mods) Alternative Launcher (v0.1.2)"
             base.Width <- 800.0
             base.Height <- 400.0
             base.MinWidth <- 526.0
