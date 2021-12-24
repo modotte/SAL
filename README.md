@@ -32,6 +32,29 @@ v0.1.0
 - [ ] Shared base configuration for mod of choice (audio, video, key configurations).
 - [ ] Support Mega Map Pack and other various similar mods as extensions.
 
+## Building
+
+### Prerequisites
+
+- dotnet 5 (or dotnet 6)
+- Internet connection to download dependencies
+
+### Build & Run
+
+```sh
+
+# Restore all tools and depedencies
+dotnet tool restore
+dotnet paket install
+
+# Building the application
+dotnet build
+
+# Running
+
+dotnet run
+```
+
 ## How to contribute
 Please read CONTRIBUTING.md first.
 
