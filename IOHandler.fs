@@ -11,6 +11,11 @@ module IOHandler =
     exception TemporaryFolderCreationException of string
     exception TemporaryFolderDeletionException of string
 
+    let private getCategory = function
+        | SEF -> "SEF"
+        | SEF_FR -> "SEF_FR"
+        | SEF_BTLA -> "SEF_BTLA"
+
     let modDirectoryOutput (gameMod: Mod) = 
         $"{gameMod.Maintainer}-{getCategory gameMod.Category}-{gameMod.Version}"
 
