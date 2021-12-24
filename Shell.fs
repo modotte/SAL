@@ -94,7 +94,7 @@ module Shell =
             | LaunchResult.Success m ->
                 { model with IsInProgress = false }, Cmd.none
 
-        let withOpenNewFolderDialog window model =
+        let withOpenFolderDialog window model =
             let dialog = Dialog.getFolderDialog model.SwatDirectory
             let previousSwatDir = model.SwatDirectory
             let showDialog w = async {
@@ -109,8 +109,18 @@ module Shell =
             }
             model, Cmd.OfAsync.perform showDialog (window :> Window) FolderDialogOpened
 
-        let withNewFolderFolderOpened directory model =
-            { model with SwatDirectory = directory }, Cmd.none
+        let withFolderFolderOpened directory model = { model with SwatDirectory = directory }, Cmd.none
+
+        let withOpenInfoPopup message model =
+            { model with CurrentScreen = InfoPopup; ProgressCompletedStatus = Some message }, Cmd.none
+        let withCloseInfoPopup model = { model with CurrentScreen = Primary }, Cmd.none
+
+        let withOpenErrorPopup message model = { model with CurrentScreen = ErrorPopup; ProgressCompletedStatus = Some message }, Cmd.none
+        let withCloseErrorPopup model = { model with CurrentScreen = Primary }, Cmd.none
+
+        let withVisitLink link model =
+            Avalonia.Dialogs.AboutAvaloniaDialog.OpenBrowser(link)
+            model, Cmd.none
         
 
     let update (message: Message) (model: Model) (window: HostWindow): Model * Cmd<Message> =
@@ -118,35 +128,21 @@ module Shell =
         | Failure err -> log.Error err; model, Cmd.none
         | QuitProgram -> UpdateHandler.withQuitProgram window model
         | SwatDirectoryEntryChanged directory -> UpdateHandler.withSwatDirectoryEntryChanged directory model
-
         | InstallDownload id -> UpdateHandler.withInstallDownload id model
         | AfterInstallDownload installDownloadResult -> UpdateHandler.withAfterInstallDownload installDownloadResult model
-
         | InstallExtract id -> UpdateHandler.withInstallExtract id model
         | AfterInstallExtract installExtractResult -> UpdateHandler.withAfterInstallExtract installExtractResult model
-
         | Uninstall id -> UpdateHandler.withUninstall id model
         | AfterUninstall uninstallResult -> UpdateHandler.withAfterUninstall uninstallResult model
-        
         | Launch id -> UpdateHandler.withLaunch id model
         | AfterLaunch launchResult -> UpdateHandler.withAfterLaunch launchResult model
-
-        | OpenFolderDialog -> UpdateHandler.withOpenNewFolderDialog window model
-        | FolderDialogOpened directory -> UpdateHandler.withNewFolderFolderOpened directory model
-
-        | OpenInfoPopup message ->
-            { model with CurrentScreen = InfoPopup; ProgressCompletedStatus = Some message }, Cmd.none
-        | CloseInfoPopup ->
-            { model with CurrentScreen = Primary }, Cmd.none
-
-        | OpenErrorPopup message ->
-            { model with CurrentScreen = ErrorPopup; ProgressCompletedStatus = Some message }, Cmd.none
-        | CloseErrorPopup ->
-            { model with CurrentScreen = Primary }, Cmd.none
-
-        | VisitLink link ->
-            Avalonia.Dialogs.AboutAvaloniaDialog.OpenBrowser(link)
-            model, Cmd.none
+        | OpenFolderDialog -> UpdateHandler.withOpenFolderDialog window model
+        | FolderDialogOpened directory -> UpdateHandler.withFolderFolderOpened directory model
+        | OpenInfoPopup message -> UpdateHandler.withOpenInfoPopup message model
+        | CloseInfoPopup -> UpdateHandler.withCloseInfoPopup model
+        | OpenErrorPopup message ->  UpdateHandler.withOpenErrorPopup message model
+        | CloseErrorPopup -> UpdateHandler.withCloseErrorPopup model
+        | VisitLink link -> UpdateHandler.withVisitLink link model
             
 
     type ShellWindow() as this =
