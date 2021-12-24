@@ -98,9 +98,8 @@ module View =
                     TextBlock.fontWeight FontWeight.ExtraBold
                     TextBlock.text category
                 ]
-                TextBlock.create [
-                    TextBlock.text $" {getOrigin selectedMod.Origin}: {selectedMod.Maintainer}-{selectedMod.Version}-{selectedMod.Stability.ToString()} {isInstalledText}"
-                ]
+                
+                Utility.simpleTextBlock $" {getOrigin selectedMod.Origin}: {selectedMod.Maintainer}-{selectedMod.Version}-{selectedMod.Stability.ToString()} {isInstalledText}"
 
                 
                 if selectedMod.IsInstalled then
