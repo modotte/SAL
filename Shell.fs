@@ -67,6 +67,7 @@ module Shell =
 
             let status = $"Uninstalling {IOHandler.modDirectoryOutput selectedMod} mod.."
             { model with IsInProgress = true; ProgressStatus = Some status }, Cmd.OfAsync.result message
+            
         let withAfterUninstall result model =
             match result with
             | UninstallationResult.Failure (m, err) -> { model with IsInProgress = false }, Cmd.ofMsg (OpenErrorPopup err)

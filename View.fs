@@ -35,17 +35,12 @@ module View =
                     MenuItem.viewItems [
                         MenuItem.create [
                             MenuItem.header "About SAL"
-                            MenuItem.onClick (fun _ -> dispatch (VisitLink "https://github.com/modotte/SAL/#README.md"))
+                            MenuItem.onClick (fun _ -> dispatch (VisitLink "https://github.com/modotte/SAL#readme"))
                         ]
 
                         MenuItem.create [
                             MenuItem.header "Report bugs or suggest feedbacks"
                             MenuItem.onClick (fun _ -> dispatch (VisitLink "https://github.com/modotte/SAL/issues"))
-                        ]
-
-                        MenuItem.create [
-                            MenuItem.header "Visit source code repository on Github"
-                            MenuItem.onClick (fun _ -> dispatch (VisitLink "https://github.com/modotte/SAL"))
                         ]
                     ]
                 ]
