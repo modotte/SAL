@@ -25,7 +25,7 @@ I'm terrible at it. Also, expect a lot of bugs during this phase.
 
 ## Version
 
-v0.1.0
+v0.1.2
 
 ## Planned Features (need to research first)
 
@@ -51,7 +51,6 @@ dotnet paket install
 dotnet build
 
 # Running
-
 dotnet run
 ```
 
