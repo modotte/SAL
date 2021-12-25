@@ -43,7 +43,7 @@
             "Version": "v0.65",
             "Url": "http://localhost:6792/SEF_FRv065Stable.rar",
             "Origin": "Official",
-            "PreExtractFolder": "SEF_FR",
+            "ModRootFolderName": "SEF_FR",
             "Stability": "Stable",
             "ArchiveFormat": "Rar",
             "IsInstalled": false
