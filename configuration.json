@@ -7,7 +7,7 @@
             "Version": "v7.0",
             "Url": "http://localhost:6792/SEF-v7.0.zip",
             "Origin": "Official",
-            "PreExtractFolder": "SEF",
+            "ModRootFolderName": "SEF",
             "Stability": "Stable",
             "ArchiveFormat": "Zip",
             "IsInstalled": false
@@ -19,7 +19,7 @@
             "Version": "v6.0",
             "Url": "http://localhost:6792/SEFv6.zip",
             "Origin": "Official",
-            "PreExtractFolder": "SEF",
+            "ModRootFolderName": "SEF",
             "Stability": "Stable",
             "ArchiveFormat": "Zip",
             "IsInstalled": false
@@ -31,7 +31,7 @@
             "Version": "v0.66",
             "Url": "http://localhost:6792/SEF_FRv66b.1.rar",
             "Origin": "Official",
-            "PreExtractFolder": "SEF_FR",
+            "ModRootFolderName": "SEF_FR",
             "Stability": "Beta",
             "ArchiveFormat": "Rar",
             "IsInstalled": false
@@ -55,7 +55,7 @@
             "Version": "v1.5.7",
             "Url": "http://localhost:6792/SEF-BTLA_v1.5.7z",
             "Origin": "Official",
-            "PreExtractFolder": "SEF-BTLA",
+            "ModRootFolderName": "SEF-BTLA",
             "Stability": "Stable",
             "ArchiveFormat": "SevenZip",
             "IsInstalled": false
@@ -63,7 +63,5 @@
     ],
     "SwatDirectory": "C:\\GOG Games\\SWAT 4",
     "IsInProgress": false,
-    "ProgressStatus": "Uninstalling beppe_goodoldrebel-SEF_FR-v0.66 mod..",
-    "ProgressCompletedStatus": "Connection refused. [::ffff:127.0.0.1]:6792 (localhost:6792)",
     "CurrentScreen": "Primary"
 }

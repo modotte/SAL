@@ -17,7 +17,7 @@ module Domain =
         Version: string
         Url: string
         Origin: OriginType
-        PreExtractFolder: string
+        ModRootFolderName: string
         Stability: StabilityType
         ArchiveFormat: ArchiveFormatType
         IsInstalled: bool
@@ -81,7 +81,7 @@ module Domain =
             Version = "v7.0"
             Url = "http://localhost:6792/SEF-v7.0.zip"
             Origin = Official
-            PreExtractFolder = "SEF"
+            ModRootFolderName = "SEF"
             Stability = Stable
             ArchiveFormat = Zip
             IsInstalled = false
@@ -94,7 +94,7 @@ module Domain =
             Version = "v0.66"
             Url = "http://localhost:6792/SEF_FRv66b.1.rar"
             Origin = Official
-            PreExtractFolder = "SEF_FR"
+            ModRootFolderName = "SEF_FR"
             Stability = Beta
             ArchiveFormat = Rar
             IsInstalled = false

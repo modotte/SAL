@@ -96,7 +96,7 @@ module IOHandler =
         try
             log.Information("Renaming extracted folder...")
             Directory.Move(
-                Path.Combine(tempDirPath, gameMod.PreExtractFolder),
+                Path.Combine(tempDirPath, gameMod.ModRootFolderName),
                 Path.Combine(swatDir, modDirectoryOutput gameMod)
             )
 
