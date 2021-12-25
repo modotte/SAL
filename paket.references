@@ -7,3 +7,4 @@ Serilog.Sinks.Console
 SharpCompress
 Thoth.Json.Net
 FSharp.Core
+Serilog.Sinks.File

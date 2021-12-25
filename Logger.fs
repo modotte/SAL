@@ -4,6 +4,11 @@
 
 namespace SAL
 
+open Serilog
+
 module Logger =
-    open Serilog
-    let log = LoggerConfiguration().WriteTo.Console().CreateLogger()
+    let log = 
+        LoggerConfiguration()
+            .WriteTo.Console()
+            .WriteTo.File("SAL-log.txt")
+            .CreateLogger()

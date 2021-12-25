@@ -1,4 +1,6 @@
-
+*.text
+*.txt
+*.log
 *.zip
 SWAT4
 SSL certificates
