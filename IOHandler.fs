@@ -120,7 +120,8 @@ module IOHandler =
 
         | :? System.IndexOutOfRangeException as exn ->
             log.Error(exn.Message)
-            InstallExtractionResult.Failure (gameMod, exn.Message)
+            let err = $"{modDirectoryOutput gameMod} archive is corrupted. Please delete it and retry again later."
+            InstallExtractionResult.Failure (gameMod, err)
 
         | :? TemporaryFolderCreationException as exn ->
             log.Error(exn.Message)
