@@ -143,19 +143,19 @@ module IOHandler =
             UninstallationResult.Failure (gameMod, err)
 
         else
-            log.Information("Beginning to uninstall mod..")
-            log.Information($"Deleting {modPath}..gonna take a few seconds..")
-
             try
+                log.Information("Beginning to uninstall mod..")
+                log.Information($"Deleting {modPath}..gonna take a few seconds..")
                 Directory.Delete(Path.Combine(swatDir, modPath), true)
+                log.Information("Finished uninstalling..")
+
+                let msg = modPath + " uninstalled successfully"
+                log.Information(msg)
+                UninstallationResult.Success gameMod
             with
-            | :? IOException as exn -> log.Error(exn.Message)
-
-            log.Information("Finished uninstalling..")
-
-            let msg = modPath + " uninstalled successfully"
-            log.Information(msg)
-            UninstallationResult.Success gameMod
+            | :? IOException as exn -> 
+                log.Error(exn.Message)
+                UninstallationResult.Failure (gameMod, exn.Message)
 
     let launchMod gameMod swatDir =
         let modDir = Path.Combine(swatDir, modDirectoryOutput gameMod)
