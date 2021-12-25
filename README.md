@@ -1,10 +1,10 @@
-# SAL: SWAT4 swateliteforce mods Alternative Launcher
+# SAL: SWAT4 Alternative Launcher
 
 SAL is a minimal SWAT4 SEF based mod launcher. I made this initially for myself,
 because I dislike dragging folders, finding the right app to extract them archives,
 and starting all over again when a new SEF based mod is released. So I decided
 to create this tool to automate all of that annoying process for myself. Also,
-was really interested experimented in Elm architecture for desktop application,
+was really interested experimenting with Elm architecture for desktop application,
 so this is the result so far.
 
 ## Current Features
@@ -20,7 +20,7 @@ the software. No need to change the software code or rebuild the software.
 
 ### Disclaimer
 
-I apologize for the terrible UI. I'm not a UI/UX designer and have to admit,
+I apologize for the bad UI. I'm not a UI/UX designer and have to admit,
 I'm terrible at it. Also, expect a lot of bugs during this phase.
 
 ## Version
