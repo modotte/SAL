@@ -16,7 +16,7 @@ installation, uninstallation or just simply launching a mod.
 - User can review mod source links for security reasons *or*
 add more mods of their choice into `configuration.json` file that comes with 
 the software. No need to change the software code or rebuild the software.
-- Free and open source, under MIT license.
+- Free and open source, under GPL-3.0 license.
 
 ### Disclaimer
 
