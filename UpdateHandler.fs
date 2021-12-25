@@ -88,7 +88,7 @@ module UpdateHandler =
             return AfterLaunch result
         }
         
-        let status = $"Launching {IOHandler.modDirectoryOutput selectedMod} mod.."
+        let status = $"Running {IOHandler.modDirectoryOutput selectedMod} mod.."
         { model with IsInProgress = true; ProgressStatus = Some status }, Cmd.OfAsync.result message
         
     let withAfterLaunch result model =
