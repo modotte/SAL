@@ -1,12 +1,12 @@
 ﻿namespace SAL
 
+open System.Net
+open System.Diagnostics
 open System.IO
 open Logger
 open Domain
 
 module IOHandler =
-    open System.Net
-    open System.Diagnostics
 
     exception TemporaryFolderCreationException of string
     exception TemporaryFolderDeletionException of string
@@ -87,14 +87,14 @@ module IOHandler =
         let archivePath = Path.Combine(swatDir, (asArchiveFile gameMod))
 
         log.Information("Extracting mod archive..")
-        match gameMod.ArchiveFormat with
-        | Zip -> Archive.extractZipArchiveTo archivePath tempDirPath
-        | Rar -> Archive.extractRarArchiveTo archivePath tempDirPath
-        | SevenZip -> Archive.extractSevenZipArchiveTo archivePath tempDirPath
-
-        log.Information("Finished extracting mod archive")
-
         try
+            match gameMod.ArchiveFormat with
+            | Zip -> Archive.extractZipArchiveTo archivePath tempDirPath
+            | Rar -> Archive.extractRarArchiveTo archivePath tempDirPath
+            | SevenZip -> Archive.extractSevenZipArchiveTo archivePath tempDirPath
+
+            log.Information("Finished extracting mod archive")
+
             log.Information("Renaming extracted folder...")
             Directory.Move(
                 Path.Combine(tempDirPath, gameMod.ModRootFolderName),
@@ -113,9 +113,19 @@ module IOHandler =
         | :? IOException as exn ->
             log.Error(exn.Message)
             InstallExtractionResult.Failure (gameMod, exn.Message)
+
+        | :? InvalidDataException as exn ->
+            log.Error(exn.Message)
+            InstallExtractionResult.Failure (gameMod, exn.Message)
+
+        | :? System.IndexOutOfRangeException as exn ->
+            log.Error(exn.Message)
+            InstallExtractionResult.Failure (gameMod, exn.Message)
+
         | :? TemporaryFolderCreationException as exn ->
             log.Error(exn.Message)
             InstallExtractionResult.Failure (gameMod, exn.Message)
+
         | :? TemporaryFolderDeletionException as exn ->
             log.Error(exn.Message)
             InstallExtractionResult.Failure (gameMod, exn.Message)
