@@ -6,6 +6,10 @@ BINROOT_RELEASE=bin/Release/net5.0/win-x64
 PUBLISH_BIN_DIR=SAL
 VERSION=v0.1.2
 
+restore:
+	$(DOTNET) tool restore
+	$(DOTNET) paket install
+
 all:
 	$(DOTNET) build --no-restore
 
