@@ -62,5 +62,5 @@ Thank you for contributing! :smile:
 
 ## License
 
-This software has been released under the MIT license. For further details,
+This software has been released under the GPL-3.0 license. For further details,
 please see LICENSE file.

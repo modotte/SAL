@@ -1,4 +1,9 @@
-﻿namespace SAL
+﻿// Copyright (c) 2021 Modotte
+// Copyright (c) 2019 Josua Jäger (Original template code under MIT license, please see LICENSE.MIT)
+// This software is licensed under the GPL-3.0 license. For more details,
+// please read the LICENSE file content.
+
+namespace SAL
 
 open Avalonia
 open Avalonia.Controls.ApplicationLifetimes

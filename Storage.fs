@@ -1,3 +1,6 @@
+// Copyright (c) 2016 Elmish contributors (Licensed under the Apache License, Version 2.0 (the "License"))
+// Please see LICENSE.APACHE2
+
 namespace SAL.Data
 
 open System.IO

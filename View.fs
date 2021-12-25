@@ -1,5 +1,7 @@
 // Copyright (c) 2021 Modotte
-// For further details about license, see LICENSE file.
+// This software is licensed under the GPL-3.0 license. For more details,
+// please read the LICENSE file content.
+
 
 namespace SAL
 
