@@ -26,9 +26,9 @@ module Archive =
         use rarReader = RarReader.Open(fileReader)
         try
             while rarReader.MoveToNextEntry() do
-                    let extractOptions = ExtractionOptions()
-                    extractOptions.ExtractFullPath <- true
-                    rarReader.WriteEntryToDirectory(outputDir, extractOptions)
+                let extractOptions = ExtractionOptions()
+                extractOptions.ExtractFullPath <- true
+                rarReader.WriteEntryToDirectory(outputDir, extractOptions)
         finally
             fileReader.Dispose()
             rarReader.Dispose()
