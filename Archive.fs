@@ -9,7 +9,6 @@ open System.IO.Compression
 
 open SharpCompress.Common;
 open SharpCompress.Readers;
-open SharpCompress.Readers.Zip
 open SharpCompress.Readers.Rar
 
 open SharpCompress.Archives.SevenZip
