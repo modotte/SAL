@@ -114,24 +114,12 @@ module IOHandler =
             InstallExtractionResult.Success gameMod
 
         with
-        | :? IOException as exn ->
-            log.Error(exn.Message)
-            InstallExtractionResult.Failure (gameMod, exn.Message)
-
-        | :? InvalidDataException as exn ->
-            log.Error(exn.Message)
-            InstallExtractionResult.Failure (gameMod, exn.Message)
-
         | :? System.IndexOutOfRangeException as exn ->
             log.Error(exn.Message)
             let err = $"{modDirectoryOutput gameMod} archive is corrupted. Please delete it and retry again later."
             InstallExtractionResult.Failure (gameMod, err)
 
-        | :? TemporaryFolderCreationException as exn ->
-            log.Error(exn.Message)
-            InstallExtractionResult.Failure (gameMod, exn.Message)
-
-        | :? TemporaryFolderDeletionException as exn ->
+        | _ as exn -> 
             log.Error(exn.Message)
             InstallExtractionResult.Failure (gameMod, exn.Message)
 
