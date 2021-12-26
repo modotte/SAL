@@ -7,8 +7,8 @@ namespace SAL
 open System.IO
 open System.IO.Compression
 
-open SharpCompress.Common;
-open SharpCompress.Readers;
+open SharpCompress.Common
+open SharpCompress.Readers
 open SharpCompress.Readers.Rar
 
 open SharpCompress.Archives.SevenZip
