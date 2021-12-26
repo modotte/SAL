@@ -14,12 +14,12 @@ open SharpCompress.Readers.Rar
 open SharpCompress.Archives.SevenZip
 
 module Archive =
-    let extractZipArchiveTo archive outputDir =
+    let extractZipArchive archive outputDir =
         use reader = ZipFile.Open(archive, ZipArchiveMode.Read)
 
         reader.ExtractToDirectory(outputDir)
 
-    let extractRarArchiveTo archive outputDir =
+    let extractRarArchive archive outputDir =
         use fileReader = File.OpenRead(archive)
         use rarReader = RarReader.Open(fileReader)
 
@@ -28,7 +28,7 @@ module Archive =
             extractOptions.ExtractFullPath <- true
             rarReader.WriteEntryToDirectory(outputDir, extractOptions)
 
-    let extractSevenZipArchiveTo archive outputDir =
+    let extractSevenZipArchive archive outputDir =
         use fileReader = File.OpenRead(archive)
         use sevenZipReader = SevenZipArchive.Open(fileReader).ExtractAllEntries()
         

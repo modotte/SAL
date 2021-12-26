@@ -93,9 +93,9 @@ module IOHandler =
         log.Information("Extracting mod archive..")
         try
             match gameMod.ArchiveFormat with
-            | Zip -> Archive.extractZipArchiveTo archivePath tempDirPath
-            | Rar -> Archive.extractRarArchiveTo archivePath tempDirPath
-            | SevenZip -> Archive.extractSevenZipArchiveTo archivePath tempDirPath
+            | Zip -> Archive.extractZipArchive archivePath tempDirPath
+            | Rar -> Archive.extractRarArchive archivePath tempDirPath
+            | SevenZip -> Archive.extractSevenZipArchive archivePath tempDirPath
 
             log.Information("Finished extracting mod archive")
 
