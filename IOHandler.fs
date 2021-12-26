@@ -30,6 +30,26 @@ module IOHandler =
         | Rar -> modArchiveName + ".rar"
         | SevenZip -> modArchiveName + ".7z"
 
+    let executeDownload gameMod archivePath =
+        if File.Exists(archivePath) then
+            let msg = $"{archivePath} already exist. Reusing it to save resources.."
+            log.Information(msg)
+            InstallDownloadResult.Success gameMod
+            
+        else
+            log.Information("Starting to download the mod archive file..")
+            log.Information("Downloading from: " + gameMod.Url)
+            try
+                let client = new WebClient() 
+                client.Headers.Add("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36")
+                client.DownloadFile(gameMod.Url, archivePath)
+                log.Information($"{archivePath} has been downloaded")
+                InstallDownloadResult.Success gameMod
+            with
+            | :? WebException as exn ->
+                log.Error(exn.Message)
+                InstallDownloadResult.Failure (gameMod, exn.Message)
+
     let downloadArchive gameMod swatDir = 
         let modInstallDir = modDirectoryOutput gameMod
         let archivePath = Path.Combine(swatDir, asArchiveFile gameMod)
@@ -46,18 +66,7 @@ module IOHandler =
                 InstallDownloadResult.Success gameMod
                 
             else
-                log.Information("Starting to download the mod archive file..")
-                log.Information("Downloading from: " + gameMod.Url)
-                try
-                    let client = new WebClient() 
-                    client.Headers.Add("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36")
-                    client.DownloadFile(gameMod.Url, archivePath)
-                    log.Information($"{archivePath} has been downloaded")
-                    InstallDownloadResult.Success gameMod
-                with
-                | :? WebException as exn ->
-                    log.Error(exn.Message)
-                    InstallDownloadResult.Failure (gameMod, exn.Message)
+                executeDownload gameMod archivePath
 
     let private makeTemporaryFolder swatDir =
         try
